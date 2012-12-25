@@ -3,6 +3,7 @@
 #include <string>
 
 using std::map;
+using std::string;
 
 struct ISocialNetworkService
 {
@@ -11,8 +12,14 @@ struct ISocialNetworkService
 	virtual void CheckError(string szRootNode) = 0;
 
 	/*
-	* Login Functions
+	* ----------------Logging Functions----------------
 	*/
 	virtual string GetLoginURL(string params = "") = 0;
+
+	/*
+	* ----------------Data getter Functions----------------
+	*/
+	virtual map<string,string> GetMediaData(map<string,string> mapMedia) = 0;
+	
 
 };

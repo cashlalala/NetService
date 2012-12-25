@@ -158,8 +158,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			Name="core"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
@@ -167,7 +166,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Utility\Debug.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\NetKernel\Src\INetKernel.h"
+				>
+			</File>
+			<File
 				RelativePath=".\InternetConnectService.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\InternetConnectService.h"
 				>
 			</File>
 			<File
@@ -175,7 +186,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NetKernelLoader.h"
+				>
+			</File>
+			<File
 				RelativePath=".\NetService.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NetService.h"
 				>
 			</File>
 			<File
@@ -190,36 +209,6 @@
 					/>
 				</FileConfiguration>
 			</File>
-		</Filter>
-		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
-			>
-			<File
-				RelativePath="..\..\Utility\Debug.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\NetKernel\Src\INetKernel.h"
-				>
-			</File>
-			<File
-				RelativePath=".\InternetConnectService.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ISocialNetworkService.h"
-				>
-			</File>
-			<File
-				RelativePath=".\NetKernelLoader.h"
-				>
-			</File>
-			<File
-				RelativePath=".\NetService.h"
-				>
-			</File>
 			<File
 				RelativePath=".\stdafx.h"
 				>
@@ -230,6 +219,38 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+		</Filter>
+		<Filter
+			Name="SocialNetwork"
+			>
+			<File
+				RelativePath=".\BaseService.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BaseService.h"
+				>
+			</File>
+			<File
+				RelativePath=".\FacebookService.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\FacebookService.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ISocialNetworkService.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SocialServiceFactory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SocialServiceFactory.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
