@@ -1,6 +1,6 @@
 #pragma once
-#include "..\src\stdafx.h"
-#include "..\src\InternetConnectService.h"
+
+#include <InternetConnectService.h>
 #include <cppunit/extensions/HelperMacros.h>
 
 class InternetConnectTest  : public CPPUNIT_NS::TestFixture

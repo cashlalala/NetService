@@ -3,6 +3,7 @@
 #include <string>
 #include <list>
 #include <memory>
+
 #include "NetKernelLoader.h"
 #include "..\..\NetKernel\Src\INetKernel.h"
 

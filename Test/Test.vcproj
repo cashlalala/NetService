@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;F:\Power2Go9\thirdparty\cppunit-1.12.1\include&quot;"
+				AdditionalIncludeDirectories="&quot;F:\Power2Go9\thirdparty\cppunit-1.12.1\include&quot;;F:\Power2Go9\subsys\NetService\src"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;TEST_EXPORTS;CPPUNIT_DLL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,9 +61,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="cppunitd_dll.lib Shlwapi.lib"
+				AdditionalDependencies="cppunitd_dll.lib Shlwapi.lib NetService.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;F:\Power2Go9\thirdparty\cppunit-1.12.1\lib&quot;"
+				AdditionalLibraryDirectories="&quot;F:\Power2Go9\thirdparty\cppunit-1.12.1\lib&quot;;F:\Power2Go9\subsys\NetService\Debug"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -181,38 +181,6 @@
 			</File>
 			<File
 				RelativePath=".\InternetConnectTest.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="References"
-			>
-			<File
-				RelativePath="..\..\Utility\Debug.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Utility\Debug.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\NetKernel\Src\INetKernel.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\InternetConnectService.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\InternetConnectService.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\NetKernelLoader.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\NetKernelLoader.h"
 				>
 			</File>
 		</Filter>

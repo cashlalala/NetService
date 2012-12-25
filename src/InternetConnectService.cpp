@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "..\..\Utility\Debug.h"
 #include "InternetConnectService.h"
 #include <algorithm>
