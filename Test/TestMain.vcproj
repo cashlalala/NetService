@@ -266,14 +266,6 @@
 				RelativePath="..\src\InternetConnectService.h"
 				>
 			</File>
-			<File
-				RelativePath="..\src\NetKernelLoader.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\NetKernelLoader.h"
-				>
-			</File>
 		</Filter>
 		<File
 			RelativePath="Main.cpp"
@@ -299,6 +291,14 @@
 		</File>
 		<File
 			RelativePath="Makefile.am"
+			>
+		</File>
+		<File
+			RelativePath="..\src\NetKernelLoader.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\src\NetKernelLoader.h"
 			>
 		</File>
 	</Files>

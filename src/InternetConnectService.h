@@ -8,7 +8,7 @@
 
 using std::list;
 using std::string;
-using std::auto_ptr;
+using std::wstring;
 
 class CInternetConnectService
 {
@@ -20,6 +20,7 @@ public:
 	void SetProxyDetectUrl(string szUrl);
 	void ForceStopNetKernel(void);
 	bool DetectProxy(void);
+	string OpenUrl(string szUrl, string szHttpMethod = HTTP_METHOD_GET, wstring wszCookieFilePath = L"", void* pfnCallBack = NULL);
 
 
 private:

@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #include "..\..\Utility\Debug.h"
 #include "InternetConnectService.h"
+#include <algorithm>
+#include <ctype.h>
 
 CInternetConnectService::CInternetConnectService(void)
 : m_bIsProxyDetectSucc(false),
@@ -57,4 +59,34 @@ bool CInternetConnectService::DetectProxy(void)
 	m_cNetKernelLoader.DelInstance(pINetKernel);
 
 	return m_bIsProxyDetectSucc;
+}
+
+string CInternetConnectService::OpenUrl( string szUrl, string szHttpMethod /*= HTTP_METHOD_GET*/, wstring wszCookieFilePath /*= L""*/, void* pfnCallBack /*= NULL*/ )
+{
+	INetKernel* pINetKernel = m_cNetKernelLoader.GetInstance();
+	m_listINetKernel.push_back(pINetKernel);
+
+	// reserved
+	//if (pfnCallBack)
+	//	pINetKernel->SetCallBack(pfnCallBack);
+
+	string szExt;
+	szExt.resize(szUrl.size());
+	std::transform(szUrl.rbegin(),szUrl.rbegin()+4,szExt.begin(),tolower);
+	if (szExt.compare(0,4,"gpj.")==0)
+		pINetKernel->SetDownloadCache(TRUE);
+
+	HttpResponseValueObject cHttpRespVO;
+	pINetKernel->OpenUrl(cHttpRespVO,szUrl.c_str(),szHttpMethod.c_str(), 
+										NULL,NULL,wszCookieFilePath.c_str());
+
+	list<INetKernel*>::iterator it = std::find(m_listINetKernel.begin(),m_listINetKernel.end(),pINetKernel);
+	if (it == m_listINetKernel.end())
+	{
+		delete pINetKernel;
+		(*it) = pINetKernel = NULL;
+		m_listINetKernel.erase(it);
+	}
+
+	return cHttpRespVO.strResponse;
 }
