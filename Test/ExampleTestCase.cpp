@@ -1,7 +1,7 @@
 #include <cppunit/config/SourcePrefix.h>
 #include "ExampleTestCase.h"
 
-CPPUNIT_TEST_SUITE_REGISTRATION( ExampleTestCase );
+//CPPUNIT_TEST_SUITE_REGISTRATION( ExampleTestCase );
 
 void ExampleTestCase::example()
 {

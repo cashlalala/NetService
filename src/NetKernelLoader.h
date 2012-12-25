@@ -12,6 +12,6 @@ private:
 public:
 	HMODULE m_hNetKernel;
 	INetKernel* GetInstance(void);
-	void DelInstance(void);
+	void DelInstance(INetKernel* pInst);
 };
 

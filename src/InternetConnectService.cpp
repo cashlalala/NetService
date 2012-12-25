@@ -41,7 +41,7 @@ bool CInternetConnectService::DetectProxy(void)
 	if (this->m_bIsProxyDetectSucc)
 		return true;
 
-	auto_ptr<INetKernel> pINetKernel (m_cNetKernelLoader.GetInstance());
+	INetKernel* pINetKernel  = m_cNetKernelLoader.GetInstance();
 
 	HttpResponseValueObject cHttpRespVO;
 	pINetKernel->OpenUrl(cHttpRespVO,m_szProxyDetectUrl.c_str());
@@ -53,6 +53,8 @@ bool CInternetConnectService::DetectProxy(void)
 	}
 	else
 		m_bIsProxyDetectSucc = true;
+
+	m_cNetKernelLoader.DelInstance(pINetKernel);
 
 	return m_bIsProxyDetectSucc;
 }

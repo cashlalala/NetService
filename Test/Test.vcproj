@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="cppunitd_dll.lib"
+				AdditionalDependencies="cppunitd_dll.lib Shlwapi.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;F:\Power2Go9\thirdparty\cppunit-1.12.1\lib&quot;"
 				GenerateDebugInformation="true"
@@ -173,27 +173,53 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			Name="Tests"
 			>
 			<File
-				RelativePath=".\SimplePlugIn.cpp"
+				RelativePath=".\InternetConnectTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\InternetConnectTest.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			Name="References"
 			>
+			<File
+				RelativePath="..\..\Utility\Debug.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Utility\Debug.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\NetKernel\Src\INetKernel.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\InternetConnectService.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\InternetConnectService.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\NetKernelLoader.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\NetKernelLoader.h"
+				>
+			</File>
 		</Filter>
-		<Filter
-			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
-			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
+		<File
+			RelativePath=".\SimplePlugIn.cpp"
 			>
-		</Filter>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

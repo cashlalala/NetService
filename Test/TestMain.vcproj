@@ -4,6 +4,7 @@
 	Version="8.00"
 	Name="TestMain"
 	ProjectGUID="{27F845DB-93B1-41A3-87B9-615AAEAD7E23}"
+	RootNamespace="TestMain"
 	>
 	<Platforms>
 		<Platform
@@ -164,10 +165,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib cppunitd.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib cppunitd.lib NetService.lib Shlwapi.lib"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;F:\Power2Go9\thirdparty\cppunit-1.12.1\lib&quot;"
+				AdditionalLibraryDirectories="&quot;F:\Power2Go9\thirdparty\cppunit-1.12.1\lib&quot;;F:\Power2Go9\subsys\NetService\Debug"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/TestMain.pdb"
 				SubSystem="1"
@@ -204,32 +205,76 @@
 	<References>
 	</References>
 	<Files>
-		<File
-			RelativePath="ExampleTestCase.cpp"
+		<Filter
+			Name="Tests"
 			>
-			<FileConfiguration
-				Name="Release|Win32"
+			<File
+				RelativePath="ExampleTestCase.cpp"
 				>
-				<Tool
-					Name="VCCLCompilerTool"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Win32"
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\ExampleTestCase.h"
 				>
-				<Tool
-					Name="VCCLCompilerTool"
-					AdditionalIncludeDirectories=""
-					PreprocessorDefinitions=""
-				/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="ExampleTestCase.h"
+			</File>
+			<File
+				RelativePath=".\InternetConnectTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\InternetConnectTest.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Reference"
 			>
-		</File>
+			<File
+				RelativePath="..\..\Utility\Debug.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Utility\Debug.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\NetKernel\Src\INetKernel.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\InternetConnectService.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\InternetConnectService.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\NetKernelLoader.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\NetKernelLoader.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="Main.cpp"
 			>

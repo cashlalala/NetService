@@ -44,9 +44,8 @@ INetKernel* NetKernelLoader::GetInstance( void )
 }
 
 
-void NetKernelLoader::DelInstance(void)
+void NetKernelLoader::DelInstance( INetKernel* pInst )
 {
-	//PFNDELINSTANCE pFn = (PFNDELINSTANCE) GetProcAddress(m_hNetKernel,"_DelInstance@0");
-	//INetKernel::PFNDELINSTANCE pFn = (INetKernel::PFNDELINSTANCE) GetProcAddress(m_hNetKernel,"DelInstance");
-	//pFn();
+	INetKernel::PFNDELINSTANCE pFn = (INetKernel::PFNDELINSTANCE) GetProcAddress(m_hNetKernel,"DeleteInstance");
+	pFn(pInst);
 }
