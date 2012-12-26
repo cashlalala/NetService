@@ -233,6 +233,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="references"
+			>
+			<File
+				RelativePath=".\IOnlineMgr.h"
+				>
+			</File>
+			<File
+				RelativePath=".\UploadProgress.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="Main.cpp"
 			>
