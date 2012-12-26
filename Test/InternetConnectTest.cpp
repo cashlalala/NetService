@@ -1,7 +1,7 @@
 #include "InternetConnectTest.h"
 #include <iostream>
 
-//CPPUNIT_TEST_SUITE_REGISTRATION( InternetConnectTest );
+CPPUNIT_TEST_SUITE_REGISTRATION( InternetConnectTest );
 
 InternetConnectTest::InternetConnectTest()
 {

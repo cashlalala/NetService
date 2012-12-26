@@ -209,6 +209,14 @@
 			Name="Tests"
 			>
 			<File
+				RelativePath=".\FacebookServiceTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\FacebookServiceTest.h"
+				>
+			</File>
+			<File
 				RelativePath=".\InternetConnectTest.cpp"
 				>
 			</File>

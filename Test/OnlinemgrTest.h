@@ -21,8 +21,8 @@ class COnlinemgrTest : public CPPUNIT_NS::TestFixture, public BackgroundUploadPr
 {
 	CPPUNIT_TEST_SUITE( COnlinemgrTest );
 	CPPUNIT_TEST( testLoginUrl );
-	CPPUNIT_TEST( testGetAccessToken );
-	CPPUNIT_TEST( testCheckLoginResult );
+	//CPPUNIT_TEST( testGetAccessToken );
+	//CPPUNIT_TEST( testCheckLoginResult );
 	CPPUNIT_TEST_SUITE_END();
 public:
 	COnlinemgrTest();

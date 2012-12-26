@@ -8,9 +8,9 @@ class InternetConnectTest  : public CPPUNIT_NS::TestFixture
 
 	CPPUNIT_TEST_SUITE( InternetConnectTest );
 	CPPUNIT_TEST( testDetectProxy );
-	//CPPUNIT_TEST( testForceStopNetKernel );
-	//CPPUNIT_TEST( testOpenUrl );
-	//CPPUNIT_TEST( testOpenUrlWithJpg );
+	CPPUNIT_TEST( testForceStopNetKernel );
+	CPPUNIT_TEST( testOpenUrl );
+	CPPUNIT_TEST( testOpenUrlWithJpg );
 	CPPUNIT_TEST( testOpenUrlWithWrongFileName );
 	CPPUNIT_TEST_SUITE_END();
 

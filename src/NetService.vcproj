@@ -219,10 +219,6 @@
 			Name="Util"
 			>
 			<File
-				RelativePath=".\MapHelper.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\MapHelper.h"
 				>
 			</File>

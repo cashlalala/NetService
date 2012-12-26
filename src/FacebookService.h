@@ -26,11 +26,11 @@ private:
 	static const SysMaps::EnCat2Str S_MAP_CATEGORY;
 	static const SysMaps::EnSvrInfo2Str S_MAP_SERVER_INFO;
 	static const string S_STR_URL_PREFIX;
-
-	HttpResponseValueObject CallGraphAPI(string szId, 
-																  EnCategory enCatogory = systypes::None, 
-																  SysMaps::Str2Str mapParams = SysMaps::Str2Str(),
-																  EnHttpMethod enMethod = systypes::Get,
-																  bool bCheckError =  true);
+public:
+	string CallGraphAPI(string szId = "me", 
+									EnCategory enCatogory = systypes::None, 
+									SysMaps::Str2Str mapParams = SysMaps::Str2Str(),
+									EnHttpMethod enMethod = systypes::Get,
+									bool bCheckError =  true);
 
 };

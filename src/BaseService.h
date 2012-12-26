@@ -21,9 +21,15 @@ public:
 
 	virtual SysMaps::Str2Str GetPhotos( SysMaps::Str2Str mapQryCriteria );
 
-	virtual void SetConnectionInfo(ConnectionInfoValueObject cConectInfoVO);
+	virtual void SetConnectionInfo(ConnectionInfoValueObject cConectInfoVO)
+	{
+		m_cConnectInfo = cConectInfoVO;
+	}
 
-	virtual ConnectionInfoValueObject GetConnectionInfo(void);
+	virtual ConnectionInfoValueObject GetConnectionInfo(void)
+	{
+		return m_cConnectInfo;
+	}
 
 	static const SysMaps::HttpMethod2Str S_MAP_HTTP_METHOD;
 

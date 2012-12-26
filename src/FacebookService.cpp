@@ -2,6 +2,7 @@
 #include "FacebookService.h"
 #include <boost/format.hpp>
 #include "MapHelper.h"
+#include "..\..\Utility\Debug.h"
 
 using boost::format;
 using systypes::EnCategory;
@@ -46,24 +47,26 @@ map<string,string> CFacebookService::GetPhotos( map<string,string> mapQryCriteri
 	return QQ;
 }
 
-HttpResponseValueObject CFacebookService::CallGraphAPI( string szId, EnCategory enCatogory /*= None*/, SysMaps::Str2Str mapParams /*= MapStringStirng()*/, EnHttpMethod enMethod /*= Get*/, bool bCheckError /*= true*/ )
+string CFacebookService::CallGraphAPI( string szId /*= "me"*/, EnCategory enCatogory /*= None*/, SysMaps::Str2Str mapParams /*= MapStringStirng()*/, EnHttpMethod enMethod /*= Get*/, bool bCheckError /*= true*/ )
 {
-	string szParams;
-	for (SysMaps::Str2Str::iterator it = mapParams.begin();it!=mapParams.end();++it)
-	{
-		szParams += it->first + "=" + it->second;
-	}
+	if (mapParams["access_token"]=="")
+		mapParams["access_token"] = GetConnectionInfo().szAccessToken;
+	
+	//[prefix] [    server name       ]     [    szId      ]     [categ]     [   params     ]
+	//https://  graph.facebook.com   /  724760664  /  photos  ?  fields=id,name
+	string szComposedUrl = CFacebookService::S_STR_URL_PREFIX 
+		+	CMapHelper::GetValue(S_MAP_SERVER_INFO,systypes::ServerName)
+		+ "/"
+		+ ((szId=="")? (GetConnectionInfo().szUid=="")? "me": GetConnectionInfo().szUid : szId)
+		+ "/"
+		+ CMapHelper::GetValue(S_MAP_CATEGORY,enCatogory)
+		+ "?"
+		+ CMapHelper::ToParamString(mapParams);
 
-	//[%1%] [            %2%       ]   [     %3      ]   [ %4%]	 [         %5     ]
-	//https:// graph.facebook.com / 724760664 /  photos  ?  fields=id,name
-	//format fmter("%1%%2%/%3%/%4%?%5%") % S_STR_URL_PREFIX % S_MAP_SERVER_INFO;
+	dprintf("Composed Url is [%s]",szComposedUrl.c_str());
 
-	//
-	//if (mapParams["access_token"] == "")
-	//	mapParams["access_token"] = this->m_cConnectInfo.szAccessToken;
-
-	HttpResponseValueObject cHttpRespVo;
-	return cHttpRespVo;
+	string szResult = OpenUrl(szComposedUrl);
+	return szResult;
 
 }
 
