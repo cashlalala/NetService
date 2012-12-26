@@ -155,7 +155,7 @@ void COnlinemgrTest::SetCurrentUploader( ONLINE_TYPE onlineType )
 	}
 }
 
-bool COnlinemgrTest::CreateUploader( ONLINE_TYPE onlineType )
+BOOL COnlinemgrTest::CreateUploader( ONLINE_TYPE onlineType )
 {
 	if (!m_hOnlineMgr)
 	{

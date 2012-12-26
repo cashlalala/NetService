@@ -38,7 +38,7 @@ public:
 
 protected:
 	void SetCurrentUploader(ONLINE_TYPE onlineType);
-	bool CreateUploader(ONLINE_TYPE onlineType);
+	BOOL CreateUploader(ONLINE_TYPE onlineType);
 
 public:
 	// Interface in BackgroundUploadProgress

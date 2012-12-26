@@ -41,5 +41,5 @@ void CSocialFacotryTest::testCloseServices()
 		}
 	}
 
-	CPPUNIT_ASSERT(bAssert,"Items in container were not cleaned!!!");
+	CPPUNIT_ASSERT_MESSAGE("Items in container were not cleaned!!!",bAssert);
 }

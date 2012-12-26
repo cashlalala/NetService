@@ -185,11 +185,31 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OnlinemgrTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OnlinemgrTest.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SocialFacotryTest.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\SocialFacotryTest.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="references"
+			>
+			<File
+				RelativePath=".\IOnlineMgr.h"
+				>
+			</File>
+			<File
+				RelativePath=".\UploadProgress.h"
 				>
 			</File>
 		</Filter>
