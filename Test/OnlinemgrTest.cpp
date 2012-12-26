@@ -46,3 +46,18 @@ void COnlinemgrTest::testLoginUrl()
 {
 
 }
+
+void COnlinemgrTest::OnBackgroundUploadComplete( HRESULT hr )
+{
+	throw std::exception("The method or operation is not implemented.");
+}
+
+bool COnlinemgrTest::CheckCancel()
+{
+	return m_bCancelUpload;
+}
+
+void COnlinemgrTest::OnFileProgress( LPCTSTR lpszPathName, DWORD dwFileBytesSent, DWORD dwFileBytesTotal, DWORD dwSecondsToFileCompletion, DWORD dwOverallBytesSent, DWORD dwOverallBytesTotal, DWORD dwSecondsToOverallCompletion, DWORD dwBytesPerSecond )
+{
+
+}
