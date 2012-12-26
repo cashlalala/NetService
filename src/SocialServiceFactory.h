@@ -17,10 +17,11 @@ class CSocialServiceFactory
 public:
 	static ISocialNetworkService* GetService(EnServiceType enServTp);
 	static list<ISocialNetworkService*> GetAllServices();
+	static void CloseServices();
 
 private:
 	CSocialServiceFactory(void);
 	~CSocialServiceFactory(void);
+	
 	static map<EnServiceType,ISocialNetworkService*> m_mapServices;
-
 };

@@ -209,37 +209,27 @@
 			Name="Tests"
 			>
 			<File
-				RelativePath="ExampleTestCase.cpp"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\ExampleTestCase.h"
-				>
-			</File>
-			<File
 				RelativePath=".\InternetConnectTest.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\InternetConnectTest.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OnlinemgrTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OnlinemgrTest.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SocialFacotryTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SocialFacotryTest.h"
 				>
 			</File>
 		</Filter>
@@ -267,14 +257,6 @@
 		</File>
 		<File
 			RelativePath="Makefile.am"
-			>
-		</File>
-		<File
-			RelativePath="..\src\NetKernelLoader.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\src\NetKernelLoader.h"
 			>
 		</File>
 	</Files>

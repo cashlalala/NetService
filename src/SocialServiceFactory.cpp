@@ -3,7 +3,7 @@
 #include "FacebookService.h"
 
 
-
+map<EnServiceType,ISocialNetworkService*> CSocialServiceFactory::m_mapServices;
 
 CSocialServiceFactory::CSocialServiceFactory(void)
 {
@@ -42,4 +42,21 @@ list<ISocialNetworkService*> CSocialServiceFactory::GetAllServices()
 		listISNServ.push_back(it->second);
 	}
 	return listISNServ;
+}
+
+
+void CSocialServiceFactory::CloseServices()
+{
+	map<EnServiceType,ISocialNetworkService*>::iterator it = m_mapServices.begin();
+	for (;it!=m_mapServices.end();++it)
+	{
+		void* pRaw = NULL;
+		if (pRaw = dynamic_cast<CFacebookService*> (it->second))
+		{
+			CFacebookService* pInst = (CFacebookService*) pRaw;
+			delete pInst;
+			pInst =  NULL;
+			it->second = NULL;
+		}
+	}
 }

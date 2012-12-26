@@ -64,6 +64,7 @@
 				AdditionalDependencies="cppunitd_dll.lib Shlwapi.lib NetService.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;F:\Power2Go9\thirdparty\cppunit-1.12.1\lib&quot;;F:\Power2Go9\subsys\NetService\Debug"
+				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -181,6 +182,14 @@
 			</File>
 			<File
 				RelativePath=".\InternetConnectTest.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SocialFacotryTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SocialFacotryTest.h"
 				>
 			</File>
 		</Filter>
