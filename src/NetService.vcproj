@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=""
+				AdditionalIncludeDirectories="F:\Power2Go9\thirdparty\boost_1_52_0"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;NETSERVICE_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,6 +61,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalLibraryDirectories="F:\Power2Go9\thirdparty\boost_1_52_0\libs"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -215,6 +216,18 @@
 			</File>
 		</Filter>
 		<Filter
+			Name="Util"
+			>
+			<File
+				RelativePath=".\MapHelper.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MapHelper.h"
+				>
+			</File>
+		</Filter>
+		<Filter
 			Name="SocialNetwork"
 			>
 			<File
@@ -245,10 +258,22 @@
 				RelativePath=".\SocialServiceFactory.h"
 				>
 			</File>
+			<File
+				RelativePath=".\SysTypes.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Model"
 			>
+			<File
+				RelativePath=".\PhotoModel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PhotoModel.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"

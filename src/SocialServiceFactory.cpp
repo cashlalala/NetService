@@ -20,10 +20,10 @@ ISocialNetworkService* CSocialServiceFactory::GetService( EnServiceType enServTp
 	{
 		switch (enServTp)
 		{
-		case EnServiceType::FACEBOOK:
+		case FACEBOOK:
 			pInst = new CFacebookService();
 			break;
-		case EnServiceType::FLICKR:
+		case FLICKR:
 			break;
 		default:
 			break;

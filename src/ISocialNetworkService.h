@@ -1,13 +1,24 @@
 #pragma once
+#include "SysTypes.h"
 #include <map>
 #include <string>
 
+using systypes::SysMaps;
 using std::map;
 using std::string;
 
-struct ISocialNetworkService
+
+struct ConnectionInfoValueObject
 {
-	virtual map<string,string> PrepareParams(string szMethod, map<string,string> params, bool bSignature) = 0;
+	string szUid;
+	string szAccessToken;
+};
+
+struct ISocialNetworkService
+{	
+
+	virtual SysMaps::Str2Str 
+		PrepareParams(string szMethod, SysMaps::Str2Str params, bool bSignature) = 0;
 
 	virtual void CheckError(string szRootNode) = 0;
 
@@ -19,7 +30,6 @@ struct ISocialNetworkService
 	/*
 	* ----------------Data getter Functions----------------
 	*/
-	virtual map<string,string> GetMediaData(map<string,string> mapMedia) = 0;
-	
+	virtual SysMaps::Str2Str GetPhotos(SysMaps::Str2Str mapQryCriteria) = 0;
 
 };
