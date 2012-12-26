@@ -1,7 +1,8 @@
 #pragma once
 
 #include <cppunit/extensions/HelperMacros.h>
-
+#include <Windows.h>
+#include "IOnlineMgr.h"
 
 class COnlinemgrTest : public CPPUNIT_NS::TestFixture
 {
@@ -16,4 +17,8 @@ public:
 	void testLoginUrl();
 
 private:
+
+	HINSTANCE m_hOnlineMgr;
+	IOnlineUploader* m_pFacebookUploader;
+
 };

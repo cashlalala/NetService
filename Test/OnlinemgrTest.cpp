@@ -1,13 +1,10 @@
 
 #include "OnlinemgrTest.h"
-#include <Windows.h>
-#include "IOnlineMgr.h"
+
 #include <Shlwapi.h>
 #include <tchar.h>
 
 CPPUNIT_TEST_SUITE_REGISTRATION( COnlinemgrTest );
-
-static HINSTANCE g_hOnlineMgr;
 
 
 void COnlinemgrTest::setUp()
@@ -16,14 +13,15 @@ void COnlinemgrTest::setUp()
 	GetModuleFileName(NULL, szExePath, _MAX_PATH);
 	PathRemoveFileSpec(szExePath);
 	_tcscat_s(szExePath, _T("OnlineMgr.dll"));
-	g_hOnlineMgr = LoadLibrary(szExePath);
+	m_hOnlineMgr = LoadLibrary(szExePath);
 
-	pfnCreateOnlineUploader fnCreateFacebookUploader = (pfnCreateOnlineUploader) GetProcAddress(g_hOnlineMgr, "CreateFacebookUploader");
+	pfnCreateOnlineUploader fnCreateFacebookUploader = (pfnCreateOnlineUploader) GetProcAddress(m_hOnlineMgr, "CreateFacebookUploader");
+	//m_pFacebookUploader = fnCreateFacebookUploader(this);
 }
 
 void COnlinemgrTest::tearDown()
 {
-	if (g_hOnlineMgr)
+	if (m_hOnlineMgr)
 	{
 		//if (m_pFacebookUploader)
 		//{
@@ -39,8 +37,8 @@ void COnlinemgrTest::tearDown()
 		//	m_pYouTubeUploader = NULL;
 		//}
 
-		FreeLibrary(g_hOnlineMgr);
-		g_hOnlineMgr = NULL;
+		FreeLibrary(m_hOnlineMgr);
+		m_hOnlineMgr = NULL;
 	}
 }
 
