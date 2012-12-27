@@ -1,11 +1,14 @@
 #pragma once
 #include "SysTypes.h"
+#include "IPhotoModel.h"
 #include <map>
 #include <string>
 
 using systypes::SysMaps;
 using std::map;
 using std::string;
+using model::IPhoto;
+using model::IPhotoList;
 
 
 struct ConnectionInfoValueObject
@@ -30,6 +33,6 @@ struct ISocialNetworkService
 	/*
 	* ----------------Data getter Functions----------------
 	*/
-	virtual SysMaps::Str2Str GetPhotos(SysMaps::Str2Str mapQryCriteria) = 0;
+	virtual IPhotoList GetPhotos( SysMaps::Str2Str mapQryCriteria=SysMaps::Str2Str(), string szId = "me") = 0;
 
 };

@@ -219,6 +219,18 @@
 			Name="Util"
 			>
 			<File
+				RelativePath=".\DataParserFactory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\DataParserFactory.h"
+				>
+			</File>
+			<File
+				RelativePath=".\IDataParser.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MapHelper.h"
 				>
 			</File>
@@ -263,11 +275,15 @@
 			Name="Model"
 			>
 			<File
-				RelativePath=".\PhotoModel.cpp"
+				RelativePath=".\FacebookPhotoModel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\PhotoModel.h"
+				RelativePath=".\FacebookPhotoModel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\IPhotoModel.h"
 				>
 			</File>
 		</Filter>

@@ -15,7 +15,7 @@ class CInternetConnectService
 {
 public:
 	CInternetConnectService(void);
-	~CInternetConnectService(void);
+	virtual ~CInternetConnectService(void);
 
 public:
 	void SetProxyDetectUrl(string szUrl);

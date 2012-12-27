@@ -19,7 +19,7 @@ public:
 
 	virtual string GetLoginURL( string params = "" );
 
-	virtual SysMaps::Str2Str GetPhotos( SysMaps::Str2Str mapQryCriteria );
+	virtual IPhotoList GetPhotos( SysMaps::Str2Str mapQryCriteria=SysMaps::Str2Str(), string szId = "me");
 
 private:
 

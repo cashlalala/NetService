@@ -9,17 +9,14 @@ class CBaseSocialService :
 	public ISocialNetworkService
 {
 public:
-	CBaseSocialService(void);
-	~CBaseSocialService(void);
 
-	virtual SysMaps::Str2Str 
-		PrepareParams( string szMethod, SysMaps::Str2Str params, bool bSignature );
+	virtual SysMaps::Str2Str PrepareParams( string szMethod, SysMaps::Str2Str params, bool bSignature ) =0;
 
-	virtual void CheckError( string szRootNode );
+	virtual void CheckError( string szRootNode ) =0;
 
-	virtual string GetLoginURL( string params = "" );
+	virtual string GetLoginURL( string params = "" ) =0;
 
-	virtual SysMaps::Str2Str GetPhotos( SysMaps::Str2Str mapQryCriteria );
+	virtual IPhotoList GetPhotos( SysMaps::Str2Str mapQryCriteria=SysMaps::Str2Str(), string szId = "me") =0;
 
 	virtual void SetConnectionInfo(ConnectionInfoValueObject cConectInfoVO)
 	{
