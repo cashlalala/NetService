@@ -185,6 +185,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\JSonCppMgrTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\JSonCppMgrTest.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OnlinemgrTest.cpp"
 				>
 			</File>

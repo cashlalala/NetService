@@ -113,7 +113,6 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
@@ -138,7 +137,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;F:\Power2Go9\thirdparty\cppunit-1.12.1\include&quot;;F:\Power2Go9\subsys\NetService\src;F:\Power2Go9\subsys\NetKernel\Src"
+				AdditionalIncludeDirectories="F:\Power2Go9\thirdparty\cppunit\trunk\cppunit\include;F:\Power2Go9\subsys\NetService\src;F:\Power2Go9\subsys\NetKernel\Src"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -165,10 +164,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib cppunitd.lib Shlwapi.lib NetService.lib"
+				LinkLibraryDependencies="true"
+				AdditionalOptions="/verbose:lib"
+				AdditionalDependencies="cppunitd.lib Shlwapi.lib NetService.lib "
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;F:\Power2Go9\thirdparty\cppunit-1.12.1\lib&quot;;F:\Power2Go9\subsys\NetService\Debug"
+				AdditionalLibraryDirectories="F:\Power2Go9\thirdparty\cppunit\trunk\cppunit\lib;F:\Power2Go9\subsys\NetService\Debug;F:\Power2Go9\thirdparty\jsoncpp\trunk\jsoncpp\build\vs71\debug\lib_json"
+				IgnoreAllDefaultLibraries="false"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/TestMain.pdb"
 				SubSystem="1"
@@ -222,6 +225,14 @@
 			</File>
 			<File
 				RelativePath=".\InternetConnectTest.h"
+				>
+			</File>
+			<File
+				RelativePath=".\JSonCppMgrTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\JSonCppMgrTest.h"
 				>
 			</File>
 			<File
