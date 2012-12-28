@@ -42,7 +42,7 @@ string CFacebookService::GetLoginURL( string params /*= "" */ )
 
 IPhotoList CFacebookService::GetPhotos(SysMaps::Str2Str mapQryCriteria, string szId)
 {
-	CFacebookPhotoListModel listPhoto;
+	model::CFacebookPhotoList listPhoto;
 	string szResultStr = CallGraphAPI(szId, Photo,mapQryCriteria);
 
 	return listPhoto;

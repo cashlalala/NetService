@@ -9,8 +9,8 @@ using std::string;
 namespace model
 {
 	struct IImage{
-		int szHeight;
-		int szWidth;
+		int nHeight;
+		int nWidth;
 		string szSource;
 	};
 
@@ -21,10 +21,10 @@ namespace model
 		list<IImage> listImages;
 	};
 
-
 	struct IPhotoList : public list<IPhoto>{
 		string szNext;
 		string szPrevious;
 	};
+
 }
 

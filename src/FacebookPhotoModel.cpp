@@ -1,10 +1,10 @@
 #include "StdAfx.h"
 #include "FacebookPhotoModel.h"
 
-CFacebookPhotoModel::CFacebookPhotoModel(void)
+model::CFacebookPhoto::CFacebookPhoto(void)
 {
 }
 
-CFacebookPhotoModel::~CFacebookPhotoModel(void)
+model::CFacebookPhoto::~CFacebookPhoto(void)
 {
 }

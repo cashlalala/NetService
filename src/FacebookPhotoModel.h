@@ -8,15 +8,19 @@ using std::list;
 using std::string;
 using model::IPhoto;
 using model::IPhotoList;
-
-class CFacebookPhotoModel : public IPhoto
+namespace model
 {
-public:
-	CFacebookPhotoModel(void);
-	~CFacebookPhotoModel(void);
-};
+	class CFacebookPhoto : public IPhoto
+	{
+	public:
+		CFacebookPhoto(void);
+		~CFacebookPhoto(void);
+	};
 
-class CFacebookPhotoListModel : public IPhotoList
-{
+	class CFacebookPhotoList : public IPhotoList
+	{
 
-};
+	};
+}
+
+
