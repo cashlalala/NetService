@@ -19,6 +19,7 @@ struct ConnectionInfoValueObject
 
 struct ISocialNetworkService
 {	
+	virtual ~ISocialNetworkService() = 0;
 
 	virtual SysMaps::Str2Str 
 		PrepareParams(string szMethod, SysMaps::Str2Str params, bool bSignature) = 0;
@@ -36,3 +37,5 @@ struct ISocialNetworkService
 	virtual IPhotoList GetPhotos( SysMaps::Str2Str mapQryCriteria=SysMaps::Str2Str(), string szId = "me") = 0;
 
 };
+
+inline ISocialNetworkService::~ISocialNetworkService(){};

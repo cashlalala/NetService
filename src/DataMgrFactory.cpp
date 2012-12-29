@@ -1,28 +1,46 @@
 #include "StdAfx.h"
 #include "DataMgrFactory.h"
 #include "JSonCppMgr.h"
+#include "NetServiceErr.h"
 
 #include <map>
 
 using std::map;
-using util::CJsonCppMgr;
-using util::IDataManager;
-using util::CDataMgrFactory;
-using util::EnDataMgr;
+using namespace util;
+
+map<EnDataMgr, IDataManager*> CDataMgrFactory::S_MAP_DATAMGR;
 
 IDataManager* CDataMgrFactory::GetInstance( EnDataMgr enDataMgr /*= BoostJson*/ )
 {
-	static map<EnDataMgr,IDataManager*> smapMgrs;
-	IDataManager* pIDataMgr =  smapMgrs[enDataMgr];
+	IDataManager* pIDataMgr =  S_MAP_DATAMGR[enDataMgr];
 	if (!pIDataMgr)
 	{
 		switch (enDataMgr)
 		{
-		case BoostJson:
-			pIDataMgr = new CJsonCppMgr();
+		case JsonCpp:
+			pIDataMgr= new CJsonCppMgr();
 			break;
 		}
-		smapMgrs[enDataMgr] = pIDataMgr;
+		S_MAP_DATAMGR[enDataMgr] = pIDataMgr;
 	}
 	return pIDataMgr;
+	return  new CJsonCppMgr();
+}
+
+int util::CDataMgrFactory::DeleteInstance( IDataManager* pIDataMgr )
+{
+	int nResuilt = E_FAIL;
+	map<EnDataMgr,IDataManager*>::iterator it = S_MAP_DATAMGR.begin();
+	for (;it!=S_MAP_DATAMGR.end();++it)
+	{
+		if (pIDataMgr == it->second)
+		{
+			delete it->second;
+			it->second = NULL;
+			S_MAP_DATAMGR.erase(it);
+			nResuilt = S_OK;
+			break;
+		}
+	}
+	return nResuilt;
 }

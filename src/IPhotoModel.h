@@ -9,12 +9,14 @@ using std::string;
 namespace model
 {
 	struct IImage{
+		virtual ~IImage(){};
 		int nHeight;
 		int nWidth;
 		string szSource;
 	};
 
 	struct IPhoto : public IImage{
+		virtual ~IPhoto(){};
 		string id;
 		string szlink;
 		string szThumbNail;
@@ -22,6 +24,7 @@ namespace model
 	};
 
 	struct IPhotoList : public list<IPhoto>{
+		virtual ~IPhotoList(){};
 		string szNext;
 		string szPrevious;
 	};

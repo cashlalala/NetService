@@ -19,8 +19,11 @@ namespace util
 	} EnDataOwner;
 
 	struct IDataManager {
+		virtual ~IDataManager() = 0;
 		virtual int ParsePhotoList( string szInput, IPhotoList& iPhotoList, EnDataOwner enDataOwner ) =0;
 		virtual int ParsePhoto( string szInput, IPhoto& iPhoto, EnDataOwner enDataOwner  ) =0;
 	};
+
+	inline IDataManager::~IDataManager(){};
 }
 

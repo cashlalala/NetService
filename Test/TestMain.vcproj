@@ -165,7 +165,6 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="true"
-				AdditionalOptions="/verbose:lib"
 				AdditionalDependencies="cppunitd.lib Shlwapi.lib NetService.lib "
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -261,6 +260,18 @@
 			</File>
 			<File
 				RelativePath=".\UploadProgress.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="TestData"
+			>
+			<File
+				RelativePath=".\TestData\10photos.txt"
+				>
+			</File>
+			<File
+				RelativePath=".\TestData\1photo.txt"
 				>
 			</File>
 		</Filter>

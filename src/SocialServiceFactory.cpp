@@ -3,7 +3,7 @@
 #include "FacebookService.h"
 
 
-map<EnServiceType,ISocialNetworkService*> CSocialServiceFactory::m_mapServices;
+map<EnServiceType,ISocialNetworkService*> CSocialServiceFactory::S_MAP_SERVICES;
 
 CSocialServiceFactory::CSocialServiceFactory(void)
 {
@@ -13,9 +13,9 @@ CSocialServiceFactory::~CSocialServiceFactory(void)
 {
 }
 
-ISocialNetworkService* CSocialServiceFactory::GetService( EnServiceType enServTp )
+ISocialNetworkService* CSocialServiceFactory::GetInstance( EnServiceType enServTp )
 {
-	ISocialNetworkService* pInst = m_mapServices[enServTp];
+	ISocialNetworkService* pInst = S_MAP_SERVICES[enServTp];
 	if (pInst == NULL)
 	{
 		switch (enServTp)
@@ -28,7 +28,7 @@ ISocialNetworkService* CSocialServiceFactory::GetService( EnServiceType enServTp
 		default:
 			break;
 		}
-		m_mapServices[enServTp] = pInst;
+		S_MAP_SERVICES[enServTp] = pInst;
 	}
 	return pInst;
 }
@@ -36,8 +36,8 @@ ISocialNetworkService* CSocialServiceFactory::GetService( EnServiceType enServTp
 list<ISocialNetworkService*> CSocialServiceFactory::GetAllServices()
 {
 	list<ISocialNetworkService*> listISNServ;
-	map<EnServiceType,ISocialNetworkService*>::iterator it = m_mapServices.begin();
-	for (;it!=m_mapServices.end();++it)
+	map<EnServiceType,ISocialNetworkService*>::iterator it = S_MAP_SERVICES.begin();
+	for (;it!=S_MAP_SERVICES.end();++it)
 	{
 		listISNServ.push_back(it->second);
 	}
@@ -47,16 +47,29 @@ list<ISocialNetworkService*> CSocialServiceFactory::GetAllServices()
 
 void CSocialServiceFactory::CloseServices()
 {
-	map<EnServiceType,ISocialNetworkService*>::iterator it = m_mapServices.begin();
-	for (;it!=m_mapServices.end();++it)
+	map<EnServiceType,ISocialNetworkService*>::iterator it = S_MAP_SERVICES.begin();
+	for (;it!=S_MAP_SERVICES.end();++it)
 	{
-		void* pRaw = NULL;
-		if (pRaw = dynamic_cast<CFacebookService*> (it->second))
+		delete it->second;
+		it->second = NULL;
+	}
+	S_MAP_SERVICES.clear();
+}
+
+int CSocialServiceFactory::DeleteInstance( ISocialNetworkService* pISNS )
+{
+	int nResuilt = E_FAIL;
+	map<EnServiceType,ISocialNetworkService*>::iterator it = S_MAP_SERVICES.begin();
+	for (;it!=S_MAP_SERVICES.end();++it)
+	{
+		if (pISNS == it->second)
 		{
-			CFacebookService* pInst = (CFacebookService*) pRaw;
-			delete pInst;
-			pInst =  NULL;
+			delete it->second;
 			it->second = NULL;
+			S_MAP_SERVICES.erase(it);
+			nResuilt = S_OK;
+			break;
 		}
 	}
+	return nResuilt;
 }

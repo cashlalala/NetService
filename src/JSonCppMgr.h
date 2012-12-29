@@ -11,7 +11,7 @@ namespace util
 	{
 	public:
 		CJsonCppMgr(void);
-		~CJsonCppMgr(void);
+		virtual ~CJsonCppMgr(void);
 
 		virtual int ParsePhotoList( string szInput, IPhotoList& iPhotoList, EnDataOwner enDataOwner ) ;
 
@@ -19,6 +19,7 @@ namespace util
 
 	private:
 		void TravFBPhotoList( Json::Value &jvRoot, IPhotoList &iPhotoList );
+		void TravFBPhoto( Json::Value &jvRoot, IPhoto &iPhoto );
 	};
 }
 

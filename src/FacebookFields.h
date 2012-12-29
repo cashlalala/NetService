@@ -9,6 +9,7 @@
 
 #define FB_PHOTO_THUBMNAIL "picture"
 #define FB_PHOTO_LINK "link"
+#define FB_PHOTO_IMAGES "images"
 
 #define FB_PHOTOS_NEXTPAGE "next"
 #define FB_PHOTOS_PREVPAGE "previous"

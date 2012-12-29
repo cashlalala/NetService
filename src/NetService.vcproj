@@ -200,6 +200,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NetServiceErr.h"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
