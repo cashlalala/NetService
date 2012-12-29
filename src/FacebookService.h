@@ -10,16 +10,15 @@ class CFacebookService :
 {
 public:
 	CFacebookService(void);
-	~CFacebookService(void);
+	virtual ~CFacebookService(void);
 
-	virtual SysMaps::Str2Str 
-		PrepareParams( string szMethod, SysMaps::Str2Str params, bool bSignature );
+	virtual SysMaps::Str2Str PrepareParams( string szMethod, SysMaps::Str2Str& params, bool bSignature );
 
 	virtual void CheckError( string szRootNode );
 
 	virtual string GetLoginURL( string params = "" );
 
-	virtual IPhotoList GetPhotos( SysMaps::Str2Str mapQryCriteria=SysMaps::Str2Str(), string szId = "me");
+	virtual IPhotoList GetPhotos( SysMaps::Str2Str& mapQryCriteria=SysMaps::Str2Str(), string szId = "me");
 
 private:
 

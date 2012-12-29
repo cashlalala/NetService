@@ -18,7 +18,6 @@ const SysMaps::EnCat2Str
 CFacebookService::S_MAP_CATEGORY = CMapHelper::CreateCategoryMap();
 
 CFacebookService::CFacebookService(void)
-: CBaseSocialService()
 {
 }
 
@@ -26,7 +25,7 @@ CFacebookService::~CFacebookService(void)
 {
 }
 
-map<string,string> CFacebookService::PrepareParams( string szMethod, map<string,string> params, bool bSignature )
+SysMaps::Str2Str CFacebookService::PrepareParams( string szMethod, SysMaps::Str2Str& params, bool bSignature )
 {
 	throw std::exception("The method or operation is not implemented.");
 }
@@ -41,7 +40,7 @@ string CFacebookService::GetLoginURL( string params /*= "" */ )
 	throw std::exception("The method or operation is not implemented.");
 }
 
-IPhotoList CFacebookService::GetPhotos(SysMaps::Str2Str mapQryCriteria, string szId)
+IPhotoList CFacebookService::GetPhotos(SysMaps::Str2Str& mapQryCriteria, string szId)
 {
 	model::CFacebookPhotoList listPhoto;
 	string szResultStr = CallGraphAPI(szId, Photo,mapQryCriteria);

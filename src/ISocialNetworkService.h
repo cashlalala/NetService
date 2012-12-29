@@ -21,8 +21,7 @@ struct ISocialNetworkService
 {	
 	virtual ~ISocialNetworkService() = 0;
 
-	virtual SysMaps::Str2Str 
-		PrepareParams(string szMethod, SysMaps::Str2Str params, bool bSignature) = 0;
+	virtual SysMaps::Str2Str PrepareParams(string szMethod, SysMaps::Str2Str& params, bool bSignature) = 0;
 
 	virtual void CheckError(string szRootNode) = 0;
 
@@ -34,7 +33,7 @@ struct ISocialNetworkService
 	/*
 	* ----------------Data getter Functions----------------
 	*/
-	virtual IPhotoList GetPhotos( SysMaps::Str2Str mapQryCriteria=SysMaps::Str2Str(), string szId = "me") = 0;
+	virtual IPhotoList GetPhotos( SysMaps::Str2Str& mapQryCriteria=SysMaps::Str2Str(), string szId = "me") = 0;
 
 };
 
