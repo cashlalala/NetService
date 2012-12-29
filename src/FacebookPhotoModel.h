@@ -10,6 +10,12 @@ using model::IPhoto;
 using model::IPhotoList;
 namespace model
 {
+	class CFacebookImage : public IImage
+	{
+
+	};
+
+
 	class CFacebookPhoto : public IPhoto
 	{
 	public:

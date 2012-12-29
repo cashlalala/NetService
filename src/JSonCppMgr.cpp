@@ -3,7 +3,6 @@
 #include "FacebookFields.h"
 #include "FacebookPhotoModel.h"
 #include "NetServiceErr.h"
-#include <sstream>
 #include <json/json.h>
 
 using util::CJsonCppMgr;
@@ -94,7 +93,7 @@ void util::CJsonCppMgr::TravFBPhoto( Json::Value &jvRoot, IPhoto &iPhoto )
 	for (int j = 0; j<nImageNum;++j)
 	{
 		Json::Value item = jvRoot[FB_PHOTO_IMAGES][j];
-		model::IImage iImage;
+		model::CFacebookImage iImage;
 		iImage.nHeight = item[FB_IMAGE_HEIGHT].asInt();
 		iImage.nWidth = item[FB_IMAGE_WIDTH].asInt();
 		iImage.szSource = item[FB_IMAGE_SOURCE].asString();
