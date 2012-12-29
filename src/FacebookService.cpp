@@ -6,6 +6,7 @@
 
 using systypes::EnCategory;
 using systypes::EnHttpMethod;
+using util::CMapHelper;
 
 const string CFacebookService::S_STR_URL_PREFIX = "https://";
 

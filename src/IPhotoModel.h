@@ -24,7 +24,7 @@ namespace model
 	};
 
 	struct IPhotoList : public list<IPhoto>{
-		virtual ~IPhotoList() ;
+		virtual ~IPhotoList() {};
 		string szNext;
 		string szPrevious;
 	};
