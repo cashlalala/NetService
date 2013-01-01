@@ -1,9 +1,9 @@
 //#pragma comment(lib,"../../../thirdparty/jsoncpp/trunk/jsoncpp/build/vs71/debug/lib_json/json_vc71_libmtd.lib")
 //#pragma comment(lib,"json_vc71_libmtd.lib")
-
+#include <NetServiceErr.h>
 #include "JSonCppMgrTest.h"
 #include <FacebookPhotoModel.h>
-#include <NetServiceErr.h>
+
 #include <fstream>
 
 CPPUNIT_TEST_SUITE_REGISTRATION( JSonCppMgrTest );
@@ -78,26 +78,21 @@ void JSonCppMgrTest::tearDown()
 	char szResult[100];
 	memset(szResult,0x0,100);
 	sprintf(szResult,"Delete Instance Fail: %d", nResult);
-	CPPUNIT_ASSERT_MESSAGE(szResult , nResult ==S_OK);
+	CPPUNIT_ASSERT_MESSAGE(szResult , nResult ==0);
 }
 
 void JSonCppMgrTest::TestParsePhotoList()
 {
-	//IPhotoList iPhotoList;
 	model::CFacebookPhotoList iPhotoList;
-	int nResult = m_pJSonCppMgr->ParsePhotoList(m_szTestPhotoList,iPhotoList, util::Facebook);
-	char szResult[100];
-	memset(szResult,0x0,100);
-	sprintf(szResult,"function fail : %d",nResult);
-	CPPUNIT_ASSERT_MESSAGE(szResult,nResult==S_OK);
+	model::CFBError cFBError;
+	int nResult = m_pJSonCppMgr->ParsePhotoList(iPhotoList,m_szTestPhotoList, util::Facebook,cFBError);
+	CPPUNIT_ASSERT_MESSAGE(cFBError.szMsg.c_str(),nResult==0);
 }
 
 void JSonCppMgrTest::TestParsePhoto()
 {
 	model::CFacebookPhoto iPhoto;
-	int nResult = m_pJSonCppMgr->ParsePhoto(m_szTestPhoto,iPhoto, util::Facebook);
-	char szResult[100];
-	memset(szResult,0x0,100);
-	sprintf(szResult,"function fail : %d",nResult);
-	CPPUNIT_ASSERT_MESSAGE(szResult,nResult==S_OK);
+	model::CFBError cFbErr;
+	int nResult = m_pJSonCppMgr->ParsePhoto(m_szTestPhoto,iPhoto, util::Facebook, cFbErr);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==0);
 }

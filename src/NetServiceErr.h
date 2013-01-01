@@ -28,10 +28,17 @@
 #ifdef _WINDOWS
 	#include <WinError.h>
 #else
-	#define HRESULT int  
+	#ifndef HRESULT
+		#define HRESULT int  
+	#endif
 
-	#define S_OK		 0x00000000
-	#define E_FAIL    0x80004005
+	#ifndef S_OK
+		#define S_OK		 0x00000000
+	#endif
+
+	#ifndef E_FAIL
+		#define E_FAIL    0x80004005
+	#endif
 	#define SEVERITY_SUCCESS    0
 	#define SEVERITY_ERROR      1
 #endif
@@ -53,6 +60,7 @@
 
 #define ITF_SOCIALNETWORKSERVICE        0x01       // ISOCIALNETWORKSERVICE
 #define ITF_DATAMANAGER           0x02       // IDATAMANAGER
+#define ITF_INTERNETCONNECTSERVICE 0x03 //CInternetConnectService
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -69,6 +77,16 @@
 
 
 #define NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED	MAKE_NETSERVICE_ERROR(ITF_DATAMANAGER,0x001)
-#define NS_E_DMGR_DELETE_MGR_FAIL_NO_TYPE	MAKE_NETSERVICE_ERROR(ITF_DATAMANAGER,0x002)
+#define NS_E_DMGR_DELETE_MGR_FAIL_NO_TYPE			MAKE_NETSERVICE_ERROR(ITF_DATAMANAGER,0x002)
+#define NS_E_DMGR_BAD_REQUEST_PARAMS					MAKE_NETSERVICE_ERROR(ITF_DATAMANAGER,003)
 
-#define NS_S_DMGR_NO_DATA_OWNER	MAKE_NETSERVICE_ERROR(ITF_DATAMANAGER,0x999)
+#define NS_S_DMGR_NO_DATA_OWNER								MAKE_NETSERVICE_INFO(ITF_DATAMANAGER,0x999)
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// CINTERNETCONNECTSERVICE
+//
+///////////////////////////////////////////////////////////////////////////////
+
+#define NS_E_INET_CONNECT_FAIL_API_RETURN_ERROR			MAKE_NETSERVICE_ERROR(ITF_INTERNETCONNECTSERVICE,0x001)
+#define NS_E_INET_CONNECT_FAIL_HTTP_STATUS_ERROR			MAKE_NETSERVICE_ERROR(ITF_INTERNETCONNECTSERVICE,0x002)

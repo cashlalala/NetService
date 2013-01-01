@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="json_vc71_libmtd.lib Advapi32.lib"
+				AdditionalDependencies="json_vc71_libmtd.lib Advapi32.lib Wininet.lib"
 				AdditionalLibraryDirectories="F:\Power2Go9\thirdparty\boost_1_52_0\libs;F:\Power2Go9\thirdparty\jsoncpp\trunk\jsoncpp\build\vs71\debug\lib_json"
 			/>
 			<Tool
@@ -247,6 +247,14 @@
 				RelativePath=".\MapHelper.h"
 				>
 			</File>
+			<File
+				RelativePath=".\UrlHelper.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\UrlHelper.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="SocialNetwork"
@@ -265,6 +273,10 @@
 			</File>
 			<File
 				RelativePath=".\FacebookService.h"
+				>
+			</File>
+			<File
+				RelativePath=".\IConnectionInfo.h"
 				>
 			</File>
 			<File
@@ -300,7 +312,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\IErrorModel.h"
+				>
+			</File>
+			<File
 				RelativePath=".\IPhotoModel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\IUserModel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\IVideoModel.h"
 				>
 			</File>
 		</Filter>

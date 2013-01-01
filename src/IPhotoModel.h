@@ -17,8 +17,8 @@ namespace model
 
 	struct IPhoto : public IImage{
 		virtual ~IPhoto() {};
-		string id;
-		string szlink;
+		string szId;
+		string szLink;
 		string szThumbNail;
 		list<IImage> listImages;
 	};

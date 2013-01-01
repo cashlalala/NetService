@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\..\Utility\Debug.h"
 #include "InternetConnectService.h"
+#include "NetServiceErr.h"
 #include <algorithm>
 #include <ctype.h>
 
@@ -45,7 +46,7 @@ bool CInternetConnectService::DetectProxy(void)
 
 	INetKernel* pINetKernel  = m_cNetKernelLoader.GetInstance();
 
-	HttpResponseValueObject cHttpRespVO;
+	HttpRespValObj cHttpRespVO;
 	pINetKernel->OpenUrl(cHttpRespVO,m_szProxyDetectUrl.c_str());
 
 	if (cHttpRespVO.dwError || cHttpRespVO.dwStatusCode == 407)
@@ -61,8 +62,9 @@ bool CInternetConnectService::DetectProxy(void)
 	return m_bIsProxyDetectSucc;
 }
 
-string CInternetConnectService::OpenUrl( string szUrl, string szHttpMethod /*= HTTP_METHOD_GET*/, wstring wszCookieFilePath /*= L""*/, void* pfnCallBack /*= NULL*/ )
+int CInternetConnectService::OpenUrl( HttpRespValObj& cHttpRespVO, string szUrl, string szHttpMethod /*= HTTP_METHOD_GET*/, wstring wszCookieFilePath /*= L""*/, void* pfnCallBack /*= NULL*/ )
 {
+	int nResult = E_FAIL;
 	INetKernel* pINetKernel = m_cNetKernelLoader.GetInstance();
 	m_listINetKernel.push_back(pINetKernel);
 
@@ -76,7 +78,7 @@ string CInternetConnectService::OpenUrl( string szUrl, string szHttpMethod /*= H
 	if (szExt.compare(0,4,"gpj.")==0)
 		pINetKernel->SetDownloadCache(TRUE);
 
-	HttpResponseValueObject cHttpRespVO;
+	//HttpResponseValueObject cHttpRespVO;
 	pINetKernel->OpenUrl(cHttpRespVO,szUrl.c_str(),szHttpMethod.c_str(), 
 										NULL,NULL,wszCookieFilePath.c_str());
 
@@ -88,5 +90,18 @@ string CInternetConnectService::OpenUrl( string szUrl, string szHttpMethod /*= H
 		m_listINetKernel.erase(it);
 	}
 
-	return cHttpRespVO.strResponse;
+	if (cHttpRespVO.dwError!=0)
+	{
+		nResult = NS_E_INET_CONNECT_FAIL_API_RETURN_ERROR;
+	}
+	else if (cHttpRespVO.dwStatusCode!=200)
+	{
+		nResult = NS_E_INET_CONNECT_FAIL_HTTP_STATUS_ERROR;
+	}
+	else
+	{
+		nResult = S_OK;
+	}
+
+	return nResult;
 }

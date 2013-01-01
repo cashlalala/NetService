@@ -2,9 +2,11 @@
 
 #include <map>
 #include <string>
+#include <list>
 
 using std::string;
 using std::map;
+using std::list;
 
 namespace systypes
 {
@@ -39,5 +41,11 @@ namespace systypes
 		typedef map<EnCategory,string> EnCat2Str;
 		typedef map<EnServerInfo,string> EnSvrInfo2Str ;
 	};
+
+	struct SysList
+	{
+		typedef list<string> StrList;
+	};
+
 }
 

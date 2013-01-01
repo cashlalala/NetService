@@ -216,6 +216,14 @@
 				RelativePath=".\SocialFacotryTest.h"
 				>
 			</File>
+			<File
+				RelativePath=".\UrlHelperTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\UrlHelperTest.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="references"

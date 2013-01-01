@@ -4,6 +4,8 @@
 
 using systypes::SysMaps;
 
+#define EXCEPTION_BREAK(result) if (!SUCCEEDED(result)) break;
+
 class CBaseSocialService :
 	public CInternetConnectService,
 	public ISocialNetworkService
@@ -11,20 +13,7 @@ class CBaseSocialService :
 public:
 	virtual ~CBaseSocialService() = 0;
 
-	virtual void SetConnectionInfo(ConnectionInfoValueObject cConectInfoVO)
-	{
-		m_cConnectInfo = cConectInfoVO;
-	}
-
-	virtual ConnectionInfoValueObject GetConnectionInfo(void)
-	{
-		return m_cConnectInfo;
-	}
-
 	static const SysMaps::HttpMethod2Str S_MAP_HTTP_METHOD;
-
-private:
-	ConnectionInfoValueObject m_cConnectInfo;
 
 };
 

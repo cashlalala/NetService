@@ -250,6 +250,14 @@
 				RelativePath=".\SocialFacotryTest.h"
 				>
 			</File>
+			<File
+				RelativePath=".\UrlHelperTest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\UrlHelperTest.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="references"
@@ -272,6 +280,10 @@
 			</File>
 			<File
 				RelativePath=".\TestData\1photo.txt"
+				>
+			</File>
+			<File
+				RelativePath=".\TestData\TestConfig.ini"
 				>
 			</File>
 		</Filter>

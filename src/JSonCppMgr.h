@@ -13,13 +13,19 @@ namespace util
 		CJsonCppMgr(void);
 		virtual ~CJsonCppMgr(void);
 
-		virtual int ParsePhotoList( string szInput, IPhotoList& iPhotoList, EnDataOwner enDataOwner ) ;
+		virtual int ParsePhotoList( IPhotoList& iPhotoList, string szInput, EnDataOwner enDataOwner, IError& iError ) ;
 
-		virtual int ParsePhoto( string szInput, IPhoto& iPhoto, EnDataOwner enDataOwner  ) ;
+		virtual int ParsePhoto( string szInput, IPhoto& iPhoto, EnDataOwner enDataOwner, IError& iError  ) ;
+
+		virtual int ParseUser(string szInput, IUser& iUser, EnDataOwner enDataOwner, IError& iError) ;
 
 	private:
-		void TravFBPhotoList( Json::Value &jvRoot, IPhotoList &iPhotoList );
+		void TravFBPhotoList( Json::Value &jvRoot, IPhotoList &iPhotoList);
+		int TravFBErr(Json::Value &jvRoot, IError& cFbErr);
 		void TravFBPhoto( Json::Value &jvRoot, IPhoto &iPhoto );
+		void TravFBUser( Json::Value jvRoot, IUser& iUser );
+
+
 	};
 }
 

@@ -21,7 +21,7 @@ public:
 	void SetProxyDetectUrl(string szUrl);
 	void ForceStopNetKernel(void);
 	bool DetectProxy(void);
-	string OpenUrl(string szUrl, string szHttpMethod = HTTP_METHOD_GET, wstring wszCookieFilePath = L"", void* pfnCallBack = NULL);
+	int OpenUrl(HttpRespValObj& cHttpRespVO, string szUrl, string szHttpMethod = HTTP_METHOD_GET, wstring wszCookieFilePath = L"", void* pfnCallBack = NULL);
 
 
 private:
