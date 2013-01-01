@@ -5,6 +5,7 @@
 #include <string>
 #include <list>
 #include <WinBase.h>
+#include <FacebookPhotoModel.h>
 
 using std::string;
 using std::list;
@@ -70,4 +71,13 @@ void CFacebookServiceTest::testGetUserInfo()
 	CFBError cfbErr ;
 	int nResult = m_pFacebookService->GetUsersInfo(temp,cfbErr,listUsr);
 	CPPUNIT_ASSERT_MESSAGE(cfbErr.szMsg.c_str(),nResult==S_OK);
+}
+
+void CFacebookServiceTest::testGetPhotos()
+{
+	
+	model::CFacebookPhotoList cFBPhotoList;
+	CFBError cFbErr;
+	int nResult = m_pFacebookService->GetPhotos(cFBPhotoList,cFbErr);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
 }

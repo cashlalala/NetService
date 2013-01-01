@@ -12,20 +12,46 @@ namespace model
 {
 	class CFacebookImage : public IImage
 	{
-
+	public:
+		CFacebookImage(void){};
+		virtual ~CFacebookImage(void){};
 	};
 
 
 	class CFacebookPhoto : public IPhoto
 	{
 	public:
-		CFacebookPhoto(void);
-		~CFacebookPhoto(void);
+		CFacebookPhoto(void) {};
+		virtual ~CFacebookPhoto(void)
+		{
+			for (list<IImage*>::iterator it = listImages.begin();it!=listImages.end();++it)
+			{
+				if (*it !=NULL)
+				{
+					delete *it;
+					*it = NULL;
+				}
+			}
+			listImages.clear();
+		};
 	};
 
 	class CFacebookPhotoList : public IPhotoList
 	{
-
+	public:
+		CFacebookPhotoList(void){};
+		virtual ~CFacebookPhotoList(void)
+		{ 
+			for (list<IPhoto*>::iterator it = listPhoto.begin();it!=listPhoto.end();++it)
+			{
+				if (*it !=NULL)
+				{
+					delete *it;
+					*it = NULL;
+				}
+			}
+			listPhoto.clear();
+		};
 	};
 }
 

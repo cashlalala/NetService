@@ -63,7 +63,7 @@ int util::CJsonCppMgr::ParsePhoto( string szInput, IPhoto& iPhoto, EnDataOwner e
 			{
 				nResult = TravFBErr(jvRoot,iError);
 				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
-				TravFBPhoto(jvRoot,iPhoto);
+				TravFBPhoto(jvRoot,&iPhoto);
 				nResult = S_OK;
 				break;
 			}
@@ -114,15 +114,15 @@ void util::CJsonCppMgr::TravFBPhotoList( Json::Value &jvRoot, IPhotoList &iPhoto
 	for (int i=0;i<nPhotoNum;++i)
 	{
 		Json::Value item = jvRoot[FB_DATA][i];
-		model::CFacebookPhoto cFbPhot;
+		model::CFacebookPhoto* cFbPhot = new model::CFacebookPhoto();
 		TravFBPhoto(item,cFbPhot);
-		iPhotoList.push_back(cFbPhot);
+		iPhotoList.listPhoto.push_back(cFbPhot);
 	}
 }
 
-void util::CJsonCppMgr::TravFBPhoto( Json::Value &jvRoot, IPhoto &iPhoto )
+void util::CJsonCppMgr::TravFBPhoto( Json::Value &jvRoot, IPhoto* pIPhoto )
 {
-	model::CFacebookPhoto* pFbPhto = (model::CFacebookPhoto*)&iPhoto;
+	model::CFacebookPhoto* pFbPhto = dynamic_cast<model::CFacebookPhoto*>(pIPhoto);
 	pFbPhto->szId = jvRoot[FB_ID].asString();
 	pFbPhto->nHeight = jvRoot[FB_IMAGE_HEIGHT].asInt();
 	pFbPhto->nWidth = jvRoot[FB_IMAGE_WIDTH].asInt();
@@ -132,10 +132,10 @@ void util::CJsonCppMgr::TravFBPhoto( Json::Value &jvRoot, IPhoto &iPhoto )
 	for (int j = 0; j<nImageNum;++j)
 	{
 		Json::Value item = jvRoot[FB_PHOTO_IMAGES][j];
-		model::CFacebookImage iImage;
-		iImage.nHeight = item[FB_IMAGE_HEIGHT].asInt();
-		iImage.nWidth = item[FB_IMAGE_WIDTH].asInt();
-		iImage.szSource = item[FB_IMAGE_SOURCE].asString();
+		model::CFacebookImage* iImage = new model::CFacebookImage();
+		iImage->nHeight = item[FB_IMAGE_HEIGHT].asInt();
+		iImage->nWidth = item[FB_IMAGE_WIDTH].asInt();
+		iImage->szSource = item[FB_IMAGE_SOURCE].asString();
 		pFbPhto->listImages.push_back(iImage);
 	}
 }

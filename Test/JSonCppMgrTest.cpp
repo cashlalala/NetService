@@ -1,7 +1,8 @@
 //#pragma comment(lib,"../../../thirdparty/jsoncpp/trunk/jsoncpp/build/vs71/debug/lib_json/json_vc71_libmtd.lib")
 //#pragma comment(lib,"json_vc71_libmtd.lib")
-#include <NetServiceErr.h>
+
 #include "JSonCppMgrTest.h"
+#include <NetServiceErr.h>
 #include <FacebookPhotoModel.h>
 
 #include <fstream>
