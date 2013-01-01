@@ -3,8 +3,8 @@
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/TextTestResult.h>
 #include <cppunit/TestResultCollector.h>
-//#include <cppunit/TestRunner.h>
-#include <cppunit/TextTestRunner.h>
+#include <cppunit/TestRunner.h>
+//#include <cppunit/TextTestRunner.h>
 
 
 int
@@ -22,7 +22,8 @@ main( int argc, char* argv[] )
   controller.addListener( &progress );      
 
   // Add the top suite to the test runner
-  CPPUNIT_NS::TextTestRunner runner;
+  //CPPUNIT_NS::TextTestRunner runner;
+  CPPUNIT_NS::TestRunner runner;
   runner.addTest( CPPUNIT_NS::TestFactoryRegistry::getRegistry().makeTest() );
   runner.run( controller);
 
