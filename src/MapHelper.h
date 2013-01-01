@@ -74,7 +74,8 @@ namespace util
 		{
 			string szParams;
 			for (SysMaps::Str2Str::const_iterator cIt = map.begin();cIt!=map.end();++cIt)
-				szParams += cIt->first + "="  + cIt->second + "&";
+				if (!cIt->second.empty())
+					szParams += cIt->first + "="  + cIt->second + "&";
 			return szParams.substr(0,(szParams.length()!=0)? szParams.length()-1:0);
 		}
 
