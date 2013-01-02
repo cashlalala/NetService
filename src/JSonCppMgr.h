@@ -17,7 +17,7 @@ namespace util
 
 		virtual int ParsePhoto( IPhoto& iPhoto, string szInput, EnDataOwner enDataOwner, IError& iError  ) ;
 
-		virtual int ParseUser(string szInput, IUser& iUser, EnDataOwner enDataOwner, IError& iError) ;
+		virtual int ParseUser(IUser& iUser, string szInput, EnDataOwner enDataOwner, IError& iError) ;
 
 		virtual int ParseError(IError& iError, string szInput, EnDataOwner enDataOwner) ;
 

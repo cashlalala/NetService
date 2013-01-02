@@ -109,7 +109,7 @@ int CFacebookService::GetUsersInfo( IUserList& iUserLst, IError& iErr, SysList::
 			nResult = this->CallGraphAPI(cHttpResp,*it,None,mapQryCriteria);
 			EXCEPTION_HANDLING(nResult)
 
-			nResult = m_pIDataMgr->ParseUser(cHttpResp.szResp,*cFbUsr,util::Facebook,iErr);
+			nResult = m_pIDataMgr->ParseUser(*cFbUsr,cHttpResp.szResp,util::Facebook,iErr);
 			EXCEPTION_HANDLING(nResult)
 
 			iUserLst.listUser.push_back(cFbUsr);
@@ -145,7 +145,7 @@ int CFacebookService::GetUserInfo( IUser& iUser, IError& iErr, string szUid/*="m
 		nResult = this->CallGraphAPI(cHttpResp,szUid,None,mapQryCriteria);
 		EXCEPTION_HANDLING(nResult)
 
-		nResult = m_pIDataMgr->ParseUser(cHttpResp.szResp, iUser,util::Facebook,iErr);
+		nResult = m_pIDataMgr->ParseUser( iUser,cHttpResp.szResp,util::Facebook,iErr);
 		EXCEPTION_HANDLING(nResult)
 
 		nResult = S_OK;

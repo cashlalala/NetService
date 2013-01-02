@@ -81,7 +81,7 @@ int util::CJsonCppMgr::ParsePhoto( IPhoto& iPhoto, string szInput, EnDataOwner e
 	return nResult;
 }
 
-int util::CJsonCppMgr::ParseUser( string szInput, IUser& iUser, EnDataOwner enDataOwner, IError& iError )
+int util::CJsonCppMgr::ParseUser( IUser& iUser, string szInput, EnDataOwner enDataOwner, IError& iError )
 {
 	int nResult = E_FAIL;
 	Json::Reader jrReader;
