@@ -83,11 +83,9 @@ int CInternetConnectService::OpenUrl( HttpRespValObj& cHttpRespVO, string szUrl,
 										NULL,NULL,wszCookieFilePath.c_str());
 
 	list<INetKernel*>::iterator it = std::find(m_listINetKernel.begin(),m_listINetKernel.end(),pINetKernel);
-	if (it == m_listINetKernel.end())
+	if (it != m_listINetKernel.end())
 	{
-		delete pINetKernel;
-		(*it) = pINetKernel = NULL;
-		m_listINetKernel.erase(it);
+		m_cNetKernelLoader.DelInstance(pINetKernel);
 	}
 
 	if (cHttpRespVO.dwError!=0)

@@ -277,14 +277,44 @@
 			<File
 				RelativePath=".\TestData\10photos.txt"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)"
+						CommandLine="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)"
+						Outputs="$(InputFileName)"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\TestData\1photo.txt"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)"
+						CommandLine="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)"
+						Outputs="$(InputFileName)"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\TestData\TestConfig.ini"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)"
+						CommandLine="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)"
+						Outputs="$(InputFileName)"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<File
