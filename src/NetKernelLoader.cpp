@@ -26,9 +26,22 @@ BOOL NetKernelLoader::LoadDll( void )
 	_tcscat_s(szExePath, TEXT("NetKernel.dll"));
 	m_hNetKernel = LoadLibrary(szExePath);
 
+	LPVOID lpMsgBuf;
 	if (!m_hNetKernel)
 	{
-		dprintf(L"[PyOnlineMgr] LoadDLL(): The OnlineMgr DLL object load failed! Error code: %d", GetLastError());
+		DWORD  dwErr = GetLastError();
+		FormatMessage(
+			FORMAT_MESSAGE_ALLOCATE_BUFFER |
+			FORMAT_MESSAGE_FROM_SYSTEM |
+			FORMAT_MESSAGE_IGNORE_INSERTS,
+			NULL,
+			dwErr, 
+			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
+			(LPTSTR) &lpMsgBuf,
+			0,
+			NULL);
+		dprintf(L"[PyOnlineMgr] LoadDLL(): The OnlineMgr DLL object load failed! Error code: [%d], Msg:[%s]", dwErr, (LPTSTR)&lpMsgBuf);
+		LocalFree( lpMsgBuf );		
 		return FALSE;
 	}
 

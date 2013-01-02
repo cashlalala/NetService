@@ -1,27 +1,26 @@
 #pragma once
 
 #include <list>
+#include <string>
 
 using std::list;
+using std::string;
 
 namespace model
 {
 	struct IUser{
-		virtual ~IUser() {};
+		virtual ~IUser() = 0;
 		string szId;
 		string szFullName;
 	};
 
-	struct IUserList : public list<IUser>{
-		virtual ~IUserList(){};
+	inline IUser::~IUser(){};
+
+	struct IUserList {
+		virtual ~IUserList() = 0;
+		list<IUser*> listUser;
 	};
 
-	struct CFBUser : public IUser{
-		virtual ~CFBUser(){};
-	};
-
-	struct CFBUserList : public IUserList{
-		virtual ~CFBUserList(){};
-	};
+	inline IUserList::~IUserList(){};
 
 }

@@ -6,6 +6,7 @@
 #include <list>
 #include <WinBase.h>
 #include <FacebookPhotoModel.h>
+#include <FBUserModel.h>
 
 using std::string;
 using std::list;
@@ -68,6 +69,9 @@ void CFacebookServiceTest::testGetUserInfo()
 	CFBUserList temp;
 	list<string> listUsr;
 	listUsr.push_back("me");
+	listUsr.push_back("726727685");
+	listUsr.push_back("508872928");
+	
 	CFBError cfbErr ;
 	int nResult = m_pFacebookService->GetUsersInfo(temp,cfbErr,listUsr);
 	CPPUNIT_ASSERT_MESSAGE(cfbErr.szMsg.c_str(),nResult==S_OK);

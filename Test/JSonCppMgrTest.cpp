@@ -94,6 +94,6 @@ void JSonCppMgrTest::TestParsePhoto()
 {
 	model::CFacebookPhoto iPhoto;
 	model::CFBError cFbErr;
-	int nResult = m_pJSonCppMgr->ParsePhoto(m_szTestPhoto,iPhoto, util::Facebook, cFbErr);
+	int nResult = m_pJSonCppMgr->ParsePhoto(iPhoto, m_szTestPhoto, util::Facebook, cFbErr);
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==0);
 }

@@ -30,3 +30,17 @@
 
 
 // TODO: reference additional headers your program requires here
+#ifndef NETSERV_SAFE_DELETE
+#define NETSERV_SAFE_DELETE(x) if(x) {delete x; x = NULL;}
+#endif
+
+#ifndef NETSERV_LIST_SAFE_DELETE
+#define NETSERV_LIST_SAFE_DELETE(listType,listObject) \
+{\
+	for (listType::iterator it = listObject.begin(); it!=listObject.end();++it)\
+	{\
+		NETSERV_SAFE_DELETE(*it);\
+	}\
+	listObject.clear();\
+}
+#endif

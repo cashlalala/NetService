@@ -312,6 +312,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\FBUserMdoel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\FBUserModel.h"
+				>
+			</File>
+			<File
 				RelativePath=".\IErrorModel.h"
 				>
 			</File>

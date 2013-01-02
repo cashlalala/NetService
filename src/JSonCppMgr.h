@@ -15,9 +15,11 @@ namespace util
 
 		virtual int ParsePhotoList( IPhotoList& iPhotoList, string szInput, EnDataOwner enDataOwner, IError& iError ) ;
 
-		virtual int ParsePhoto( string szInput, IPhoto& iPhoto, EnDataOwner enDataOwner, IError& iError  ) ;
+		virtual int ParsePhoto( IPhoto& iPhoto, string szInput, EnDataOwner enDataOwner, IError& iError  ) ;
 
 		virtual int ParseUser(string szInput, IUser& iUser, EnDataOwner enDataOwner, IError& iError) ;
+
+		virtual int ParseError(IError& iError, string szInput, EnDataOwner enDataOwner) ;
 
 	private:
 		//To keep the physical linkage isolated, don't specify the explicit type of the interface among the parameters.
@@ -25,7 +27,7 @@ namespace util
 		void TravFBPhotoList( Json::Value &jvRoot, IPhotoList &iPhotoList);
 		int TravFBErr(Json::Value &jvRoot, IError& cFbErr);
 		void TravFBPhoto( Json::Value &jvRoot, IPhoto* pIPhoto );
-		void TravFBUser( Json::Value jvRoot, IUser& iUser );
+		void TravFBUser( Json::Value jvRoot, IUser* iUser );
 
 
 	};
