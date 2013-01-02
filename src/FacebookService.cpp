@@ -86,19 +86,13 @@ int CFacebookService::GetPhotos(  IPhotoList& iPhotoLst, IError& iErr, string sz
 	do 
 	{
 		nResult = CallGraphAPI(cHttpResp, szId, Photo,mapQryCriteria);
-		EXCEPTION_BREAK(nResult)
+		EXCEPTION_HANDLING(nResult)
 
 		nResult = m_pIDataMgr->ParsePhotoList(iPhotoLst,cHttpResp.szResp,util::Facebook,*cFBErr);
 	} while (false);
 	
 	//Error Handling
-	if (nResult == NS_E_INET_CONNECT_FAIL_API_RETURN_ERROR ||
-		nResult == NS_E_INET_CONNECT_FAIL_HTTP_STATUS_ERROR)
-	{	
-		stringstream ss;
-		ss << "API return Code: [" << cHttpResp.dwError << "] Http Status: [" << cHttpResp.dwStatusCode << "] Response Msg:[" << cHttpResp.szResp <<"]";
-		iErr.szMsg = ss.str() ;
-	}
+	ErrorHandler(nResult, cHttpResp, iErr);
 	
 	return nResult;
 }
@@ -113,10 +107,10 @@ int CFacebookService::GetUsersInfo( IUserList& iUserLst, IError& iErr, SysList::
 		do 
 		{	
 			nResult = this->CallGraphAPI(cHttpResp,*it,None,mapQryCriteria);
-			EXCEPTION_BREAK(nResult)
+			EXCEPTION_HANDLING(nResult)
 
 			nResult = m_pIDataMgr->ParseUser(cHttpResp.szResp,*cFbUsr,util::Facebook,iErr);
-			EXCEPTION_BREAK(nResult)
+			EXCEPTION_HANDLING(nResult)
 
 			iUserLst.listUser.push_back(cFbUsr);
 			nResult = S_OK;
@@ -149,15 +143,43 @@ int CFacebookService::GetUserInfo( IUser& iUser, IError& iErr, string szUid/*="m
 	do 
 	{	
 		nResult = this->CallGraphAPI(cHttpResp,szUid,None,mapQryCriteria);
-		EXCEPTION_BREAK(nResult)
+		EXCEPTION_HANDLING(nResult)
 
 		nResult = m_pIDataMgr->ParseUser(cHttpResp.szResp, iUser,util::Facebook,iErr);
-		EXCEPTION_BREAK(nResult)
+		EXCEPTION_HANDLING(nResult)
 
 		nResult = S_OK;
 	} while (false);
 
 	//Error Handling
+	ErrorHandler(nResult, cHttpResp, iErr);
+
+	return nResult;
+}
+
+int CFacebookService::GetFriends( IUserList& iUserLst, IError& iErr, string szUid/*="me"*/, SysMaps::Str2Str& mapQryCriteria /*= SysMaps::Str2Str()*/ )
+{
+	int nResult = E_FAIL;
+	HttpRespValObj cHttpResp;
+
+	do 
+	{
+		nResult = CallGraphAPI(cHttpResp,szUid, Friend, mapQryCriteria,Get);
+		EXCEPTION_HANDLING(nResult);
+
+		m_pIDataMgr->ParseFriendList(iUserLst,cHttpResp.szResp,util::Facebook,iErr);
+		nResult = S_OK;
+	} while (false);
+
+	//Error Handling
+	ErrorHandler(nResult, cHttpResp, iErr);
+
+	return nResult;
+	
+}
+
+void CFacebookService::ErrorHandler( int nResult, HttpRespValObj &cHttpResp, IError &iErr )
+{
 	if (!SUCCEEDED(nResult))
 	{
 		if (nResult == NS_E_INET_CONNECT_FAIL_API_RETURN_ERROR ||
@@ -168,6 +190,4 @@ int CFacebookService::GetUserInfo( IUser& iUser, IError& iErr, string szUid/*="m
 			iErr.szMsg = ss.str() ;
 		}
 	}
-
-	return nResult;
 }

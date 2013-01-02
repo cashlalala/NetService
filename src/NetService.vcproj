@@ -300,34 +300,6 @@
 			Name="Model"
 			>
 			<File
-				RelativePath=".\FBErrorModel.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\FBErrorModel.h"
-				>
-			</File>
-			<File
-				RelativePath=".\FBFields.h"
-				>
-			</File>
-			<File
-				RelativePath=".\FBPhotoModel.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\FBPhotoModel.h"
-				>
-			</File>
-			<File
-				RelativePath=".\FBUserMdoel.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\FBUserModel.h"
-				>
-			</File>
-			<File
 				RelativePath=".\IErrorModel.h"
 				>
 			</File>
@@ -343,6 +315,38 @@
 				RelativePath=".\IVideoModel.h"
 				>
 			</File>
+			<Filter
+				Name="Facebook"
+				>
+				<File
+					RelativePath=".\FBErrorModel.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\FBErrorModel.h"
+					>
+				</File>
+				<File
+					RelativePath=".\FBFields.h"
+					>
+				</File>
+				<File
+					RelativePath=".\FBPhotoModel.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\FBPhotoModel.h"
+					>
+				</File>
+				<File
+					RelativePath=".\FBUserMdoel.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\FBUserModel.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"

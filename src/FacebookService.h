@@ -23,6 +23,8 @@ public:
 
 	virtual int GetUserInfo(IUser& iUser, IError& iErr, string szUid="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str());
 
+	virtual int GetFriends(IUserList& iUserLst, IError& iErr, string szUid="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str()) ;
+
 private:
 
 	static const SysMaps::EnCat2Str S_MAP_CATEGORY;
@@ -39,5 +41,7 @@ private:
 									SysMaps::Str2Str mapParams = SysMaps::Str2Str(),
 									EnHttpMethod enMethod = systypes::Get,
 									bool bCheckError =  true);
+
+	void ErrorHandler( int nResult, HttpRespValObj &cHttpResp, IError &iErr );
 
 };

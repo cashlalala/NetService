@@ -25,6 +25,7 @@ namespace util
 		virtual int ParsePhotoList(  IPhotoList& iPhotoList, string szInput, EnDataOwner enDataOwner, IError& iError) =0;
 		virtual int ParsePhoto( IPhoto& iPhoto, string szInput, EnDataOwner enDataOwner, IError& iError ) =0;
 		virtual int ParseUser(string szInput, IUser& iUser, EnDataOwner enDataOwner, IError& iError) = 0;
+		virtual int ParseFriendList(IUserList& iUser, string szInput, EnDataOwner enDataOwner, IError& iError  )  = 0;
 
 		virtual int ParseError(IError& iError, string szInput, EnDataOwner enDataOwner) = 0;
 	};

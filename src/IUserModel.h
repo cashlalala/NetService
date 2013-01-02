@@ -12,6 +12,7 @@ namespace model
 		virtual ~IUser() = 0;
 		string szId;
 		string szFullName;
+		string szIcon;
 	};
 
 	inline IUser::~IUser(){};

@@ -8,6 +8,7 @@
 #include <FBPhotoModel.h>
 #include <FBUserModel.h>
 #include <FBErrorModel.h>
+#include <FBFields.h>
 
 using std::string;
 using std::list;
@@ -86,3 +87,19 @@ void CFacebookServiceTest::testGetPhotos()
 	int nResult = m_pFacebookService->GetPhotos(cFBPhotoList,cFbErr);
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
 }
+
+void CFacebookServiceTest::testGetFriends()
+{
+	model::CFBUserList cFbUsrLst;
+	CFBError cFbErr;
+	SysMaps::Str2Str mapMy;
+
+	char lpszTmp[20];
+	memset(lpszTmp,0x0,20);
+	sprintf(lpszTmp,"%s,%s",FB_USER_PICTURE,FB_USER_NAME);
+
+	mapMy[FB_FIELDS]= lpszTmp;
+	int nResult = m_pFacebookService->GetFriends(cFbUsrLst,cFbErr,"me",mapMy);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
+}
+

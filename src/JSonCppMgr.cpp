@@ -6,6 +6,7 @@
 #include "FBUserModel.h"
 #include "FBErrorModel.h"
 
+#include <typeinfo>
 #include <sstream>
 
 #include <json/json.h>
@@ -185,4 +186,43 @@ int util::CJsonCppMgr::ParseError( IError& iError, string szInput, EnDataOwner e
 		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
 
 	return nResult;
+}
+
+int util::CJsonCppMgr::ParseFriendList( IUserList& iUserList, string szInput, EnDataOwner enDataOwner, IError& iError )
+{
+	int nResult = E_FAIL;
+	Json::Reader jrReader;
+	Json::Value jvRoot;
+
+	if (jrReader.parse(szInput.c_str(),jvRoot))
+	{
+		if (typeid(iUserList)==typeid(CFBUserList))
+		{
+			nResult = TravFBErr(jvRoot,iError);
+			FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+
+			TravFBFriendList(jvRoot,&iUserList);
+			nResult = S_OK;
+		}
+	}
+	else
+		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
+
+	return nResult;
+}
+
+void util::CJsonCppMgr::TravFBFriendList( Json::Value jvRoot, IUserList* iUserList )
+{
+	model::CFBUserList* pFbUserList = dynamic_cast<model::CFBUserList*>(iUserList);
+	int nFriendNum = jvRoot[FB_DATA].size();
+	for (int i = 0;i<nFriendNum;++i)
+	{
+		model::CFBUser* pFbUsr = new model::CFBUser(); 
+		pFbUsr->szId = jvRoot[FB_DATA][i][FB_ID].asString();
+		pFbUsr->szFullName = jvRoot[FB_DATA][i][FB_USER_NAME].asString();
+		pFbUsr->szIcon = jvRoot[FB_DATA][i][FB_USER_PICTURE][FB_USER_PICTURE_DATA][FB_USER_PICTURE_DATA_URL].asString();
+		pFbUserList->listUser.push_back(pFbUsr);
+	}
+	pFbUserList->szNext = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
+	pFbUserList->szPrevious = jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
 }
