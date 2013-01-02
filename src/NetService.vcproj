@@ -300,15 +300,15 @@
 			Name="Model"
 			>
 			<File
-				RelativePath=".\FacebookFields.h"
-				>
-			</File>
-			<File
 				RelativePath=".\FBErrorModel.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\FBErrorModel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\FBFields.h"
 				>
 			</File>
 			<File

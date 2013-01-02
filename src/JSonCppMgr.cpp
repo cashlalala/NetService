@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "JSonCppMgr.h"
-#include "FacebookFields.h"
+#include "FBFields.h"
 #include "FBPhotoModel.h"
 #include "NetServiceErr.h"
 #include "FBUserModel.h"
