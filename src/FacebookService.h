@@ -13,10 +13,6 @@ public:
 	CFacebookService(void);
 	virtual ~CFacebookService(void);
 
-	virtual SysMaps::Str2Str PrepareParams( string szMethod, SysMaps::Str2Str& params, bool bSignature );
-
-	virtual void CheckError( string szRootNode );
-
 	virtual void SetConnectionInfo(IConnectionInfo& cConectInfoVO);
 
 	virtual string GetLoginURL( string szAppId, string szScope = "read_stream,publish_stream,user_photos,friends_photos,user_videos,friends_videos,offline_access" );

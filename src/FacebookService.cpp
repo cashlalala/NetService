@@ -38,16 +38,6 @@ CFacebookService::~CFacebookService(void)
 	util::CDataMgrFactory::DeleteInstance(m_pIDataMgr);
 }
 
-SysMaps::Str2Str CFacebookService::PrepareParams( string szMethod, SysMaps::Str2Str& params, bool bSignature )
-{
-	throw std::exception("The method or operation is not implemented.");
-}
-
-void CFacebookService::CheckError( string szRootNode )
-{
-	throw std::exception("The method or operation is not implemented.");
-}
-
 void CFacebookService::SetConnectionInfo( IConnectionInfo& cConectInfoVO )
 {
 	m_cConnectInfo = *(dynamic_cast<CFBConnectionInfo*>(&cConectInfoVO));

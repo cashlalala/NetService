@@ -25,10 +25,6 @@ struct ISocialNetworkService
 
 	virtual void SetConnectionInfo(IConnectionInfo& cConectInfoVO) = 0;
 
-	virtual SysMaps::Str2Str PrepareParams(string szMethod, SysMaps::Str2Str& params, bool bSignature) = 0;
-
-	virtual void CheckError(string szRootNode) = 0;
-
 	/*
 	* ----------------Logging Functions----------------
 	*/
