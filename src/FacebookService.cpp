@@ -93,7 +93,7 @@ int CFacebookService::GetPhotos(  IPhotoList& iPhotoLst, IError& iErr, string sz
 	} while (false);
 	
 	//Error Handling
-	ErrorHandler(nResult, cHttpResp, iErr);
+	ExceptionHandler(nResult, cHttpResp, iErr);
 	
 	return nResult;
 }
@@ -153,7 +153,7 @@ int CFacebookService::GetUserInfo( IUser& iUser, IError& iErr, string szUid/*="m
 	} while (false);
 
 	//Error Handling
-	ErrorHandler(nResult, cHttpResp, iErr);
+	ExceptionHandler(nResult, cHttpResp, iErr);
 
 	return nResult;
 }
@@ -173,13 +173,13 @@ int CFacebookService::GetFriends( IUserList& iUserLst, IError& iErr, string szUi
 	} while (false);
 
 	//Error Handling
-	ErrorHandler(nResult, cHttpResp, iErr);
+	ExceptionHandler(nResult, cHttpResp, iErr);
 
 	return nResult;
 	
 }
 
-void CFacebookService::ErrorHandler( int nResult, HttpRespValObj &cHttpResp, IError &iErr )
+void CFacebookService::ExceptionHandler( int nResult, HttpRespValObj &cHttpResp, IError &iErr )
 {
 	if (!SUCCEEDED(nResult))
 	{
@@ -206,7 +206,25 @@ int CFacebookService::GetVideos( IVideoList& iVideoList, IError& iErr, string sz
 	} while (false);
 
 	//Error Handling
-	ErrorHandler(nResult, cHttpResp, iErr);
+	ExceptionHandler(nResult, cHttpResp, iErr);
+
+	return nResult;
+}
+
+int CFacebookService::GetAlbums( IAlbumList& iAlbumLst, IError& iErr, string szUid/*="me"*/, SysMaps::Str2Str& mapQryCriteria /*= SysMaps::Str2Str()*/ )
+{
+	int nResult = E_FAIL;
+	HttpRespValObj cHttpResp;
+	do 
+	{
+		nResult = CallGraphAPI(cHttpResp, szUid, Album,mapQryCriteria);
+		EXCEPTION_HANDLING(nResult)
+
+		nResult = m_pIDataMgr->ParseAlbumList(iAlbumLst,cHttpResp.szResp,iErr);
+	} while (false);
+
+	//Error Handling
+	ExceptionHandler(nResult, cHttpResp, iErr);
 
 	return nResult;
 }

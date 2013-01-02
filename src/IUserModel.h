@@ -20,6 +20,8 @@ namespace model
 	struct IUserList {
 		virtual ~IUserList() = 0;
 		list<IUser*> listUser;
+		string szNext;
+		string szPrevious;
 	};
 
 	inline IUserList::~IUserList(){};

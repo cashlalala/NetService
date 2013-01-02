@@ -300,6 +300,10 @@
 			Name="Model"
 			>
 			<File
+				RelativePath=".\IAlbumModel.h"
+				>
+			</File>
+			<File
 				RelativePath=".\IErrorModel.h"
 				>
 			</File>
@@ -318,6 +322,14 @@
 			<Filter
 				Name="Facebook"
 				>
+				<File
+					RelativePath=".\FBAlbumModel.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\FBAlbumModel.h"
+					>
+				</File>
 				<File
 					RelativePath=".\FBErrorModel.cpp"
 					>

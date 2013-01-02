@@ -5,6 +5,7 @@
 #include "IUserModel.h"
 #include "IErrorModel.h"
 #include "IVideoModel.h"
+#include "IAlbumModel.h"
 
 #include <string>
 
@@ -17,6 +18,7 @@ using model::IUserList;
 using model::IError;
 using model::IUser;
 using model::IVideoList;
+using model::IAlbumList;
 
 
 
@@ -49,7 +51,8 @@ struct ISocialNetworkService
 
 	virtual int GetFriends(IUserList& iUserLst, IError& iErr, string szUid="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str()) = 0;
 
-	
+	virtual int GetAlbums(IAlbumList& iAlbumLst, IError& iErr, string szUid="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str()) = 0;
+
 
 };
 

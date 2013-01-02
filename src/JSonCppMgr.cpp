@@ -6,6 +6,7 @@
 #include "FBUserModel.h"
 #include "FBErrorModel.h"
 #include "FBVideoModel.h"
+#include "FBAlbumModel.h"
 
 #include <typeinfo>
 #include <sstream>
@@ -269,7 +270,7 @@ void util::CJsonCppMgr::TravFBVideoList( Json::Value& jvRoot, IVideoList* pIVide
 void util::CJsonCppMgr::TravFBVideo( Json::Value& jvRoot, IVideo* pIVideo )
 {
 		model::CFBVideo* pFbVideo = dynamic_cast<model::CFBVideo*>(pIVideo);
-		pFbVideo->id = jvRoot[FB_ID].asString();
+		pFbVideo->szId = jvRoot[FB_ID].asString();
 		pFbVideo->szSource = jvRoot[FB_VIDEO_SOURCE].asString();
 		pFbVideo->szThumbNail = jvRoot[FB_VIDEO_THUMBNAIL].asString();
 		pFbVideo->szEmbedHtml = jvRoot[FB_VIDEO_EMBED_HTML].asString();
@@ -283,4 +284,50 @@ void util::CJsonCppMgr::TravFBVideo( Json::Value& jvRoot, IVideo* pIVideo )
 			pFbVideoFormat->szEmbedHtml = jvRoot[FB_VIDEO_FORMAT][i][FB_VIDEO_EMBED_HTML].asString();
 			pFbVideo->listFormat.push_back(pFbVideoFormat);
 		}
+}
+
+int util::CJsonCppMgr::ParseAlbumList( IAlbumList& iAlbumList, string szInput, IError& iError )
+{
+	int nResult = E_FAIL;
+	Json::Reader jrReader;
+	Json::Value jvRoot;
+
+	if (jrReader.parse(szInput.c_str(),jvRoot))
+	{
+		if (typeid(iAlbumList)==typeid(CFBAlbumList))
+		{
+			nResult = TravFBErr(jvRoot,iError);
+			FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+
+			TravFBAlbumList(jvRoot,&iAlbumList);
+			nResult = S_OK;
+		}
+	}
+	else
+		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
+
+	return nResult;
+}
+
+void util::CJsonCppMgr::TravFBAlbumList( Json::Value& jvRoot, IAlbumList* pIAlbumList )
+{
+	model::CFBAlbumList* pFbAlbumList = dynamic_cast<model::CFBAlbumList*>(pIAlbumList);
+	int nAlbumNum = jvRoot[FB_DATA].size();
+	for (int i = 0 ;i<nAlbumNum;++i)
+	{
+		CFBAlbum* pFbAlbum = new CFBAlbum();
+		Json::Value jvItem = jvRoot[FB_DATA][i];
+		TravFBAlbum(jvItem,pFbAlbum);
+		pFbAlbumList->listAlbum.push_back(pFbAlbum);
+	}
+	pFbAlbumList->szNext = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
+	pFbAlbumList->szPrevious = jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
+}
+
+void util::CJsonCppMgr::TravFBAlbum( Json::Value& jvRoot, IAlbum* pIAlbum )
+{
+	model::CFBAlbum* pFbAlbum = dynamic_cast<model::CFBAlbum*>(pIAlbum);
+	pFbAlbum->szId = jvRoot[FB_ID].asString();
+	pFbAlbum->szCoverPhotoId = jvRoot[FB_ALBUM_COVER_PHOTO].asString();
+	pFbAlbum->nCount = jvRoot[FB_ALBUM_PHOTO_COUNT].asInt();
 }

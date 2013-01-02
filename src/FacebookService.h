@@ -27,6 +27,8 @@ public:
 
 	virtual int GetFriends(IUserList& iUserLst, IError& iErr, string szUid="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str()) ;
 
+	virtual int GetAlbums(IAlbumList& iAlbumLst, IError& iErr, string szUid="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str());
+
 private:
 
 	static const SysMaps::EnCat2Str S_MAP_CATEGORY;
@@ -44,6 +46,6 @@ private:
 									EnHttpMethod enMethod = systypes::Get,
 									bool bCheckError =  true);
 
-	void ErrorHandler( int nResult, HttpRespValObj &cHttpResp, IError &iErr );
+	void ExceptionHandler( int nResult, HttpRespValObj &cHttpResp, IError &iErr );
 
 };

@@ -25,6 +25,8 @@ namespace util
 
 		virtual int ParseVideoList( IVideoList&iVideoList, string szInput, IError& iError) ;
 
+		virtual int ParseAlbumList(IAlbumList& iAlbumList, string szInput, IError& iError) ;
+
 	private:
 		//To keep the physical linkage isolated, don't specify the explicit type of the interface among the parameters.
 		// Even the function name is specified with exact targets like "FB" "FLICKR";
@@ -35,8 +37,11 @@ namespace util
 		void TravFBFriendList(Json::Value jvRoot, IUserList* pUserList);
 		void TravFBVideoList(Json::Value& jvRoot, IVideoList* pIVideoList);
 		void TravFBVideo(Json::Value& jvRoot, IVideo* pIVideo);
-
+		void TravFBAlbumList(Json::Value& jvRoot, IAlbumList* pIAlbumList);
+		void TravFBAlbum(Json::Value& jvRoot, IAlbum* pIAlbum);
 
 	};
 }
+
+
 

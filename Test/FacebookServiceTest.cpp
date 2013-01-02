@@ -9,6 +9,7 @@
 #include <FBUserModel.h>
 #include <FBErrorModel.h>
 #include <FBVideoModel.h>
+#include <FBAlbumModel.h>
 #include <FBFields.h>
 
 using std::string;
@@ -30,6 +31,7 @@ CFacebookServiceTest::~CFacebookServiceTest(void)
 void CFacebookServiceTest::setUp()
 {
 	m_pFacebookService = new CFacebookService();
+
 	CFBConnectionInfo cCnctInfoVO;
 	char* lpszTmp = new char[1025];
 	memset(lpszTmp,0x0,1025);
@@ -116,6 +118,15 @@ void CFacebookServiceTest::testGetVideos()
 
 	//mapMy[FB_FIELDS]= lpszTmp;
 	int nResult = m_pFacebookService->GetVideos(cFbVideoLst,cFbErr);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
+}
+
+void CFacebookServiceTest::testGetAlbums()
+{
+	model::CFBAlbumList cFbVideoLst;
+	CFBError cFbErr;
+
+	int nResult = m_pFacebookService->GetAlbums(cFbVideoLst,cFbErr);
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
 }
 

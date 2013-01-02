@@ -10,8 +10,6 @@ namespace model
 
 	struct CFBUserList : public IUserList{
 		virtual ~CFBUserList();
-		string szNext;
-		string szPrevious;
 	};
 }
 

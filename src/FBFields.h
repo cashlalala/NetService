@@ -33,3 +33,5 @@
 #define FB_VIDEO_FORMAT "format"
 #define FB_VIDEO_EMBED_HTML "embed_html"
 
+#define FB_ALBUM_COVER_PHOTO	"cover_photo"
+#define FB_ALBUM_PHOTO_COUNT "count"

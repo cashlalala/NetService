@@ -3,13 +3,5 @@
 
 model::CFBUserList::~CFBUserList()
 {
-	for (list<IUser*>::iterator it = listUser.begin();it!=listUser.end();++it)
-	{
-		if (*it !=NULL)
-		{
-			delete *it;
-			*it = NULL;
-		}
-	}
-	listUser.clear();
+	NETSERV_LIST_SAFE_DELETE(list<IUser*>,listUser)
 }

@@ -19,7 +19,7 @@ namespace model
 
 	struct IVideo{
 		virtual ~IVideo() =0;
-		string id;
+		string szId;
 		string szSource;
 		string szThumbNail;
 		list<IVideoFormat*> listFormat;
