@@ -9,24 +9,31 @@ using std::string;
 namespace model
 {
 	struct IVideoFormat{
-		virtual ~IVideoFormat() {};
+		virtual ~IVideoFormat() = 0 ;
 		int nHeight;
 		int nWidth;
 		string szThumbNail;
 	};
 
+	inline IVideoFormat::~IVideoFormat(){};
+
 	struct IVideo{
-		virtual ~IVideo() {};
+		virtual ~IVideo() =0;
 		string id;
 		string szSource;
 		string szThumbNail;
-		list<IVideoFormat> listFormat;
+		list<IVideoFormat*> listFormat;
 	};
 
-	struct IVideoList : public list<IVideo>{
-		virtual ~IVideoList() {};
+	inline IVideo::~IVideo(){};
+
+	struct IVideoList {
+		virtual ~IVideoList() =0;
+		list<IVideo*> listVideo;
 		string szNext;
 		string szPrevious;
 	};
+
+	inline IVideoList::~IVideoList(){};
 
 }

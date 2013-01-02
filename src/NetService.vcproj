@@ -346,6 +346,14 @@
 					RelativePath=".\FBUserModel.h"
 					>
 				</File>
+				<File
+					RelativePath=".\FBVideoModel.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\FBVideoModel.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<File
