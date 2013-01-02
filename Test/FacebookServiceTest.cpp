@@ -8,6 +8,7 @@
 #include <FBPhotoModel.h>
 #include <FBUserModel.h>
 #include <FBErrorModel.h>
+#include <FBVideoModel.h>
 #include <FBFields.h>
 
 using std::string;
@@ -100,6 +101,21 @@ void CFacebookServiceTest::testGetFriends()
 
 	mapMy[FB_FIELDS]= lpszTmp;
 	int nResult = m_pFacebookService->GetFriends(cFbUsrLst,cFbErr,"me",mapMy);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
+}
+
+void CFacebookServiceTest::testGetVideos()
+{
+	model::CFBVideoList cFbVideoLst;
+	CFBError cFbErr;
+	SysMaps::Str2Str mapMy;
+
+	//char lpszTmp[20];
+	//memset(lpszTmp,0x0,20);
+	//sprintf(lpszTmp,"%s,%s",FB_USER_PICTURE,FB_USER_NAME);
+
+	//mapMy[FB_FIELDS]= lpszTmp;
+	int nResult = m_pFacebookService->GetVideos(cFbVideoLst,cFbErr);
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
 }
 

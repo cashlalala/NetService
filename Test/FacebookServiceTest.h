@@ -10,6 +10,7 @@ class CFacebookServiceTest : public CPPUNIT_NS::TestFixture
 	CPPUNIT_TEST( testGetUserInfo );
 	CPPUNIT_TEST( testGetPhotos );
 	CPPUNIT_TEST( testGetFriends );
+	CPPUNIT_TEST( testGetVideos );
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -23,6 +24,7 @@ public:
 	void testGetUserInfo();
 	void testGetPhotos();
 	void testGetFriends();
+	void testGetVideos();
 
 private:
 	CFacebookService* m_pFacebookService;

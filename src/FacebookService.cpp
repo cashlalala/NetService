@@ -3,6 +3,7 @@
 #include "MapHelper.h"
 #include "FBPhotoModel.h"
 #include "FBErrorModel.h"
+#include "FBVideoModel.h"
 #include "DataMgrFactory.h"
 #include "NetServiceErr.h"
 #include "UrlHelper.h"
@@ -190,4 +191,22 @@ void CFacebookService::ErrorHandler( int nResult, HttpRespValObj &cHttpResp, IEr
 			iErr.szMsg = ss.str() ;
 		}
 	}
+}
+
+int CFacebookService::GetVideos( IVideoList& iVideoList, IError& iErr, string szId/*="me"*/, SysMaps::Str2Str& mapQryCriteria /*= SysMaps::Str2Str()*/ )
+{
+	int nResult = E_FAIL;
+	HttpRespValObj cHttpResp;
+	do 
+	{
+		nResult = CallGraphAPI(cHttpResp, szId, Video,mapQryCriteria);
+		EXCEPTION_HANDLING(nResult)
+
+		nResult = m_pIDataMgr->ParseVideoList(iVideoList,cHttpResp.szResp,iErr);
+	} while (false);
+
+	//Error Handling
+	ErrorHandler(nResult, cHttpResp, iErr);
+
+	return nResult;
 }

@@ -19,7 +19,7 @@ namespace model
 	public:
 		CFBVideo(void);
 		virtual ~CFBVideo(void);
-		
+		string szEmbedHtml;
 	};
 
 	class CFBVideoList : public IVideoList

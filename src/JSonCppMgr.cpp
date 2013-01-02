@@ -5,6 +5,7 @@
 #include "NetServiceErr.h"
 #include "FBUserModel.h"
 #include "FBErrorModel.h"
+#include "FBVideoModel.h"
 
 #include <typeinfo>
 #include <sstream>
@@ -211,9 +212,9 @@ int util::CJsonCppMgr::ParseFriendList( IUserList& iUserList, string szInput, En
 	return nResult;
 }
 
-void util::CJsonCppMgr::TravFBFriendList( Json::Value jvRoot, IUserList* iUserList )
+void util::CJsonCppMgr::TravFBFriendList( Json::Value jvRoot, IUserList* pUserList )
 {
-	model::CFBUserList* pFbUserList = dynamic_cast<model::CFBUserList*>(iUserList);
+	model::CFBUserList* pFbUserList = dynamic_cast<model::CFBUserList*>(pUserList);
 	int nFriendNum = jvRoot[FB_DATA].size();
 	for (int i = 0;i<nFriendNum;++i)
 	{
@@ -225,4 +226,61 @@ void util::CJsonCppMgr::TravFBFriendList( Json::Value jvRoot, IUserList* iUserLi
 	}
 	pFbUserList->szNext = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
 	pFbUserList->szPrevious = jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
+}
+
+int util::CJsonCppMgr::ParseVideoList( IVideoList&iVideoList, string szInput, IError& iError )
+{
+	int nResult = E_FAIL;
+	Json::Reader jrReader;
+	Json::Value jvRoot;
+
+	if (jrReader.parse(szInput.c_str(),jvRoot))
+	{
+		if (typeid(iVideoList)==typeid(CFBVideoList))
+		{
+			nResult = TravFBErr(jvRoot,iError);
+			FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+
+			TravFBVideoList(jvRoot,&iVideoList);
+			nResult = S_OK;
+		}
+	}
+	else
+		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
+
+	return nResult;
+}
+
+void util::CJsonCppMgr::TravFBVideoList( Json::Value& jvRoot, IVideoList* pIVideoList )
+{
+	model::CFBVideoList* pFbVideoList = dynamic_cast<model::CFBVideoList*>(pIVideoList);
+	int nVideoNum = jvRoot[FB_DATA].size();
+	for (int i = 0 ;i<nVideoNum;++i)
+	{
+		CFBVideo* pFbVideo = new CFBVideo();
+		Json::Value jvItem = jvRoot[FB_DATA][i];
+		TravFBVideo(jvItem,pFbVideo);
+		pFbVideoList->listVideo.push_back(pFbVideo);
+	}
+	pFbVideoList->szNext = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
+	pFbVideoList->szPrevious = jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
+}
+
+void util::CJsonCppMgr::TravFBVideo( Json::Value& jvRoot, IVideo* pIVideo )
+{
+		model::CFBVideo* pFbVideo = dynamic_cast<model::CFBVideo*>(pIVideo);
+		pFbVideo->id = jvRoot[FB_ID].asString();
+		pFbVideo->szSource = jvRoot[FB_VIDEO_SOURCE].asString();
+		pFbVideo->szThumbNail = jvRoot[FB_VIDEO_THUMBNAIL].asString();
+		pFbVideo->szEmbedHtml = jvRoot[FB_VIDEO_EMBED_HTML].asString();
+		int nVideoFormat = jvRoot[FB_VIDEO_FORMAT].size();
+		for (int i = 0;i<nVideoFormat;++i)
+		{
+			CFBVideoFormat* pFbVideoFormat = new CFBVideoFormat();
+			pFbVideoFormat->nHeight = jvRoot[FB_VIDEO_FORMAT][i][FB_VIDEO_HEIGHT].asInt();
+			pFbVideoFormat->nWidth = jvRoot[FB_VIDEO_FORMAT][i][FB_VIDEO_WIDTH].asInt();
+			pFbVideoFormat->szThumbNail = jvRoot[FB_VIDEO_FORMAT][i][FB_VIDEO_THUMBNAIL].asString();
+			pFbVideoFormat->szEmbedHtml = jvRoot[FB_VIDEO_FORMAT][i][FB_VIDEO_EMBED_HTML].asString();
+			pFbVideo->listFormat.push_back(pFbVideoFormat);
+		}
 }
