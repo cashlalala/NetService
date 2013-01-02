@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "FacebookService.h"
 #include "MapHelper.h"
-#include "FacebookPhotoModel.h"
+#include "FBPhotoModel.h"
 #include "FBErrorModel.h"
 #include "DataMgrFactory.h"
 #include "NetServiceErr.h"
@@ -90,7 +90,7 @@ string CFacebookService::GetLoginURL( string szAppId, string szScope /*= "read_s
 int CFacebookService::GetPhotos(  IPhotoList& iPhotoLst, IError& iErr, string szId, SysMaps::Str2Str& mapQryCriteria)
 {
 	int nResult = E_FAIL;
-	model::CFacebookPhotoList listPhoto;
+	model::CFBPhotoList listPhoto;
 	HttpRespValObj cHttpResp;
 	CFBError* cFBErr = dynamic_cast<CFBError*>(&iErr);
 	do 

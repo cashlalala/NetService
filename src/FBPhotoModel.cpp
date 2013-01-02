@@ -1,7 +1,7 @@
 #include "StdAfx.h"
-#include "FacebookPhotoModel.h"
+#include "FBPhotoModel.h"
 
-model::CFacebookPhoto::~CFacebookPhoto( void )
+model::CFBPhoto::~CFBPhoto( void )
 {
 	for (list<IImage*>::iterator it = listImages.begin();it!=listImages.end();++it)
 	{
@@ -10,7 +10,7 @@ model::CFacebookPhoto::~CFacebookPhoto( void )
 	listImages.clear();
 }
 
-model::CFacebookPhotoList::~CFacebookPhotoList( void )
+model::CFBPhotoList::~CFBPhotoList( void )
 {
 	for (list<IPhoto*>::iterator it = listPhoto.begin();it!=listPhoto.end();++it)
 	{

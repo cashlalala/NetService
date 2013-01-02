@@ -304,19 +304,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\FacebookPhotoModel.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\FacebookPhotoModel.h"
-				>
-			</File>
-			<File
 				RelativePath=".\FBErrorModel.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\FBErrorModel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\FBPhotoModel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\FBPhotoModel.h"
 				>
 			</File>
 			<File

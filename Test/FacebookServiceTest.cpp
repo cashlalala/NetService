@@ -5,7 +5,7 @@
 #include <string>
 #include <list>
 #include <WinBase.h>
-#include <FacebookPhotoModel.h>
+#include <FBPhotoModel.h>
 #include <FBUserModel.h>
 #include <FBErrorModel.h>
 
@@ -81,7 +81,7 @@ void CFacebookServiceTest::testGetUserInfo()
 void CFacebookServiceTest::testGetPhotos()
 {
 	
-	model::CFacebookPhotoList cFBPhotoList;
+	model::CFBPhotoList cFBPhotoList;
 	CFBError cFbErr;
 	int nResult = m_pFacebookService->GetPhotos(cFBPhotoList,cFbErr);
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);

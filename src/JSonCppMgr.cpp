@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "JSonCppMgr.h"
 #include "FacebookFields.h"
-#include "FacebookPhotoModel.h"
+#include "FBPhotoModel.h"
 #include "NetServiceErr.h"
 #include "FBUserModel.h"
 #include "FBErrorModel.h"
@@ -116,7 +116,7 @@ void util::CJsonCppMgr::TravFBPhotoList( Json::Value &jvRoot, IPhotoList &iPhoto
 	for (int i=0;i<nPhotoNum;++i)
 	{
 		Json::Value item = jvRoot[FB_DATA][i];
-		model::CFacebookPhoto* cFbPhot = new model::CFacebookPhoto();
+		model::CFBPhoto* cFbPhot = new model::CFBPhoto();
 		TravFBPhoto(item,cFbPhot);
 		iPhotoList.listPhoto.push_back(cFbPhot);
 	}
@@ -124,7 +124,7 @@ void util::CJsonCppMgr::TravFBPhotoList( Json::Value &jvRoot, IPhotoList &iPhoto
 
 void util::CJsonCppMgr::TravFBPhoto( Json::Value &jvRoot, IPhoto* pIPhoto )
 {
-	model::CFacebookPhoto* pFbPhto = dynamic_cast<model::CFacebookPhoto*>(pIPhoto);
+	model::CFBPhoto* pFbPhto = dynamic_cast<model::CFBPhoto*>(pIPhoto);
 	pFbPhto->szId = jvRoot[FB_ID].asString();
 	pFbPhto->nHeight = jvRoot[FB_IMAGE_HEIGHT].asInt();
 	pFbPhto->nWidth = jvRoot[FB_IMAGE_WIDTH].asInt();
@@ -134,7 +134,7 @@ void util::CJsonCppMgr::TravFBPhoto( Json::Value &jvRoot, IPhoto* pIPhoto )
 	for (int j = 0; j<nImageNum;++j)
 	{
 		Json::Value item = jvRoot[FB_PHOTO_IMAGES][j];
-		model::CFacebookImage* iImage = new model::CFacebookImage();
+		model::CFBImage* iImage = new model::CFBImage();
 		iImage->nHeight = item[FB_IMAGE_HEIGHT].asInt();
 		iImage->nWidth = item[FB_IMAGE_WIDTH].asInt();
 		iImage->szSource = item[FB_IMAGE_SOURCE].asString();

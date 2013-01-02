@@ -3,7 +3,7 @@
 
 #include "JSonCppMgrTest.h"
 #include <NetServiceErr.h>
-#include <FacebookPhotoModel.h>
+#include <FBPhotoModel.h>
 #include <FBErrorModel.h>
 
 #include <fstream>
@@ -85,7 +85,7 @@ void JSonCppMgrTest::tearDown()
 
 void JSonCppMgrTest::TestParsePhotoList()
 {
-	model::CFacebookPhotoList iPhotoList;
+	model::CFBPhotoList iPhotoList;
 	model::CFBError cFBError;
 	int nResult = m_pJSonCppMgr->ParsePhotoList(iPhotoList,m_szTestPhotoList, util::Facebook,cFBError);
 	CPPUNIT_ASSERT_MESSAGE(cFBError.szMsg.c_str(),nResult==0);
@@ -93,7 +93,7 @@ void JSonCppMgrTest::TestParsePhotoList()
 
 void JSonCppMgrTest::TestParsePhoto()
 {
-	model::CFacebookPhoto iPhoto;
+	model::CFBPhoto iPhoto;
 	model::CFBError cFbErr;
 	int nResult = m_pJSonCppMgr->ParsePhoto(iPhoto, m_szTestPhoto, util::Facebook, cFbErr);
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==0);
