@@ -2,6 +2,7 @@
 #include "FacebookService.h"
 #include "MapHelper.h"
 #include "FacebookPhotoModel.h"
+#include "FBErrorModel.h"
 #include "DataMgrFactory.h"
 #include "NetServiceErr.h"
 #include "UrlHelper.h"
@@ -15,6 +16,7 @@ using systypes::EnCategory;
 using systypes::EnHttpMethod;
 using util::CMapHelper;
 using std::stringstream;
+using namespace model;
 
 const string CFacebookService::S_STR_URL_PREFIX = "https://";
 
@@ -90,7 +92,7 @@ int CFacebookService::GetPhotos(  IPhotoList& iPhotoLst, IError& iErr, string sz
 	int nResult = E_FAIL;
 	model::CFacebookPhotoList listPhoto;
 	HttpRespValObj cHttpResp;
-	model::CFBError* cFBErr = dynamic_cast<model::CFBError*>(&iErr);
+	CFBError* cFBErr = dynamic_cast<CFBError*>(&iErr);
 	do 
 	{
 		nResult = CallGraphAPI(cHttpResp, szId, Photo,mapQryCriteria);

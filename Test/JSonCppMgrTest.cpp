@@ -4,6 +4,7 @@
 #include "JSonCppMgrTest.h"
 #include <NetServiceErr.h>
 #include <FacebookPhotoModel.h>
+#include <FBErrorModel.h>
 
 #include <fstream>
 

@@ -4,6 +4,7 @@
 #include "FacebookPhotoModel.h"
 #include "NetServiceErr.h"
 #include "FBUserModel.h"
+#include "FBErrorModel.h"
 
 #include <sstream>
 
@@ -151,7 +152,7 @@ void util::CJsonCppMgr::TravFBUser( Json::Value jvRoot, IUser* pIUser )
 
 int util::CJsonCppMgr::TravFBErr( Json::Value &jvRoot, IError& cFbErr )
 {
-	CFBError* pCFBErr = dynamic_cast<CFBError*>(&cFbErr);
+	model::CFBError* pCFBErr = dynamic_cast<model::CFBError*>(&cFbErr);
 	if (jvRoot[FB_ERROR].isNull()) return S_OK;
 	pCFBErr->szCode = jvRoot[FB_ERROR][FB_ERROR_CODE].asString();
 	pCFBErr->szMsg = jvRoot[FB_ERROR][FB_ERROR_MSG].asString();

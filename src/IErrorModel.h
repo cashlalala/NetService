@@ -1,17 +1,17 @@
 #pragma once
 
+#include <string>
+
+using std::string;
+
 namespace model
 {
 	struct IError {
-		virtual ~IError(){};
+		virtual ~IError() = 0;
 		string szCode;
 		string szMsg;
 	};
 
-	struct CFBError : public IError {
-		virtual ~CFBError(){};
-		string szType;
-		string szErrSubCode;
-	};
+	inline IError::~IError(){};
 }
 
