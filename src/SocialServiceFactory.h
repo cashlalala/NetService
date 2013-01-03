@@ -1,16 +1,12 @@
 #pragma once
 
+
 #include "ISocialNetworkService.h"
 #include <map>
 #include <list>
 
 using std::map;
 using std::list;
-
-typedef enum {
-	FACEBOOK = 0,
-	FLICKR = 1
-} EnServiceType;
 
 class CSocialServiceFactory
 {

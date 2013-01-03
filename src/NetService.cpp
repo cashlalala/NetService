@@ -2,7 +2,7 @@
 //
 #include "stdafx.h"
 #include "NetService.h"
-
+#include "SocialServiceFactory.h"
 
 #ifdef _MANAGED
 #pragma managed(push, off)
@@ -24,22 +24,29 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     return TRUE;
 }
 
+
+NETSERVCIE_EXTERNC NETSERVICE_API ISocialNetworkService* __cdecl GetInstance(EnServiceType enServTyp)
+{
+	return CSocialServiceFactory::GetInstance(enServTyp);
+}
+
+
 #ifdef _MANAGED
 #pragma managed(pop)
 #endif
 
-// This is an example of an exported variable
-NETSERVICE_API int nNetService=0;
-
-// This is an example of an exported function.
-NETSERVICE_API int fnNetService(void)
-{
-	return 42;
-}
-
-// This is the constructor of a class that has been exported.
-// see NetService.h for the class definition
-CNetService::CNetService()
-{
-	return;
-}
+//// This is an example of an exported variable
+//NETSERVICE_API int nNetService=0;
+//
+//// This is an example of an exported function.
+//NETSERVICE_API int fnNetService(void)
+//{
+//	return 42;
+//}
+//
+//// This is the constructor of a class that has been exported.
+//// see NetService.h for the class definition
+//CNetService::CNetService()
+//{
+//	return;
+//}

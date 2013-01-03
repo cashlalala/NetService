@@ -128,8 +128,8 @@ int CFacebookService::GetUsersInfo( IUserList& iUserLst, IError& iErr, SysList::
 				iErr.szMsg = ss.str() ;
 			}
 
-			NETSERV_SAFE_DELETE(cFbUsr);
-			NETSERV_LIST_SAFE_DELETE(list<IUser*>,iUserLst.listUser);
+			SAFE_DELETE_OBJECT(cFbUsr);
+			SAFE_DELETE_LIST(list<IUser*>,iUserLst.listUser);
 
 			break;
 		}

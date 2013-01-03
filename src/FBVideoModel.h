@@ -4,30 +4,23 @@
 
 namespace model
 {
-	class CFBVideoFormat : public IVideoFormat
+	struct CFBVideoFormat : public IVideoFormat
 	{
-	public:
-		CFBVideoFormat(void);
-		virtual ~CFBVideoFormat(void);
+		virtual ~CFBVideoFormat(void){};
 		string szEmbedHtml;
 	};
 
 
-	class CFBVideo :
+	struct CFBVideo :
 		public IVideo
 	{
-	public:
-		CFBVideo(void);
-		virtual ~CFBVideo(void);
+		virtual ~CFBVideo(void){};
 		string szEmbedHtml;
 	};
 
-	class CFBVideoList : public IVideoList
+	struct CFBVideoList : public IVideoList
 	{
-	public:
-		CFBVideoList(void);
-		virtual ~CFBVideoList(void);
-
+		virtual ~CFBVideoList(void){};
 	};
 }
 

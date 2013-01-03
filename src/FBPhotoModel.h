@@ -12,26 +12,20 @@ using model::IPhotoList;
 namespace model
 {
 
-	class CFBImage : public IImage
+	struct CFBImage : public IImage
 	{
-	public:
-		CFBImage(void){};
 		virtual ~CFBImage(void){};
 	};
 
 
-	class CFBPhoto : public IPhoto
+	struct CFBPhoto : public IPhoto
 	{
-	public:
-		CFBPhoto(void);
-		virtual ~CFBPhoto(void);
+		virtual ~CFBPhoto(void){};
 	};
 
-	class CFBPhotoList : public IPhotoList
+	struct CFBPhotoList : public IPhotoList
 	{
-	public:
-		CFBPhotoList(void){};
-		virtual ~CFBPhotoList(void);
+		virtual ~CFBPhotoList(void){};
 	};
 }
 

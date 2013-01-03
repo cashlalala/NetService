@@ -5,20 +5,16 @@
 
 namespace model
 {
-	class CFBAlbum :
+	struct CFBAlbum :
 		public IAlbum
 	{
-	public:
-		CFBAlbum(void);
-		virtual ~CFBAlbum(void);
+		virtual ~CFBAlbum(void){};
 	};
 
-	class CFBAlbumList :
+	struct CFBAlbumList :
 		public IAlbumList	
 	{
-	public:
-		CFBAlbumList(void);
-		virtual ~CFBAlbumList(void);
+		virtual ~CFBAlbumList(void){};
 	};
 }
 

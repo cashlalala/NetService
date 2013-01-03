@@ -1,5 +1,7 @@
 #pragma once
 
+#include "IModel.h"
+
 #include <string>
 #include <list>
 
@@ -8,7 +10,7 @@ using std::string;
 
 namespace model
 {
-	struct IVideoFormat{
+	struct IVideoFormat : public IModel{
 		virtual ~IVideoFormat() = 0 ;
 		int nHeight;
 		int nWidth;
@@ -17,7 +19,7 @@ namespace model
 
 	inline IVideoFormat::~IVideoFormat(){};
 
-	struct IVideo{
+	struct IVideo : public IModel{
 		virtual ~IVideo() =0;
 		string szId;
 		string szSource;
@@ -25,15 +27,21 @@ namespace model
 		list<IVideoFormat*> listFormat;
 	};
 
-	inline IVideo::~IVideo(){};
+	inline IVideo::~IVideo()
+	{
+		SAFE_DELETE_LIST(list<IVideoFormat*>,listFormat)
+	};
 
-	struct IVideoList {
+	struct IVideoList :  public IModel{
 		virtual ~IVideoList() =0;
 		list<IVideo*> listVideo;
 		string szNext;
 		string szPrevious;
 	};
 
-	inline IVideoList::~IVideoList(){};
+	inline IVideoList::~IVideoList()
+	{
+		SAFE_DELETE_LIST(list<IVideo*>,listVideo)
+	};
 
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include "IModel.h"
 
 #include <string>
 #include <list>
@@ -9,7 +10,7 @@ using std::string;
 namespace model
 {
 
-	struct IImage{
+	struct IImage : public IModel{
 		virtual ~IImage() = 0;
 		int nHeight;
 		int nWidth;
@@ -26,16 +27,22 @@ namespace model
 		list<IImage*> listImages;
 	};
 
-	inline IPhoto::~IPhoto(){};
+	inline IPhoto::~IPhoto()
+	{
+		SAFE_DELETE_LIST(list<IImage*>,listImages)
+	};
 
-	struct IPhotoList {
+	struct IPhotoList : public IModel{
 		virtual ~IPhotoList() = 0;
 		list<IPhoto*> listPhoto;
 		string szNext;
 		string szPrevious;
 	};
 
-	inline IPhotoList::~IPhotoList(){};
+	inline IPhotoList::~IPhotoList()
+	{
+		SAFE_DELETE_LIST(list<IPhoto*>,listPhoto)
+	};
 
 }
 

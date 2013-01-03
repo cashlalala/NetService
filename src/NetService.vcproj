@@ -19,7 +19,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="4"
+			ConfigurationType="2"
 			CharacterSet="1"
 			>
 			<Tool
@@ -60,12 +60,18 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
-				AdditionalDependencies="json_vc71_libmtd.lib Advapi32.lib Wininet.lib"
+				Name="VCLinkerTool"
+				AdditionalDependencies="json_vc71_libmtd.lib Advapi32.lib Wininet.lib Shlwapi.lib"
+				LinkIncremental="2"
 				AdditionalLibraryDirectories="F:\Power2Go9\thirdparty\boost_1_52_0\libs;F:\Power2Go9\thirdparty\jsoncpp\trunk\jsoncpp\build\vs71\debug\lib_json"
+				GenerateDebugInformation="true"
+				SubSystem="2"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -75,6 +81,12 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -305,6 +317,10 @@
 			</File>
 			<File
 				RelativePath=".\IErrorModel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\IModel.h"
 				>
 			</File>
 			<File

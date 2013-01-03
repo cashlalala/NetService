@@ -1,5 +1,7 @@
 #pragma once
 
+#include "IModel.h"
+
 #include <string>
 #include <list>
 
@@ -8,7 +10,7 @@ using std::string;
 
 namespace model
 {
-	struct IAlbum {
+	struct IAlbum : IModel{
 		virtual ~IAlbum() = 0;
 		string szId;
 		string szCoverPhotoId;
@@ -17,13 +19,16 @@ namespace model
 
 	inline IAlbum::~IAlbum(){};
 
-	struct IAlbumList {
+	struct IAlbumList: IModel {
 		virtual ~IAlbumList() = 0;
 		list<IAlbum*> listAlbum;
 		string szNext;
 		string szPrevious;
 	};
 
-	inline IAlbumList::~IAlbumList(){};
+	inline IAlbumList::~IAlbumList()
+	{
+		SAFE_DELETE_LIST(list<IAlbum*>,listAlbum)
+	};
 
 }

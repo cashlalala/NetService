@@ -21,6 +21,11 @@ using model::IVideoList;
 using model::IAlbumList;
 using model::IProfile;
 
+typedef enum {
+	FACEBOOK = 0,
+	FLICKR = 1
+} EnServiceType;
+
 struct ISocialNetworkService
 {	
 	virtual ~ISocialNetworkService() = 0;
@@ -62,6 +67,11 @@ struct ISocialNetworkService
 	*/
 	virtual int GetProfile(IProfile& iProfile, IError& iErr, string szId="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str()) = 0;
 
+	
+	/*
+	* ----------------Exported types----------------
+	*/
+	typedef ISocialNetworkService* (__cdecl *PFNGETINSTANCE)(EnServiceType);
 
 };
 
