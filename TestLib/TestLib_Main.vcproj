@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="TestLibMain"
+	Name="TestLib_Main"
 	ProjectGUID="{27F845DB-93B1-41A3-87B9-615AAEAD7E23}"
-	RootNamespace="TestMain"
+	RootNamespace="TestLib_Main"
 	>
 	<Platforms>
 		<Platform
@@ -38,7 +38,7 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\Release/TestMain.tlb"
+				TypeLibraryName=".\Release/TestLib_Main.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -51,7 +51,7 @@
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile=".\Release/TestMain.pch"
+				PrecompiledHeaderFile=".\Release/TestLib_Main.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
@@ -73,11 +73,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="odbc32.lib odbccp32.lib cppunit.lib"
-				OutputFile=".\Release/TestMain.exe"
+				OutputFile=".\Release/TestLib_Main.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="../../lib/"
-				ProgramDatabaseFile=".\Release/TestMain.pdb"
+				ProgramDatabaseFile=".\Release/TestLib_Main.pdb"
 				SubSystem="1"
 				TargetMachine="1"
 			/>
@@ -93,7 +93,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Release/TestMain.bsc"
+				OutputFile=".\Release/TestLib_Main.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -131,7 +131,7 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\Debug/TestMain.tlb"
+				TypeLibraryName=".\Debug/TestLib_Main.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -143,7 +143,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="true"
-				PrecompiledHeaderFile=".\Debug/TestMain.pch"
+				PrecompiledHeaderFile=".\Debug/TestLib_Main.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
@@ -172,7 +172,7 @@
 				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Debug/TestMain.pdb"
+				ProgramDatabaseFile=".\Debug/TestLib_Main.pdb"
 				SubSystem="1"
 				TargetMachine="1"
 			/>
@@ -188,7 +188,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Debug/TestMain.bsc"
+				OutputFile=".\Debug/TestLib_Main.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

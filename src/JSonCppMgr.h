@@ -41,7 +41,7 @@ namespace util
 		void TravFBVideo(Json::Value& jvRoot, IVideo* pIVideo);
 		void TravFBAlbumList(Json::Value& jvRoot, IAlbumList* pIAlbumList);
 		void TravFBAlbum(Json::Value& jvRoot, IAlbum* pIAlbum);
-		void TravFBProfile( Json::Value& jvRoot, IProfile* pIProfile );
+		int TravFBProfile( Json::Value& jvRoot, IProfile* pIProfile, IError& iError );
 
 	};
 }

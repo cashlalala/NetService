@@ -348,7 +348,9 @@ int util::CJsonCppMgr::ParseProfile( IProfile& iProfile, string szInput, IError&
 			nResult = TravFBErr(jvRoot,iError);
 			FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 
-			TravFBProfile(jvRoot,&iProfile);
+			nResult = TravFBProfile(jvRoot,&iProfile,iError);
+			FB_ERROR_RETURN(nResult,NS_E_DMGR_WRONG_DATA_SIZE)
+
 			nResult = S_OK;
 		}
 	}
@@ -358,13 +360,18 @@ int util::CJsonCppMgr::ParseProfile( IProfile& iProfile, string szInput, IError&
 	return nResult;
 }
 
-void util::CJsonCppMgr::TravFBProfile( Json::Value& jvRoot, IProfile* pIProfile )
+int util::CJsonCppMgr::TravFBProfile( Json::Value& jvRoot, IProfile* pIProfile, IError& iError )
 {
 	model::CFBProfile* pFbProfile = dynamic_cast<model::CFBProfile*>(pIProfile);
 	int nSize = jvRoot[FB_DATA].size();
-	assert(nSize==1);
-	pFbProfile->szBig = jvRoot[FB_DATA][0][FB_PROFILE_PIC].asString();
-	pFbProfile->szBig = jvRoot[FB_DATA][0][FB_PROFILE_PIC_BIG].asString();
-	pFbProfile->szSmall = jvRoot[FB_DATA][0][FB_PROFILE_PIC_SMALL].asString();
-	pFbProfile->szSquare = jvRoot[FB_DATA][0][FB_PROFILE_PIC_SQUARE].asString();
+	if (nSize==1)
+	{
+		pFbProfile->szBig = jvRoot[FB_DATA][0][FB_PROFILE_PIC].asString();
+		pFbProfile->szBig = jvRoot[FB_DATA][0][FB_PROFILE_PIC_BIG].asString();
+		pFbProfile->szSmall = jvRoot[FB_DATA][0][FB_PROFILE_PIC_SMALL].asString();
+		pFbProfile->szSquare = jvRoot[FB_DATA][0][FB_PROFILE_PIC_SQUARE].asString();
+		return S_OK;
+	}
+	else
+		return NS_E_DMGR_WRONG_DATA_SIZE;
 }
