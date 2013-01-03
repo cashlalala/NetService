@@ -8,11 +8,18 @@ using std::string;
 
 namespace model
 {
+	struct IProfile {
+		virtual ~IProfile() = 0;
+		string szThumNail;
+	};
+
+	inline IProfile::~IProfile(){};
+
 	struct IUser{
 		virtual ~IUser() = 0;
 		string szId;
 		string szFullName;
-		string szIcon;
+		IProfile* pProfile;
 	};
 
 	inline IUser::~IUser(){};

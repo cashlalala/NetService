@@ -133,6 +133,7 @@ void util::CJsonCppMgr::TravFBPhoto( Json::Value &jvRoot, IPhoto* pIPhoto )
 	pFbPhto->nWidth = jvRoot[FB_IMAGE_WIDTH].asInt();
 	pFbPhto->szLink = jvRoot[FB_PHOTO_LINK].asString();
 	pFbPhto->szSource = jvRoot[FB_IMAGE_SOURCE].asString();
+	pFbPhto->szThumbNail = jvRoot[FB_PHOTO_THUBMNAIL].asString();
 	int nImageNum = jvRoot[FB_PHOTO_IMAGES].size();
 	for (int j = 0; j<nImageNum;++j)
 	{
@@ -222,7 +223,8 @@ void util::CJsonCppMgr::TravFBFriendList( Json::Value jvRoot, IUserList* pUserLi
 		model::CFBUser* pFbUsr = new model::CFBUser(); 
 		pFbUsr->szId = jvRoot[FB_DATA][i][FB_ID].asString();
 		pFbUsr->szFullName = jvRoot[FB_DATA][i][FB_USER_NAME].asString();
-		pFbUsr->szIcon = jvRoot[FB_DATA][i][FB_USER_PICTURE][FB_USER_PICTURE_DATA][FB_USER_PICTURE_DATA_URL].asString();
+		pFbUsr->pProfile  = new CFBProfile();
+		pFbUsr->pProfile->szThumNail = jvRoot[FB_DATA][i][FB_USER_PICTURE][FB_USER_PICTURE_DATA][FB_USER_PICTURE_DATA_URL].asString();
 		pFbUserList->listUser.push_back(pFbUsr);
 	}
 	pFbUserList->szNext = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();

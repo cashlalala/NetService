@@ -8,6 +8,7 @@ using std::string;
 
 namespace model
 {
+
 	struct IImage{
 		virtual ~IImage() = 0;
 		int nHeight;

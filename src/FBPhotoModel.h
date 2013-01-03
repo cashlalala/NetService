@@ -11,6 +11,7 @@ using model::IPhotoList;
 
 namespace model
 {
+
 	class CFBImage : public IImage
 	{
 	public:
@@ -22,7 +23,7 @@ namespace model
 	class CFBPhoto : public IPhoto
 	{
 	public:
-		CFBPhoto(void) {};
+		CFBPhoto(void);
 		virtual ~CFBPhoto(void);
 	};
 
