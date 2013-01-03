@@ -10,6 +10,7 @@
 
 #include <typeinfo>
 #include <sstream>
+#include <assert.h>
 
 #include <json/json.h>
 
@@ -332,4 +333,38 @@ void util::CJsonCppMgr::TravFBAlbum( Json::Value& jvRoot, IAlbum* pIAlbum )
 	pFbAlbum->szId = jvRoot[FB_ID].asString();
 	pFbAlbum->szCoverPhotoId = jvRoot[FB_ALBUM_COVER_PHOTO].asString();
 	pFbAlbum->nCount = jvRoot[FB_ALBUM_PHOTO_COUNT].asInt();
+}
+
+int util::CJsonCppMgr::ParseProfile( IProfile& iProfile, string szInput, IError& iError )
+{
+	int nResult = E_FAIL;
+	Json::Reader jrReader;
+	Json::Value jvRoot;
+
+	if (jrReader.parse(szInput.c_str(),jvRoot))
+	{
+		if (typeid(iProfile)==typeid(CFBProfile))
+		{
+			nResult = TravFBErr(jvRoot,iError);
+			FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+
+			TravFBProfile(jvRoot,&iProfile);
+			nResult = S_OK;
+		}
+	}
+	else
+		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
+
+	return nResult;
+}
+
+void util::CJsonCppMgr::TravFBProfile( Json::Value& jvRoot, IProfile* pIProfile )
+{
+	model::CFBProfile* pFbProfile = dynamic_cast<model::CFBProfile*>(pIProfile);
+	int nSize = jvRoot[FB_DATA].size();
+	assert(nSize==1);
+	pFbProfile->szBig = jvRoot[FB_DATA][0][FB_PROFILE_PIC].asString();
+	pFbProfile->szBig = jvRoot[FB_DATA][0][FB_PROFILE_PIC_BIG].asString();
+	pFbProfile->szSmall = jvRoot[FB_DATA][0][FB_PROFILE_PIC_SMALL].asString();
+	pFbProfile->szSquare = jvRoot[FB_DATA][0][FB_PROFILE_PIC_SQUARE].asString();
 }

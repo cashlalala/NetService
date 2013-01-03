@@ -130,3 +130,12 @@ void CFacebookServiceTest::testGetAlbums()
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
 }
 
+void CFacebookServiceTest::testGetProfile()
+{
+	model::CFBProfile cFbVideoLst;
+	CFBError cFbErr;
+
+	int nResult = m_pFacebookService->GetProfile(cFbVideoLst,cFbErr);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
+}
+

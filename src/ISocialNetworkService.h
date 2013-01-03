@@ -19,8 +19,7 @@ using model::IError;
 using model::IUser;
 using model::IVideoList;
 using model::IAlbumList;
-
-
+using model::IProfile;
 
 struct ISocialNetworkService
 {	
@@ -30,12 +29,17 @@ struct ISocialNetworkService
 	virtual void SetConnectionInfo(IConnectionInfo& cConectInfoVO) = 0;
 
 	/*
+	* ----------------Mighty Functions----------------
+	*/
+	//virtual string ServiceApi(string szInput) = 0;
+
+	/*
 	* ----------------Logging Functions----------------
 	*/
 	virtual string GetLoginURL(string szAppId, string szScope = "read_stream,publish_stream,user_photos,friends_photos,user_videos,friends_videos,offline_access") = 0;
 
 	/*
-	* ----------------Data getter Functions----------------
+	* ----------------Media getter Functions----------------
 	*/
 	virtual int GetPhotos( IPhotoList& iPhotoLst, IError& iErr, string szId = "me", SysMaps::Str2Str& mapQryCriteria=SysMaps::Str2Str()) = 0;
 
@@ -52,6 +56,11 @@ struct ISocialNetworkService
 	virtual int GetFriends(IUserList& iUserLst, IError& iErr, string szUid="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str()) = 0;
 
 	virtual int GetAlbums(IAlbumList& iAlbumLst, IError& iErr, string szUid="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str()) = 0;
+
+	/*
+	* ----------------Profile Functions----------------
+	*/
+	virtual int GetProfile(IProfile& iProfile, IError& iErr, string szId="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str()) = 0;
 
 
 };

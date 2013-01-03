@@ -228,3 +228,40 @@ int CFacebookService::GetAlbums( IAlbumList& iAlbumLst, IError& iErr, string szU
 
 	return nResult;
 }
+
+int CFacebookService::GetProfile( IProfile& iProfile, IError& iErr, string szId/*="me"*/, SysMaps::Str2Str& mapQryCriteria /*= SysMaps::Str2Str()*/ )
+{
+	int nResult = E_FAIL;
+	HttpRespValObj cHttpResp;
+	do 
+	{
+		char lpszFql[500];
+		memset(lpszFql,0x0,500);
+		sprintf_s(lpszFql,"select pic, pic_big, pic_small, pic_square from profile where id = %s",
+			(szId=="me")?"me()":szId.c_str()
+			);
+
+		nResult = CallFQLQuery(cHttpResp, lpszFql);
+		EXCEPTION_HANDLING(nResult)
+
+		nResult = m_pIDataMgr->ParseProfile(iProfile,cHttpResp.szResp,iErr);
+	} while (false);
+
+	//Error Handling
+	ExceptionHandler(nResult, cHttpResp, iErr);
+
+	return nResult;
+}
+
+int CFacebookService::CallFQLQuery(HttpRespValObj& cHttpRespVO,  string szQry )
+{
+	//https://  graph.facebook.com   /  fql ? q = xxxx & access_token=xxx
+	string szComposedUrl = 
+		CFacebookService::S_STR_URL_PREFIX 
+		+	CMapHelper::GetValue(S_MAP_SERVER_INFO,systypes::ServerName)
+		+ "/fql?q=" + szQry
+		+ "&access_token=" + m_cConnectInfo.szAccessToken;
+
+	int nResult = OpenUrl(cHttpRespVO, szComposedUrl);
+	return nResult;
+}

@@ -35,3 +35,8 @@
 
 #define FB_ALBUM_COVER_PHOTO	"cover_photo"
 #define FB_ALBUM_PHOTO_COUNT "count"
+
+#define FB_PROFILE_PIC "pic"
+#define FB_PROFILE_PIC_BIG "pic_big"
+#define FB_PROFILE_PIC_SMALL "pic_small"
+#define FB_PROFILE_PIC_SQUARE "pic_square"
