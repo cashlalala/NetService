@@ -33,6 +33,8 @@ void CSocialServiceTest::setUp()
 
 	char* lpszTmp = new char[1025];
 	memset(lpszTmp,0x0,1025);
+	GetModuleFileNameA(NULL,lpszTmp,1024);
+	memset(lpszTmp,0x0,1025);
 	GetPrivateProfileStringA("FBService","access_token",NULL,lpszTmp,1024,"TestData\\TestConfig.ini");
 	cCnctInfoVO.szAccessToken = string(lpszTmp);
 
