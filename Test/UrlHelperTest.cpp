@@ -1,6 +1,7 @@
 #include "UrlHelperTest.h"
 #include "UrlHelper.h"
 
+using namespace util;
 
 CPPUNIT_TEST_SUITE_REGISTRATION( CUrlHelperTest );
 

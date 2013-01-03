@@ -8,15 +8,15 @@ using std::cout;
 using std::endl;
 using std::wstring;
 
-CUrlHelper::CUrlHelper(void)
+util::CUrlHelper::CUrlHelper(void)
 {
 }
 
-CUrlHelper::~CUrlHelper(void)
+util::CUrlHelper::~CUrlHelper(void)
 {
 }
 
-string CUrlHelper::EncodeUrl( const string& szUrl )
+string util::CUrlHelper::EncodeUrl( const string& szUrl )
 {
 	DWORD dwSize = (szUrl.length()*ESCAPE_URL_STRING_LEN)+1;
 	char* lpszUrl = new char[dwSize];

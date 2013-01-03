@@ -6,12 +6,16 @@
 
 using std::string;
 
-
-class CUrlHelper
+namespace util
 {
-public:
-	CUrlHelper(void);
-	~CUrlHelper(void);
+	class CUrlHelper
+	{
+	public:
+		CUrlHelper(void);
+		~CUrlHelper(void);
 
-	static string EncodeUrl(const string& szUrl);
-};
+		static string EncodeUrl(const string& szUrl);
+	};
+
+}
+

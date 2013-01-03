@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\..\Utility\Debug.h"
 #include "InternetConnectService.h"
+#include "UrlHelper.h"
 #include "NetServiceErr.h"
 #include <algorithm>
 #include <ctype.h>
@@ -79,7 +80,8 @@ int CInternetConnectService::OpenUrl( HttpRespValObj& cHttpRespVO, string szUrl,
 		pINetKernel->SetDownloadCache(TRUE);
 
 	//HttpResponseValueObject cHttpRespVO;
-	pINetKernel->OpenUrl(cHttpRespVO,szUrl.c_str(),szHttpMethod.c_str(), 
+	string szEncodedUrl = util::CUrlHelper::EncodeUrl(szUrl);
+	pINetKernel->OpenUrl(cHttpRespVO,szEncodedUrl.c_str(),szHttpMethod.c_str(), 
 										NULL,NULL,wszCookieFilePath.c_str());
 
 	list<INetKernel*>::iterator it = std::find(m_listINetKernel.begin(),m_listINetKernel.end(),pINetKernel);

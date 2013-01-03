@@ -75,7 +75,7 @@ string CFacebookService::GetLoginURL( string szAppId, string szScope /*= "read_s
 	szUrl += "&redirect_uri=http://www.facebook.com/connect/login_success.html" ;
 	szUrl += "&display=popup";
 	szUrl += "&scope=" + szScope;
-	return CUrlHelper::EncodeUrl(szUrl);
+	return util::CUrlHelper::EncodeUrl(szUrl);
 }
 
 int CFacebookService::GetPhotos(  IPhotoList& iPhotoLst, IError& iErr, string szId, SysMaps::Str2Str& mapQryCriteria)

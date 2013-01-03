@@ -63,7 +63,7 @@ void CFacebookServiceTest::testGetLoginUrl()
 {
 	string szLoginUrl = m_pFacebookService->GetLoginURL("215921841875602","read_stream ");
 	string szExpectLoginUrl = "https://www.facebook.com/dialog/oauth?client_id=215921841875602&redirect_uri=http://www.facebook.com/connect/login_success.html&response_type=token&display=popup&scope=read_stream%20";
-	string szRes = CUrlHelper::EncodeUrl(szExpectLoginUrl);
+	string szRes = util::CUrlHelper::EncodeUrl(szExpectLoginUrl);
 	cout << endl << szLoginUrl << endl;
 	cout << endl << szRes << endl;
 	CPPUNIT_ASSERT(szExpectLoginUrl==szRes);
