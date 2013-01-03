@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="NetService"
+	Name="NetService_DLL"
 	ProjectGUID="{FCFD0A55-3490-4A02-8278-ED7DC099ED34}"
-	RootNamespace="NetService"
+	RootNamespace="NetService_DLL"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -18,7 +18,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="2"
 			CharacterSet="1"
 			>
@@ -63,7 +63,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="json_vc71_libmtd.lib Advapi32.lib Wininet.lib Shlwapi.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="F:\Power2Go9\thirdparty\boost_1_52_0\libs;F:\Power2Go9\thirdparty\jsoncpp\trunk\jsoncpp\build\vs71\debug\lib_json"
+				AdditionalLibraryDirectories="F:\Power2Go9\thirdparty\jsoncpp\trunk\jsoncpp\build\vs71\debug\lib_json"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 			/>
