@@ -24,11 +24,14 @@ JSonCppMgrTest::JSonCppMgrTest(void)
 
 	//load photo list test data 
 	//queried by https://graph.facebook.com/me/photos?fields=link,images,height,width,id&limit=10&access_token=[yourtoken]
-	 szTestFile = "../Test/TestData/10photos.txt";
+	 szTestFile = "..\\TestData\\10photos.txt";
 	fStream.open(szTestFile.c_str(),std::ios::binary);
 	if (fStream.fail()){
 		szTestFile += " Read Fail!!!";
-		CPPUNIT_FAIL(szTestFile.c_str());
+		char a[100];
+		memset(a,0x0,100);
+		strcpy(a,szTestFile.c_str());
+		CPPUNIT_FAIL(a);
 		return;
 	}
 	fStream.seekg (0, std::ios::end);
@@ -44,7 +47,7 @@ JSonCppMgrTest::JSonCppMgrTest(void)
 	
 	//load photo test data
 	//queried by https://graph.facebook.com/4589117478468
-	szTestFile = "../Test/TestData/1photo.txt";
+	szTestFile = "..\\TestData\\1photo.txt";
 	fStream.open(szTestFile.c_str(),std::ios::binary);
 	if (fStream.fail()){
 		szTestFile += " Read Fail!!!\0";

@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="F:\Power2Go9\thirdparty\jsoncpp\trunk\jsoncpp\include"
+				AdditionalIncludeDirectories="..\..\..\thirdparty\jsoncpp\0.6.0\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;NETSERVICE_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,9 +61,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="json_vc71_libmtd.lib Advapi32.lib Wininet.lib Shlwapi.lib"
+				AdditionalDependencies="json_msvc80_mDd.lib Wininet.lib Shlwapi.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="F:\Power2Go9\thirdparty\jsoncpp\trunk\jsoncpp\build\vs71\debug\lib_json"
+				AdditionalLibraryDirectories="..\..\..\thirdparty\jsoncpp\0.6.0\libs"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 			/>

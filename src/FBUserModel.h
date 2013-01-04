@@ -23,7 +23,7 @@ namespace model
 	};
 
 	struct CFBUserList : public IUserList{
-		virtual ~CFBUserList();
+		virtual ~CFBUserList(){};
 	};
 }
 

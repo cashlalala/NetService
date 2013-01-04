@@ -9,7 +9,7 @@
 #include <cppunit/TestResultCollector.h>
 #include <cppunit/TestRunner.h>
 
-HMODULE g_hNerServ = LoadLibraryA("NetService.dll");
+HMODULE g_hNerServ = LoadLibraryA("NetService_DLL.dll");
 
 int _tmain(int argc, _TCHAR* argv[])
 {

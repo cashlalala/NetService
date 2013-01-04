@@ -35,11 +35,11 @@ void CSocialServiceTest::setUp()
 	memset(lpszTmp,0x0,1025);
 	GetModuleFileNameA(NULL,lpszTmp,1024);
 	memset(lpszTmp,0x0,1025);
-	GetPrivateProfileStringA("FBService","access_token",NULL,lpszTmp,1024,"TestData\\TestConfig.ini");
+	GetPrivateProfileStringA("FBService","access_token",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
 	cCnctInfoVO.szAccessToken = string(lpszTmp);
 
 	memset(lpszTmp,0x0,1025);
-	GetPrivateProfileStringA("FBService","uid",NULL,lpszTmp,1024,"TestData\\TestConfig.ini");
+	GetPrivateProfileStringA("FBService","uid",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
 	cCnctInfoVO.szUid = string(lpszTmp);
 
 	delete[] lpszTmp;

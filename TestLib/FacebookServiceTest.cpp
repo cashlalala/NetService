@@ -35,11 +35,11 @@ void CFacebookServiceTest::setUp()
 	CFBConnectionInfo cCnctInfoVO;
 	char* lpszTmp = new char[1025];
 	memset(lpszTmp,0x0,1025);
-	GetPrivateProfileStringA("FBService","access_token",NULL,lpszTmp,1024,"TestData\\TestConfig.ini");
+	GetPrivateProfileStringA("FBService","access_token",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
 	cCnctInfoVO.szAccessToken = string(lpszTmp);
 
 	memset(lpszTmp,0x0,1025);
-	GetPrivateProfileStringA("FBService","uid",NULL,lpszTmp,1024,"TestData\\TestConfig.ini");
+	GetPrivateProfileStringA("FBService","uid",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
 	cCnctInfoVO.szUid = string(lpszTmp);
 
 	delete[] lpszTmp;

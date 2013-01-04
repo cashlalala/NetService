@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="F:\Power2Go9\thirdparty\cppunit\trunk\cppunit\include;F:\Power2Go9\subsys\NetService\src"
+				AdditionalIncludeDirectories="..\..\..\thirdparty\cppunit\trunk\cppunit\include;..\src"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,10 +61,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="cppunitd_dll.lib"
+				AdditionalDependencies="cppunitd.lib"
 				Version=""
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="F:\Power2Go9\thirdparty\cppunit\trunk\cppunit\lib"
+				AdditionalLibraryDirectories="..\..\..\thirdparty\cppunit\1.12.1\lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -177,7 +177,7 @@
 			Name="TestData"
 			>
 			<File
-				RelativePath="..\TestLib\TestData\10photos.txt"
+				RelativePath="..\TestData\10photos.txt"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -185,13 +185,13 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)"
-						CommandLine="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)"
+						CommandLine="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)&#x0D;&#x0A;"
 						Outputs="$(InputFileName)"
 					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\TestLib\TestData\1photo.txt"
+				RelativePath="..\TestData\1photo.txt"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -199,13 +199,13 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)"
-						CommandLine="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)"
+						CommandLine="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)&#x0D;&#x0A;"
 						Outputs="$(InputFileName)"
 					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\TestLib\TestData\TestConfig.ini"
+				RelativePath="..\TestData\TestConfig.ini"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -213,7 +213,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)"
-						CommandLine="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)"
+						CommandLine="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)&#x0D;&#x0A;"
 						Outputs="$(InputFileName)"
 					/>
 				</FileConfiguration>

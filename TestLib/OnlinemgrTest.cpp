@@ -93,8 +93,8 @@ COnlinemgrTest::COnlinemgrTest() : m_onlineType(ONLINE_NONE), m_hOnlineMgr(NULL)
 	GetModuleFileName(NULL, szExePath, _MAX_PATH);
 	PathRemoveFileSpec(szExePath);
 	PathAddBackslash(szExePath);
-	_tcscat_s(szExePath, _T("OnlineMgr.dll"));
-	m_hOnlineMgr = LoadLibrary(szExePath);
+	_tcscat_s(szExePath, _T("..\\..\\OnlineMgr\\OnlineMgr.dll"));
+	m_hOnlineMgr = LoadLibrary(_T("..\\..\\OnlineMgr\\OnlineMgr.dll"));
 
 	pfnCreateOnlineUploader fnCreateFacebookUploader = (pfnCreateOnlineUploader) GetProcAddress(m_hOnlineMgr, "CreateFacebookUploader");
 }

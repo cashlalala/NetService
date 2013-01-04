@@ -137,7 +137,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="F:\Power2Go9\thirdparty\cppunit\trunk\cppunit\include;F:\Power2Go9\subsys\NetService\src;F:\Power2Go9\subsys\NetKernel\Src"
+				AdditionalIncludeDirectories="..\..\..\thirdparty\cppunit\1.12.1\include;..\src"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -165,10 +165,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="true"
-				AdditionalDependencies="cppunitd.lib Shlwapi.lib NetService.lib "
+				AdditionalDependencies="cppunitd.lib Shlwapi.lib NetService_Lib.lib"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="F:\Power2Go9\thirdparty\cppunit\trunk\cppunit\lib;F:\Power2Go9\subsys\NetService\Debug;F:\Power2Go9\thirdparty\jsoncpp\trunk\jsoncpp\build\vs71\debug\lib_json"
+				AdditionalLibraryDirectories="..\..\..\thirdparty\cppunit\1.12.1\lib;..\Debug"
 				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
@@ -275,7 +275,7 @@
 			Name="TestData"
 			>
 			<File
-				RelativePath=".\TestData\10photos.txt"
+				RelativePath="..\TestData\10photos.txt"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -289,7 +289,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\TestData\1photo.txt"
+				RelativePath="..\TestData\1photo.txt"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -303,7 +303,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\TestData\TestConfig.ini"
+				RelativePath="..\TestData\TestConfig.ini"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
