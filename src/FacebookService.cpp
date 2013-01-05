@@ -8,7 +8,7 @@
 #include "NetServiceErr.h"
 #include "UrlHelper.h"
 #include "FBUserModel.h"
-#include "..\..\Utility\Debug.h"
+//#include "..\..\Utility\Debug.h"
 
 #include <cassert>
 #include <sstream>
@@ -60,7 +60,7 @@ int CFacebookService::CallGraphAPI(HttpRespValObj& cHttpRespVO, string szId /*= 
 		+ CMapHelper::GetValue(S_MAP_CATEGORY,enCatogory)
 		+ (mapParams.empty()? "" :"?"+ CMapHelper::ToParamString(mapParams));
 
-	dprintf("Composed Url is [%s]",szComposedUrl.c_str());
+	//dprintf("Composed Url is [%s]",szComposedUrl.c_str());
 	
 	int nResult = OpenUrl(cHttpRespVO, szComposedUrl);
 

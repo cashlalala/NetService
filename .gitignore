@@ -6,3 +6,5 @@ Debug
 *.bak
 *.user
 *.user
+_Debug
+Release

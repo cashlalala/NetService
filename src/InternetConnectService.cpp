@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "..\..\Utility\Debug.h"
+//#include "..\..\Utility\Debug.h"
 #include "InternetConnectService.h"
 #include "UrlHelper.h"
 #include "NetServiceErr.h"
@@ -52,7 +52,7 @@ bool CInternetConnectService::DetectProxy(void)
 
 	if (cHttpRespVO.dwError || cHttpRespVO.dwStatusCode == 407)
 	{
-		dprintf("error link is \'%s\' , returned error is \'%d\'",m_szProxyDetectUrl, cHttpRespVO.dwError);
+		//dprintf("error link is \'%s\' , returned error is \'%d\'",m_szProxyDetectUrl, cHttpRespVO.dwError);
 		m_bIsProxyDetectSucc = false;
 	}
 	else

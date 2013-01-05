@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "UrlHelper.h"
+#include <windows.h>
 #include <WinInet.h>
 #include <iostream>
 
@@ -25,7 +26,7 @@ string util::CUrlHelper::EncodeUrl( const string& szUrl )
 	BOOL bResult = InternetCanonicalizeUrlA(szUrl.c_str(),lpszUrl, &dwSize, ICU_BROWSER_MODE);
 	if(!bResult)
 	{
-		DWORD dwErr = GetLastError();
+		unsigned int dwErr = GetLastError();
 		switch(dwErr)
 		{
 		case ERROR_BAD_PATHNAME:

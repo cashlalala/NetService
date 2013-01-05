@@ -16,13 +16,13 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\Release"
-			IntermediateDirectory=".\Release"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -45,7 +45,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="../../include"
+				AdditionalIncludeDirectories="..\..\..\thirdparty\cppunit\1.12.1\include;..\src"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -72,12 +72,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib cppunit.lib"
-				OutputFile=".\Release/TestLib_Main.exe"
+				AdditionalDependencies="odbc32.lib odbccp32.lib cppunit.lib NetService_Lib.lib"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="../../lib/"
-				ProgramDatabaseFile=".\Release/TestLib_Main.pdb"
+				AdditionalLibraryDirectories="..\..\..\thirdparty\cppunit\1.12.1\lib;..\Release"
+				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
 			/>
@@ -112,6 +111,101 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)\$(ProjectName)"
+			ConfigurationType="1"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TypeLibraryName=".\Debug/TestLib_Main.tlb"
+				HeaderFileName=""
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\..\..\thirdparty\cppunit\1.12.1\include;..\src"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				RuntimeTypeInfo="true"
+				PrecompiledHeaderFile=".\Debug/TestLib_Main.pch"
+				AssemblerListingLocation=""
+				ObjectFile="$(IntDir)\"
+				ProgramDataBaseFileName="$(IntDir)\vc80.pdb"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1036"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				LinkLibraryDependencies="true"
+				AdditionalDependencies="cppunitd.lib Shlwapi.lib NetService_Lib.lib"
+				LinkIncremental="2"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="..\..\..\thirdparty\cppunit\1.12.1\lib;..\Debug"
+				IgnoreAllDefaultLibraries="false"
+				IgnoreDefaultLibraryNames=""
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile=".\Debug/TestLib_Main.pdb"
+				SubSystem="1"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+				SuppressStartupBanner="true"
+				OutputFile=".\Debug/TestLib_Main.bsc"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="TestRelease|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -287,6 +381,16 @@
 						Outputs="$(InputFileName)"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="TestRelease|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy ..\TestData\$(InputFileName) $(OutDir)\$(ParentName)\$(InputFileName)"
+						CommandLine="copy ..\TestData\$(InputFileName) $(OutDir)\$(ParentName)\$(InputFileName)&#x0D;&#x0A;"
+						Outputs="$(InputFileName)"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\TestData\1photo.txt"
@@ -301,6 +405,16 @@
 						Outputs="$(InputFileName)"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="TestRelease|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy ..\TestData\$(InputFileName) $(OutDir)\$(ParentName)\$(InputFileName)"
+						CommandLine="copy ..\TestData\$(InputFileName) $(OutDir)\$(ParentName)\$(InputFileName)&#x0D;&#x0A;"
+						Outputs="$(InputFileName)"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\TestData\TestConfig.ini"
@@ -312,6 +426,16 @@
 						Name="VCCustomBuildTool"
 						Description="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)"
 						CommandLine="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)&#x0D;&#x0A;"
+						Outputs="$(InputFileName)"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="TestRelease|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy ..\TestData\$(InputFileName) $(OutDir)\$(ParentName)\$(InputFileName)"
+						CommandLine="copy ..\TestData\$(InputFileName) $(OutDir)\$(ParentName)\$(InputFileName)&#x0D;&#x0A;"
 						Outputs="$(InputFileName)"
 					/>
 				</FileConfiguration>
@@ -331,6 +455,15 @@
 			</FileConfiguration>
 			<FileConfiguration
 				Name="Debug|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					AdditionalIncludeDirectories=""
+					PreprocessorDefinitions=""
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="TestRelease|Win32"
 				>
 				<Tool
 					Name="VCCLCompilerTool"

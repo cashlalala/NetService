@@ -2,7 +2,7 @@
 #include <Shlwapi.h>
 #include <tchar.h>
 #include "NetKernelLoader.h"
-#include "..\..\Utility\Debug.h"
+//#include "..\..\Utility\Debug.h"
 
 NetKernelLoader::NetKernelLoader(void)
 {
@@ -40,7 +40,7 @@ BOOL NetKernelLoader::LoadDll( void )
 			(LPTSTR) &lpMsgBuf,
 			0,
 			NULL);
-		dprintf(L"[PyOnlineMgr] LoadDLL(): The OnlineMgr DLL object load failed! Error code: [%d], Msg:[%s]", dwErr, (LPTSTR)&lpMsgBuf);
+		//dprintf(L"[PyOnlineMgr] LoadDLL(): The OnlineMgr DLL object load failed! Error code: [%d], Msg:[%s]", dwErr, (LPTSTR)&lpMsgBuf);
 		LocalFree( lpMsgBuf );		
 		return FALSE;
 	}

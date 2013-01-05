@@ -119,6 +119,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="..\..\..\thirdparty\cppunit\trunk\cppunit\include;..\src"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -137,11 +138,92 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="cppunit.lib"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories="..\..\..\thirdparty\cppunit\1.12.1\lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="TestRelease|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="1"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\..\..\thirdparty\cppunit\trunk\cppunit\include;..\src"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="2"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="true"
+				DebugInformationFormat="4"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="cppunitd.lib"
+				Version=""
+				LinkIncremental="2"
+				AdditionalLibraryDirectories="..\..\..\thirdparty\cppunit\1.12.1\lib"
+				GenerateDebugInformation="true"
+				SubSystem="1"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -189,6 +271,16 @@
 						Outputs="$(InputFileName)"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="TestRelease|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)"
+						CommandLine="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)&#x0D;&#x0A;"
+						Outputs="$(InputFileName)"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\TestData\1photo.txt"
@@ -203,12 +295,32 @@
 						Outputs="$(InputFileName)"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="TestRelease|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)"
+						CommandLine="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)&#x0D;&#x0A;"
+						Outputs="$(InputFileName)"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\TestData\TestConfig.ini"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)"
+						CommandLine="copy $(InputPath) $(OutDir)\$(ParentName)\$(InputFileName)&#x0D;&#x0A;"
+						Outputs="$(InputFileName)"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="TestRelease|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
@@ -248,6 +360,14 @@
 			</FileConfiguration>
 			<FileConfiguration
 				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="TestRelease|Win32"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
