@@ -1,6 +1,7 @@
 #pragma once
 #include <FacebookService.h>
 #include <cppunit/extensions/HelperMacros.h>
+#include <string>
 
 class CFacebookServiceTest : public CPPUNIT_NS::TestFixture
 {
@@ -32,4 +33,5 @@ public:
 
 private:
 	CFacebookService* m_pFacebookService;
+	std::wstring s2ws(const std::string& s);
 };

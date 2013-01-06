@@ -19,30 +19,6 @@ HMODULE g_hNerServ = LoadLibraryA("NetService_DLL.dll");
 int _tmain(int argc, _TCHAR* argv[])
 {
 
-	//ISocialNetworkService::PFNGETINSTANCE pfn = (ISocialNetworkService::PFNGETINSTANCE) GetProcAddress(g_hNerServ,"GetInstance");
-	//ISocialNetworkService* pSocialService = pfn(FACEBOOK);
-	//CFBConnectionInfo cCnctInfoVO;
-
-	//char* lpszTmp = new char[1025];
-	//memset(lpszTmp,0x0,1025);
-	//GetModuleFileNameA(NULL,lpszTmp,1024);
-	//memset(lpszTmp,0x0,1025);
-	//GetPrivateProfileStringA("FBService","access_token",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
-	//cCnctInfoVO.szAccessToken = string(lpszTmp);
-
-	//memset(lpszTmp,0x0,1025);
-	//GetPrivateProfileStringA("FBService","uid",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
-	//cCnctInfoVO.szUid = string(lpszTmp);
-
-	//delete[] lpszTmp;
-
-	//pSocialService->SetConnectionInfo(cCnctInfoVO);
-
-	//model::CFBProfile cFbProfile;
-	//model::CFBError cFbErr;
-
-	//int nResult = pSocialService->GetProfile(cFbProfile,cFbErr);
-
 	// Create the event manager and test controller
 	CPPUNIT_NS::TextTestResult controller;
 

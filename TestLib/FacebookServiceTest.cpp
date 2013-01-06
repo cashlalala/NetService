@@ -37,10 +37,12 @@ void CFacebookServiceTest::setUp()
 	memset(lpszTmp,0x0,1025);
 	GetPrivateProfileStringA("FBService","access_token",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
 	cCnctInfoVO.szAccessToken = string(lpszTmp);
+	cout << cCnctInfoVO.szAccessToken  << endl;
 
 	memset(lpszTmp,0x0,1025);
 	GetPrivateProfileStringA("FBService","uid",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
 	cCnctInfoVO.szUid = string(lpszTmp);
+	cout << cCnctInfoVO.szUid  << endl;
 
 	delete[] lpszTmp;
 
@@ -73,13 +75,25 @@ void CFacebookServiceTest::testGetUserInfo()
 {
 	CFBUserList temp;
 	list<string> listUsr;
-	listUsr.push_back("me");
+	//listUsr.push_back("me");
 	listUsr.push_back("726727685");
 	listUsr.push_back("508872928");
 	
 	model::CFBError cfbErr ;
 	int nResult = m_pFacebookService->GetUsersInfo(temp,cfbErr,listUsr);
 	CPPUNIT_ASSERT_MESSAGE(cfbErr.szMsg.c_str(),nResult==S_OK);
+}
+
+std::wstring CFacebookServiceTest::s2ws(const std::string& s)
+{
+	int len;
+	int slength = (int)s.length() + 1;
+	len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0); 
+	wchar_t* buf = new wchar_t[len];
+	MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
+	std::wstring r(buf);
+	delete[] buf;
+	return r;
 }
 
 void CFacebookServiceTest::testGetPhotos()
