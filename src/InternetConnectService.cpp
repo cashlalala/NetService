@@ -94,10 +94,10 @@ int CInternetConnectService::OpenUrl( HttpRespValObj& cHttpRespVO, string szUrl,
 	{
 		nResult = NS_E_INET_CONNECT_FAIL_API_RETURN_ERROR;
 	}
-	else if (cHttpRespVO.dwStatusCode!=200)
-	{
-		nResult = NS_E_INET_CONNECT_FAIL_HTTP_STATUS_ERROR;
-	}
+	//else if (cHttpRespVO.dwStatusCode!=200)
+	//{
+	//	nResult = NS_E_INET_CONNECT_FAIL_HTTP_STATUS_ERROR;
+	//}
 	else
 	{
 		nResult = S_OK;
