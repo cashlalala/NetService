@@ -232,7 +232,7 @@ void util::CJsonCppMgr::TravFBFriendList( Json::Value jvRoot, IUserList* pUserLi
 	pFbUserList->szPrevious = jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
 }
 
-int util::CJsonCppMgr::ParseVideoList( IVideoList&iVideoList, string szInput, IError& iError )
+int util::CJsonCppMgr::ParseVideoList( IVideoList&iVideoList, string szInput, EnDataOwner enDataOwner, IError& iError )
 {
 	int nResult = E_FAIL;
 	Json::Reader jrReader;
@@ -240,13 +240,20 @@ int util::CJsonCppMgr::ParseVideoList( IVideoList&iVideoList, string szInput, IE
 
 	if (jrReader.parse(szInput.c_str(),jvRoot))
 	{
-		if (typeid(iVideoList)==typeid(CFBVideoList))
+		switch(enDataOwner)
 		{
-			nResult = TravFBErr(jvRoot,iError);
-			FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+		case Facebook:
+			{
+				nResult = TravFBErr(jvRoot,iError);
+				FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 
-			TravFBVideoList(jvRoot,&iVideoList);
-			nResult = S_OK;
+				TravFBVideoList(jvRoot,&iVideoList);
+				nResult = S_OK;
+				break;
+			}
+		default: 
+			nResult = NS_S_DMGR_NO_DATA_OWNER;
+			break;
 		}
 	}
 	else
@@ -289,7 +296,7 @@ void util::CJsonCppMgr::TravFBVideo( Json::Value& jvRoot, IVideo* pIVideo )
 		}
 }
 
-int util::CJsonCppMgr::ParseAlbumList( IAlbumList& iAlbumList, string szInput, IError& iError )
+int util::CJsonCppMgr::ParseAlbumList( IAlbumList& iAlbumList, string szInput, EnDataOwner enDataOwner, IError& iError )
 {
 	int nResult = E_FAIL;
 	Json::Reader jrReader;
@@ -297,13 +304,20 @@ int util::CJsonCppMgr::ParseAlbumList( IAlbumList& iAlbumList, string szInput, I
 
 	if (jrReader.parse(szInput.c_str(),jvRoot))
 	{
-		if (typeid(iAlbumList)==typeid(CFBAlbumList))
+		switch(enDataOwner)
 		{
-			nResult = TravFBErr(jvRoot,iError);
-			FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+		case Facebook:
+			{
+				nResult = TravFBErr(jvRoot,iError);
+				FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 
-			TravFBAlbumList(jvRoot,&iAlbumList);
-			nResult = S_OK;
+				TravFBAlbumList(jvRoot,&iAlbumList);
+				nResult = S_OK;
+				break;
+			}
+		default: 
+			nResult = NS_S_DMGR_NO_DATA_OWNER;
+			break;
 		}
 	}
 	else
@@ -335,7 +349,7 @@ void util::CJsonCppMgr::TravFBAlbum( Json::Value& jvRoot, IAlbum* pIAlbum )
 	pFbAlbum->nCount = jvRoot[FB_ALBUM_PHOTO_COUNT].asInt();
 }
 
-int util::CJsonCppMgr::ParseProfile( IProfile& iProfile, string szInput, IError& iError )
+int util::CJsonCppMgr::ParseProfile( IProfile& iProfile, string szInput, EnDataOwner enDataOwner, IError& iError )
 {
 	int nResult = E_FAIL;
 	Json::Reader jrReader;
@@ -343,15 +357,22 @@ int util::CJsonCppMgr::ParseProfile( IProfile& iProfile, string szInput, IError&
 
 	if (jrReader.parse(szInput.c_str(),jvRoot))
 	{
-		if (typeid(iProfile)==typeid(CFBProfile))
+		switch(enDataOwner)
 		{
-			nResult = TravFBErr(jvRoot,iError);
-			FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+		case Facebook:
+			{
+				nResult = TravFBErr(jvRoot,iError);
+				FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 
-			nResult = TravFBProfile(jvRoot,&iProfile,iError);
-			FB_ERROR_RETURN(nResult,NS_E_DMGR_WRONG_DATA_SIZE)
+				nResult = TravFBProfile(jvRoot,&iProfile,iError);
+				FB_ERROR_RETURN(nResult,NS_E_DMGR_WRONG_DATA_SIZE)
 
-			nResult = S_OK;
+				nResult = S_OK;
+				break;
+			}
+		default: 
+			nResult = NS_S_DMGR_NO_DATA_OWNER;
+			break;
 		}
 	}
 	else
@@ -366,7 +387,7 @@ int util::CJsonCppMgr::TravFBProfile( Json::Value& jvRoot, IProfile* pIProfile, 
 	int nSize = jvRoot[FB_DATA].size();
 	if (nSize==1)
 	{
-		pFbProfile->szBig = jvRoot[FB_DATA][0][FB_PROFILE_PIC].asString();
+		pFbProfile->szThumNail = jvRoot[FB_DATA][0][FB_PROFILE_PIC].asString();
 		pFbProfile->szBig = jvRoot[FB_DATA][0][FB_PROFILE_PIC_BIG].asString();
 		pFbProfile->szSmall = jvRoot[FB_DATA][0][FB_PROFILE_PIC_SMALL].asString();
 		pFbProfile->szSquare = jvRoot[FB_DATA][0][FB_PROFILE_PIC_SQUARE].asString();

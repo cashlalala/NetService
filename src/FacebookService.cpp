@@ -202,7 +202,7 @@ int CFacebookService::GetVideos( IVideoList& iVideoList, IError& iErr, string sz
 		nResult = CallGraphAPI(cHttpResp, szId, Video,mapQryCriteria);
 		EXCEPTION_HANDLING(nResult)
 
-		nResult = m_pIDataMgr->ParseVideoList(iVideoList,cHttpResp.szResp,iErr);
+		nResult = m_pIDataMgr->ParseVideoList(iVideoList,cHttpResp.szResp, util::Facebook, iErr);
 	} while (false);
 
 	//Error Handling
@@ -220,7 +220,7 @@ int CFacebookService::GetAlbums( IAlbumList& iAlbumLst, IError& iErr, string szU
 		nResult = CallGraphAPI(cHttpResp, szUid, Album,mapQryCriteria);
 		EXCEPTION_HANDLING(nResult)
 
-		nResult = m_pIDataMgr->ParseAlbumList(iAlbumLst,cHttpResp.szResp,iErr);
+		nResult = m_pIDataMgr->ParseAlbumList(iAlbumLst,cHttpResp.szResp,util::Facebook,iErr);
 	} while (false);
 
 	//Error Handling
@@ -244,7 +244,7 @@ int CFacebookService::GetProfile( IProfile& iProfile, IError& iErr, string szId/
 		nResult = CallFQLQuery(cHttpResp, lpszFql);
 		EXCEPTION_HANDLING(nResult)
 
-		nResult = m_pIDataMgr->ParseProfile(iProfile,cHttpResp.szResp,iErr);
+		nResult = m_pIDataMgr->ParseProfile(iProfile,cHttpResp.szResp, util::Facebook,iErr);
 	} while (false);
 
 	//Error Handling

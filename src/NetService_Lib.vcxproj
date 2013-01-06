@@ -116,7 +116,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Utility\Debug.cpp" />
     <ClCompile Include="InternetConnectService.cpp" />
     <ClCompile Include="NetKernelLoader.cpp" />
     <ClCompile Include="NetService.cpp" />
@@ -139,7 +138,6 @@
     <ClCompile Include="FBVideoModel.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Utility\Debug.h" />
     <ClInclude Include="..\..\NetKernel\Src\INetKernel.h" />
     <ClInclude Include="InternetConnectService.h" />
     <ClInclude Include="NetKernelLoader.h" />

@@ -23,11 +23,11 @@ namespace util
 
 		virtual int ParseFriendList(IUserList& iUserList, string szInput, EnDataOwner enDataOwner, IError& iError  ) ;
 
-		virtual int ParseVideoList( IVideoList&iVideoList, string szInput, IError& iError) ;
+		virtual int ParseVideoList( IVideoList&iVideoList, string szInput, EnDataOwner enDataOwner, IError& iError) ;
 
-		virtual int ParseAlbumList(IAlbumList& iAlbumList, string szInput, IError& iError) ;
+		virtual int ParseAlbumList(IAlbumList& iAlbumList, string szInput, EnDataOwner enDataOwner, IError& iError) ;
 
-		virtual int ParseProfile(IProfile& iProfile, string szInput, IError& iError);
+		virtual int ParseProfile(IProfile& iProfile, string szInput, EnDataOwner enDataOwner, IError& iError);
 
 	private:
 		//To keep the physical linkage isolated, don't specify the explicit type of the interface among the parameters.
