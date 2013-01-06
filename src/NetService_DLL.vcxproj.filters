@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="core">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{426e8701-08b6-4366-9422-f379403489d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SocialNetwork">
+      <UniqueIdentifier>{e1903a1f-3067-42e9-84fb-5fcb703702a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model">
+      <UniqueIdentifier>{4be9c3dd-cb5e-48b0-90cf-22976d806364}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model\Facebook">
+      <UniqueIdentifier>{2de9a42c-eecf-4365-b342-5756eae086da}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\NetKernel\Src\INetKernel.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="InternetConnectService.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="NetKernelLoader.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="NetService.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="NetServiceErr.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="DataMgrFactory.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="IDataManager.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="JSonCppMgr.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="MapHelper.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="UrlHelper.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseService.h">
+      <Filter>SocialNetwork</Filter>
+    </ClInclude>
+    <ClInclude Include="FacebookService.h">
+      <Filter>SocialNetwork</Filter>
+    </ClInclude>
+    <ClInclude Include="IConnectionInfo.h">
+      <Filter>SocialNetwork</Filter>
+    </ClInclude>
+    <ClInclude Include="ISocialNetworkService.h">
+      <Filter>SocialNetwork</Filter>
+    </ClInclude>
+    <ClInclude Include="SocialServiceFactory.h">
+      <Filter>SocialNetwork</Filter>
+    </ClInclude>
+    <ClInclude Include="SysTypes.h">
+      <Filter>SocialNetwork</Filter>
+    </ClInclude>
+    <ClInclude Include="IAlbumModel.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="IErrorModel.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="IModel.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="IPhotoModel.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="IUserModel.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="IVideoModel.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="FBAlbumModel.h">
+      <Filter>Model\Facebook</Filter>
+    </ClInclude>
+    <ClInclude Include="FBErrorModel.h">
+      <Filter>Model\Facebook</Filter>
+    </ClInclude>
+    <ClInclude Include="FBFields.h">
+      <Filter>Model\Facebook</Filter>
+    </ClInclude>
+    <ClInclude Include="FBPhotoModel.h">
+      <Filter>Model\Facebook</Filter>
+    </ClInclude>
+    <ClInclude Include="FBUserModel.h">
+      <Filter>Model\Facebook</Filter>
+    </ClInclude>
+    <ClInclude Include="FBVideoModel.h">
+      <Filter>Model\Facebook</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="InternetConnectService.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="NetKernelLoader.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="NetService.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="DataMgrFactory.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="JSonCppMgr.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="MapHelper.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="UrlHelper.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseService.cpp">
+      <Filter>SocialNetwork</Filter>
+    </ClCompile>
+    <ClCompile Include="FacebookService.cpp">
+      <Filter>SocialNetwork</Filter>
+    </ClCompile>
+    <ClCompile Include="SocialServiceFactory.cpp">
+      <Filter>SocialNetwork</Filter>
+    </ClCompile>
+    <ClCompile Include="FBAlbumModel.cpp">
+      <Filter>Model\Facebook</Filter>
+    </ClCompile>
+    <ClCompile Include="FBErrorModel.cpp">
+      <Filter>Model\Facebook</Filter>
+    </ClCompile>
+    <ClCompile Include="FBPhotoModel.cpp">
+      <Filter>Model\Facebook</Filter>
+    </ClCompile>
+    <ClCompile Include="FBUserMdoel.cpp">
+      <Filter>Model\Facebook</Filter>
+    </ClCompile>
+    <ClCompile Include="FBVideoModel.cpp">
+      <Filter>Model\Facebook</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+</Project>

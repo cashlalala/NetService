@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Tests">
+      <UniqueIdentifier>{ee2a13f4-948b-4705-a2f1-d3c17ddbb438}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="references">
+      <UniqueIdentifier>{1ed252f5-6ada-49cb-8369-bd7f10b69c07}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FacebookServiceTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="InternetConnectTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="JSonCppMgrTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="OnlinemgrTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="SocialFacotryTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="UrlHelperTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="SimplePlugIn.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FacebookServiceTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="InternetConnectTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="JSonCppMgrTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="OnlinemgrTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="SocialFacotryTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="UrlHelperTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="IOnlineMgr.h">
+      <Filter>references</Filter>
+    </ClInclude>
+    <ClInclude Include="UploadProgress.h">
+      <Filter>references</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

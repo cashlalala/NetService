@@ -8,3 +8,6 @@ Debug
 *.user
 _Debug
 Release
+ipch
+*.opensdf
+*.sdf

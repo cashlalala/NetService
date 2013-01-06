@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Tests">
+      <UniqueIdentifier>{b18c055a-a7ba-4a70-97df-686ed43b2c57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="references">
+      <UniqueIdentifier>{f8ca2c5d-ec14-4913-8cac-7165676beb9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TestData">
+      <UniqueIdentifier>{9bfddbd9-6b48-413f-9b90-d73e627120c6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FacebookServiceTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="InternetConnectTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="JSonCppMgrTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="OnlinemgrTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="SocialFacotryTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="UrlHelperTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FacebookServiceTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="InternetConnectTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="JSonCppMgrTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="OnlinemgrTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="SocialFacotryTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="UrlHelperTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="IOnlineMgr.h">
+      <Filter>references</Filter>
+    </ClInclude>
+    <ClInclude Include="UploadProgress.h">
+      <Filter>references</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Makefile.am" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\TestData\10photos.txt">
+      <Filter>TestData</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\TestData\1photo.txt">
+      <Filter>TestData</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\TestData\TestConfig.ini">
+      <Filter>TestData</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
