@@ -4,6 +4,10 @@
 #include "NetService.h"
 #include "SocialServiceFactory.h"
 
+#include <log4cxx/xml/domconfigurator.h>
+
+using namespace log4cxx::xml;
+
 #ifdef _MANAGED
 #pragma managed(push, off)
 #endif
@@ -16,6 +20,8 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
+		DOMConfigurator::configure("Log4cxxConfig.xml");
+		break;
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:
 	case DLL_PROCESS_DETACH:

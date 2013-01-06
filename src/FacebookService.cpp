@@ -9,15 +9,24 @@
 #include "UrlHelper.h"
 #include "FBUserModel.h"
 //#include "..\..\Utility\Debug.h"
+#include <log4cxx/logger.h>
+#include <log4cxx/xml/domconfigurator.h>
+
+using namespace log4cxx::xml;
 
 #include <cassert>
 #include <sstream>
+
+using namespace log4cxx;
+using namespace log4cxx::helpers;
 
 using systypes::EnCategory;
 using systypes::EnHttpMethod;
 using util::CMapHelper;
 using std::stringstream;
 using namespace model;
+
+LoggerPtr pLogger(Logger::getLogger( "CFacebookService"));
 
 const string CFacebookService::S_STR_URL_PREFIX = "https://";
 
@@ -32,6 +41,7 @@ CFacebookService::CFacebookService(void):
 m_pIDataMgr(NULL)
 {
 	m_pIDataMgr = util::CDataMgrFactory::GetInstance(util::JsonCpp);
+	DOMConfigurator::configure("Log4cxxConfig.xml");
 }
 
 CFacebookService::~CFacebookService(void)
@@ -61,8 +71,11 @@ int CFacebookService::CallGraphAPI(HttpRespValObj& cHttpRespVO, string szId /*= 
 		+ (mapParams.empty()? "" :"?"+ CMapHelper::ToParamString(mapParams));
 
 	//dprintf("Composed Url is [%s]",szComposedUrl.c_str());
+	pLogger->debug(szComposedUrl);
 	
 	int nResult = OpenUrl(cHttpRespVO, szComposedUrl);
+
+	pLogger->debug(cHttpRespVO.szResp);
 
 	return nResult;
 
