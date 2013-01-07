@@ -72,6 +72,7 @@ struct ISocialNetworkService
 	* ----------------Exported types----------------
 	*/
 	typedef ISocialNetworkService* (__cdecl *PFNGETINSTANCE)(EnServiceType);
+	typedef void (__cdecl *PFNDELINSTANCE)(ISocialNetworkService*);
 
 };
 

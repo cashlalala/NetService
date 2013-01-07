@@ -30,6 +30,11 @@ NETSERVCIE_EXTERNC NETSERVICE_API ISocialNetworkService* __cdecl GetInstance(EnS
 	return CSocialServiceFactory::GetInstance(enServTyp);
 }
 
+NETSERVCIE_EXTERNC NETSERVICE_API void __cdecl DelInstance(ISocialNetworkService* pISns)
+{
+	CSocialServiceFactory::DeleteInstance(pISns);
+}
+
 
 #ifdef _MANAGED
 #pragma managed(pop)
