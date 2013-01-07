@@ -3,10 +3,7 @@
 #include "stdafx.h"
 #include "NetService.h"
 #include "SocialServiceFactory.h"
-
-#include <log4cxx/xml/domconfigurator.h>
-
-using namespace log4cxx::xml;
+#include "LoggerMgr.h"
 
 #ifdef _MANAGED
 #pragma managed(push, off)
@@ -20,11 +17,12 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
-		DOMConfigurator::configure("Log4cxxConfig.xml");
+		util::CLoggerMgr::Config(util::Log4Cxx);
 		break;
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:
 	case DLL_PROCESS_DETACH:
+		util::CLoggerMgr::CleanLoggers();
 		break;
 	}
     return TRUE;

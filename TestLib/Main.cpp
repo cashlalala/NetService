@@ -5,11 +5,14 @@
 #include <cppunit/TestResultCollector.h>
 #include <cppunit/TestRunner.h>
 //#include <cppunit/TextTestRunner.h>
-
+#include <LoggerMgr.h>
+#include <cstdlib>
 
 int
 main( int argc, char* argv[] )
 {
+	util::CLoggerMgr::Config(util::Log4Cxx);
+
   // Create the event manager and test controller
   CPPUNIT_NS::TextTestResult controller;
 
@@ -31,6 +34,9 @@ main( int argc, char* argv[] )
   CPPUNIT_NS::CompilerOutputter outputter( &result, CPPUNIT_NS::stdCOut() );
   outputter.write(); 
 
+  util::CLoggerMgr::CleanLoggers();
+
+  system("pause");
   return result.wasSuccessful() ? 0 : 1;
 }
 

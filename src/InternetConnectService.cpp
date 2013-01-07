@@ -1,10 +1,14 @@
 #include "stdafx.h"
-//#include "..\..\Utility\Debug.h"
 #include "InternetConnectService.h"
 #include "UrlHelper.h"
 #include "NetServiceErr.h"
+#include "LoggerMgr.h"
+
 #include <algorithm>
 #include <ctype.h>
+#include <typeinfo>
+
+//util::ILogger* CInternetConnectService::S_LOGGER = util::CLoggerMgr::GetLogger(util::Log4Cxx,typeid(CInternetConnectService).name());
 
 CInternetConnectService::CInternetConnectService(void)
 : m_bIsProxyDetectSucc(false),
@@ -13,7 +17,7 @@ m_cNetKernelLoader()
 	m_szServerAddr = "";
 	m_szApName = "";
 	m_szProxyDetectUrl = "";
-	m_listINetKernel.clear();
+	S_LOGGER = util::CLoggerMgr::GetLogger(util::Log4Cxx,typeid(CInternetConnectService).name());
 }
 
 CInternetConnectService::~CInternetConnectService(void)
@@ -65,6 +69,8 @@ bool CInternetConnectService::DetectProxy(void)
 
 int CInternetConnectService::OpenUrl( HttpRespValObj& cHttpRespVO, string szUrl, string szHttpMethod /*= HTTP_METHOD_GET*/, wstring wszCookieFilePath /*= L""*/, void* pfnCallBack /*= NULL*/ )
 {
+	S_LOGGER->Debug("Input URL: [ " + szUrl +" ]");
+
 	int nResult = E_FAIL;
 	INetKernel* pINetKernel = m_cNetKernelLoader.GetInstance();
 	m_listINetKernel.push_back(pINetKernel);
@@ -93,6 +99,11 @@ int CInternetConnectService::OpenUrl( HttpRespValObj& cHttpRespVO, string szUrl,
 	if (cHttpRespVO.dwError!=0)
 	{
 		nResult = NS_E_INET_CONNECT_FAIL_API_RETURN_ERROR;
+		char* lpsz = (char*) calloc(100,sizeof(char));
+		sprintf_s(lpsz,99,"Error Code[%d] : NS_E_INET_CONNECT_FAIL_API_RETURN_ERROR",nResult);
+		S_LOGGER->Error(lpsz);
+		free(lpsz);
+		lpsz = NULL;
 	}
 	//else if (cHttpRespVO.dwStatusCode!=200)
 	//{
@@ -100,6 +111,7 @@ int CInternetConnectService::OpenUrl( HttpRespValObj& cHttpRespVO, string szUrl,
 	//}
 	else
 	{
+		S_LOGGER->Debug("Response: [ " + cHttpRespVO.szResp +" ]");
 		nResult = S_OK;
 	}
 
