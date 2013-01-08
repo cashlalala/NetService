@@ -4,7 +4,7 @@ struct IConnectionInfo
 {
 	virtual ~IConnectionInfo() =0 ;
 	string szApiKey;//must
-	string szAccessToken; //must
+	string szAppSecret; //must
 	string szUid; //option
 };
 
@@ -13,11 +13,15 @@ inline IConnectionInfo::~IConnectionInfo(){};
 struct CFBConnectionInfo : IConnectionInfo
 {
 	virtual ~CFBConnectionInfo() {};
-	string szClientAppId;
+	string szAccessToken; //must
+	string szNamespace;
+	string szSanboxMode;
 };
 
 struct CFlickrConnectionInfo : IConnectionInfo
 {
 	virtual ~CFlickrConnectionInfo() {};
-	string szSharedSecret;
+	string szApiSig;
+	string szFrob;
+	string szAuthToken; //must
 };

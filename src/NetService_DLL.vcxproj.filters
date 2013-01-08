@@ -16,6 +16,9 @@
     <Filter Include="Model\Facebook">
       <UniqueIdentifier>{2de9a42c-eecf-4365-b342-5756eae086da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SocialNetwork\Interface">
+      <UniqueIdentifier>{8781736c-acc3-4dac-89b1-195e9822eafd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\NetKernel\Src\INetKernel.h">
@@ -55,12 +58,6 @@
       <Filter>SocialNetwork</Filter>
     </ClInclude>
     <ClInclude Include="FacebookService.h">
-      <Filter>SocialNetwork</Filter>
-    </ClInclude>
-    <ClInclude Include="IConnectionInfo.h">
-      <Filter>SocialNetwork</Filter>
-    </ClInclude>
-    <ClInclude Include="ISocialNetworkService.h">
       <Filter>SocialNetwork</Filter>
     </ClInclude>
     <ClInclude Include="SocialServiceFactory.h">
@@ -113,6 +110,12 @@
     </ClInclude>
     <ClInclude Include="LoggerMgr.h">
       <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="IConnectionInfo.h">
+      <Filter>SocialNetwork\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ISocialNetworkService.h">
+      <Filter>SocialNetwork\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
