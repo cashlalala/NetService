@@ -20,11 +20,12 @@ IDataManager* CDataMgrFactory::GetInstance( EnDataMgr enDataMgr /*= BoostJson*/ 
 		case JsonCpp:
 			pIDataMgr= new CJsonCppMgr();
 			break;
+		default:
+			break;
 		}
 		S_MAP_DATAMGR[enDataMgr] = pIDataMgr;
 	}
 	return pIDataMgr;
-	return  new CJsonCppMgr();
 }
 
 int util::CDataMgrFactory::DeleteInstance( IDataManager* pIDataMgr )

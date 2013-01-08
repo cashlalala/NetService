@@ -27,18 +27,20 @@ void util::CLoggerMgr::Config( EnLogger enLogger)
 util::ILogger* util::CLoggerMgr::GetLogger( EnLogger enLogger, const std::string& szName )
 {
 	ILogger* pILogger = CLoggerMgr::S_MAP_LOGGER[szName];
-	switch (enLogger)
+	if (!pILogger)
 	{
-	case Log4Cxx:
+		switch (enLogger)
 		{
-			if (!pILogger)
+		case Log4Cxx:
+			{
 				pILogger =  new util::CCxxLogger(szName); // this line should be made to thread-safe
+				break;
+			}
+		default:
 			break;
 		}
-	default:
-		break;
+		CLoggerMgr::S_MAP_LOGGER[szName] = pILogger;
 	}
-	CLoggerMgr::S_MAP_LOGGER[szName] = pILogger;
 	return pILogger;
 }
 

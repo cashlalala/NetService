@@ -15,19 +15,47 @@ util::CCxxLogger::~CCxxLogger()
 {
 }
 
-void util::CCxxLogger::Debug( const string& szMsg )
+void util::CCxxLogger::Debug( const char* lpszFormat, ... )
 {
-	m_pCurrentLogger->debug(szMsg);
+	va_list args;
+	va_start(args, lpszFormat);
+	char* lpszMsg = MsgFormat(lpszFormat,args);
+	m_pCurrentLogger->debug(lpszMsg);
+	va_end(args);
+	free(lpszMsg);
 }
 
-void util::CCxxLogger::Info( const string& szMsg )
+void util::CCxxLogger::Info( const char* lpszFormat, ... )
 {
-	m_pCurrentLogger->info(szMsg);
+	va_list args;
+	va_start(args, lpszFormat);
+	char* lpszMsg = MsgFormat(lpszFormat,args);
+	m_pCurrentLogger->info(lpszMsg);
+	va_end(args);
+	free(lpszMsg);
 }
 
-void util::CCxxLogger::Error( const string& szMsg )
+void util::CCxxLogger::Error( const char* lpszFormat, ... )
 {
-	m_pCurrentLogger->error(szMsg);
+	va_list args;
+	va_start(args, lpszFormat);
+	char* lpszMsg = MsgFormat(lpszFormat,args);
+	m_pCurrentLogger->error(lpszMsg);
+	va_end(args);
+	free(lpszMsg);
+}
+
+char* util::CCxxLogger::MsgFormat(const char* lpszFormat, va_list args)
+{
+	int nLen = _vscprintf( lpszFormat, args ) + 1;
+	char* lpszBuffer = (char*) calloc(nLen,sizeof(char));
+	if (!lpszBuffer) 
+	{
+		m_pCurrentLogger->trace("Out of Memory!!");
+		return NULL;
+	}
+	vsprintf_s(lpszBuffer,nLen,lpszFormat,args);
+	return lpszBuffer;
 }
 
 

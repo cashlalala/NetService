@@ -18,12 +18,13 @@ namespace util
 
 		virtual ~CCxxLogger();
 
-		virtual void Debug( const string& szMsg );
+		virtual void Debug( const char* lpszFormat, ... );
 
-		virtual void Info( const string& szMsg );
+		virtual void Info( const char* lpszFormat, ... );
 
-		virtual void Error(const string& szMsg) ;
+		virtual void Error(const char* lpszFormat, ...) ;
 	private:
+		char* MsgFormat(const char* lpszFormat, va_list args);
 		LoggerPtr m_pCurrentLogger;
 	};
 }

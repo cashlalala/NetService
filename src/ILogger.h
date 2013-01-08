@@ -15,11 +15,11 @@ namespace util
 
 		virtual ~ILogger(){} ;
 
-		virtual void Debug(const string& szMsg) = 0;
+		virtual void Debug(const char* lpszFormat, ...) = 0;
 
-		virtual void Info(const string& szMsg) = 0;
+		virtual void Info(const char* lpszFormat, ...) = 0;
 
-		virtual void Error(const string& szMsg) = 0;
+		virtual void Error(const char* lpszFormat, ...) = 0;
 	};
 }
 

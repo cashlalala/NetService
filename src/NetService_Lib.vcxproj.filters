@@ -175,8 +175,6 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\TestData\Log4cxxConfig.xml">
-      <Filter>Util</Filter>
-    </CustomBuild>
+    <CustomBuild Include="..\TestData\Log4cxxConfig.xml" />
   </ItemGroup>
 </Project>

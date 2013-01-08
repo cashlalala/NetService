@@ -11,3 +11,5 @@ Release
 ipch
 *.opensdf
 *.sdf
+
+*.log

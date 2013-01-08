@@ -69,7 +69,7 @@ bool CInternetConnectService::DetectProxy(void)
 
 int CInternetConnectService::OpenUrl( HttpRespValObj& cHttpRespVO, string szUrl, string szHttpMethod /*= HTTP_METHOD_GET*/, wstring wszCookieFilePath /*= L""*/, void* pfnCallBack /*= NULL*/ )
 {
-	S_LOGGER->Debug("Input URL: [ " + szUrl +" ]");
+	S_LOGGER->Debug("Input URL: [ %s ]", szUrl.c_str());
 
 	int nResult = E_FAIL;
 	INetKernel* pINetKernel = m_cNetKernelLoader.GetInstance();
@@ -99,11 +99,7 @@ int CInternetConnectService::OpenUrl( HttpRespValObj& cHttpRespVO, string szUrl,
 	if (cHttpRespVO.dwError!=0)
 	{
 		nResult = NS_E_INET_CONNECT_FAIL_API_RETURN_ERROR;
-		char* lpsz = (char*) calloc(100,sizeof(char));
-		sprintf_s(lpsz,99,"Error Code[%d] : NS_E_INET_CONNECT_FAIL_API_RETURN_ERROR",nResult);
-		S_LOGGER->Error(lpsz);
-		free(lpsz);
-		lpsz = NULL;
+		S_LOGGER->Error("Error Code[%d] : NS_E_INET_CONNECT_FAIL_API_RETURN_ERROR",nResult);
 	}
 	//else if (cHttpRespVO.dwStatusCode!=200)
 	//{
@@ -111,7 +107,7 @@ int CInternetConnectService::OpenUrl( HttpRespValObj& cHttpRespVO, string szUrl,
 	//}
 	else
 	{
-		S_LOGGER->Debug("Response: [ " + cHttpRespVO.szResp +" ]");
+		S_LOGGER->Debug("Response: [ %s ]", cHttpRespVO.szResp.c_str());
 		nResult = S_OK;
 	}
 
