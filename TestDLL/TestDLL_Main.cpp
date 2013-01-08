@@ -14,7 +14,7 @@
 #include <FBUserModel.h>
 #include <FBErrorModel.h>
 
-#include <iostream>
+#include <cstdlib>
 
 HMODULE g_hNerServ = LoadLibraryA("NetService_DLL.dll");
 
@@ -44,9 +44,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	FreeLibrary(g_hNerServ);
 
-	int n ;
-	std::cin >> n;
-
+	system("pause");
 	return result.wasSuccessful() ? 0 : 1;
 }
 

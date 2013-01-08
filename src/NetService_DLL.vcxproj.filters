@@ -105,6 +105,15 @@
     <ClInclude Include="FBVideoModel.h">
       <Filter>Model\Facebook</Filter>
     </ClInclude>
+    <ClInclude Include="ILogger.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Log4CxxLogger.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggerMgr.h">
+      <Filter>Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InternetConnectService.cpp">
@@ -155,8 +164,17 @@
     <ClCompile Include="FBVideoModel.cpp">
       <Filter>Model\Facebook</Filter>
     </ClCompile>
+    <ClCompile Include="Log4CxxLogger.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="LoggerMgr.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Log4cxxConfig.xml" />
   </ItemGroup>
 </Project>
