@@ -26,16 +26,6 @@ SysMaps::EnCat2Str CMapHelper::CreateCategoryMap()
 	return mapEnCat;
 }
 
-SysMaps::EnSvrInfo2Str CMapHelper::CreateServerInfoMap()
-{
-	SysMaps::EnSvrInfo2Str mapEnSvrInfo;
-	mapEnSvrInfo[ServerName] = "graph.facebook.com";
-	mapEnSvrInfo[ServerUrI] = " ";
-	mapEnSvrInfo[Port] = "80";
-	mapEnSvrInfo[SecurityPort] = "443";
-	return mapEnSvrInfo;
-}
-
 SysMaps::Str2Str CMapHelper::CreateStringMap()
 {
 	SysMaps::Str2Str mapStr;
@@ -48,11 +38,6 @@ string CMapHelper::GetValue( const SysMaps::HttpMethod2Str& map, EnHttpMethod en
 	return (cIt != map.end())? cIt->second : "";
 }
 
-string CMapHelper::GetValue( const SysMaps::EnSvrInfo2Str& map, EnServerInfo enSvrInfo )
-{
-	SysMaps::EnSvrInfo2Str::const_iterator cIt = map.find(enSvrInfo);
-	return (cIt != map.end())? cIt->second : "";
-}
 
 string CMapHelper::GetValue( const SysMaps::EnCat2Str& map, EnCategory enCat )
 {

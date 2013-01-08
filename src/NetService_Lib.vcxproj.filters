@@ -16,6 +16,9 @@
     <Filter Include="Model\Facebook">
       <UniqueIdentifier>{7768b7fb-bfb9-4aad-b622-38460024b00c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SocialNetwork\interface">
+      <UniqueIdentifier>{607dc0fa-b32c-49bc-a2b6-bbb4e4d605a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InternetConnectService.cpp">
@@ -72,6 +75,9 @@
     <ClCompile Include="LoggerMgr.cpp">
       <Filter>Util</Filter>
     </ClCompile>
+    <ClCompile Include="FlickrService.cpp">
+      <Filter>SocialNetwork</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\NetKernel\Src\INetKernel.h">
@@ -111,12 +117,6 @@
       <Filter>SocialNetwork</Filter>
     </ClInclude>
     <ClInclude Include="FacebookService.h">
-      <Filter>SocialNetwork</Filter>
-    </ClInclude>
-    <ClInclude Include="IConnectionInfo.h">
-      <Filter>SocialNetwork</Filter>
-    </ClInclude>
-    <ClInclude Include="ISocialNetworkService.h">
       <Filter>SocialNetwork</Filter>
     </ClInclude>
     <ClInclude Include="SocialServiceFactory.h">
@@ -170,11 +170,18 @@
     <ClInclude Include="LoggerMgr.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="IConnectionInfo.h">
+      <Filter>SocialNetwork\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ISocialNetworkService.h">
+      <Filter>SocialNetwork\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="FlickrService.h">
+      <Filter>SocialNetwork</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="..\TestData\Log4cxxConfig.xml" />
+    <None Include="Log4cxxConfig.xml" />
   </ItemGroup>
 </Project>

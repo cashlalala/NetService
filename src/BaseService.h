@@ -6,6 +6,13 @@ using systypes::SysMaps;
 
 #define EXCEPTION_HANDLING(result) if (!SUCCEEDED(result)) break;
 
+typedef struct {
+	const char* szServerName;
+	const char* szServerURL;
+	const char* szPort;
+	const char* szSecurePort;
+} ServerInfo;
+
 class CBaseSocialService :
 	public CInternetConnectService,
 	public ISocialNetworkService

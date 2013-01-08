@@ -1,4 +1,5 @@
 #pragma once
+
 #include "baseservice.h"
 #include "IDataManager.h"
 
@@ -6,12 +7,12 @@ using systypes::SysMaps;
 using systypes::EnCategory;
 using systypes::EnHttpMethod;
 
-class CFacebookService :
+class CFlickrService :
 	public CBaseSocialService
 {
 public:
-	CFacebookService(void);
-	virtual ~CFacebookService(void);
+	CFlickrService(void);
+	virtual ~CFlickrService(void);
 
 	virtual void SetConnectionInfo(IConnectionInfo& cConectInfoVO);
 
@@ -32,25 +33,12 @@ public:
 	virtual int GetProfile(IProfile& iProfile, IError& iErr, string szId="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str());
 
 private:
-
-	static const SysMaps::EnCat2Str S_MAP_CATEGORY;
 	static const string S_STR_URL_PREFIX;
 
-	static const ServerInfo S_SERVER_INFO;
-
-	CFBConnectionInfo m_cConnectInfo;
-	util::IDataManager* m_pIDataMgr;
+	CFlickrConnectionInfo m_cConnectInfo;
 
 private:
-	int CallGraphAPI(HttpRespValObj& cHttpRespVO,
-									string szId = "me", 
-									EnCategory enCatogory = systypes::None, 
-									SysMaps::Str2Str mapParams = SysMaps::Str2Str(),
-									EnHttpMethod enMethod = systypes::Get,
-									bool bCheckError =  true);
-
-	int CallFQLQuery(HttpRespValObj& cHttpRespVO, string szQry);
-
-	void ExceptionHandler( int nResult, HttpRespValObj &cHttpResp, IError &iErr );
+	int CallApi(HttpRespValObj& cHttpRespVO, string szId /*= "me"*/, EnCategory enCatogory /*= None*/, SysMaps::Str2Str mapParams /*= SysMaps::Str2Str()*/, EnHttpMethod enMethod /*= Get*/, bool bCheckError /*= true*/);
 
 };
+

@@ -21,12 +21,10 @@ using namespace model;
 
 const string CFacebookService::S_STR_URL_PREFIX = "https://";
 
-const SysMaps::EnSvrInfo2Str
-CFacebookService::S_MAP_SERVER_INFO = CMapHelper::CreateServerInfoMap();
-
-
 const SysMaps::EnCat2Str 
 CFacebookService::S_MAP_CATEGORY = CMapHelper::CreateCategoryMap();
+
+const ServerInfo CFacebookService::S_SERVER_INFO = {"graph.facebook.com","","80","443"};
 
 CFacebookService::CFacebookService(void):
 m_pIDataMgr(NULL)
@@ -53,7 +51,7 @@ int CFacebookService::CallGraphAPI(HttpRespValObj& cHttpRespVO, string szId /*= 
 	//https://  graph.facebook.com   /  724760664  /  photos  ?  fields=id,name
 	string szComposedUrl = 
 		CFacebookService::S_STR_URL_PREFIX 
-		+	CMapHelper::GetValue(S_MAP_SERVER_INFO,systypes::ServerName)
+		+	S_SERVER_INFO.szServerName
 		+ "/"
 		+ ((szId=="")? (m_cConnectInfo.szUid=="")? "me": m_cConnectInfo.szUid : szId)
 		+ "/"
@@ -256,7 +254,7 @@ int CFacebookService::CallFQLQuery(HttpRespValObj& cHttpRespVO,  string szQry )
 	//https://  graph.facebook.com   /  fql ? q = xxxx & access_token=xxx
 	string szComposedUrl = 
 		CFacebookService::S_STR_URL_PREFIX 
-		+	CMapHelper::GetValue(S_MAP_SERVER_INFO,systypes::ServerName)
+		+	S_SERVER_INFO.szServerName
 		+ "/fql?q=" + szQry
 		+ "&access_token=" + m_cConnectInfo.szAccessToken;
 

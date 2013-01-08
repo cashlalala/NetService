@@ -116,6 +116,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FlickrService.cpp" />
     <ClCompile Include="InternetConnectService.cpp" />
     <ClCompile Include="Log4CxxLogger.cpp" />
     <ClCompile Include="LoggerMgr.cpp" />
@@ -141,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\NetKernel\Src\INetKernel.h" />
+    <ClInclude Include="FlickrService.h" />
     <ClInclude Include="ILogger.h" />
     <ClInclude Include="InternetConnectService.h" />
     <ClInclude Include="Log4CxxLogger.h" />
@@ -174,14 +176,7 @@
     <ClInclude Include="FBVideoModel.h" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\TestData\Log4cxxConfig.xml">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">copy %(FullPath) $(OutDir)%(Filename)%(Extension)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">copy %(FullPath) $(OutDir)%(Filename)%(Extension)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Filename)%(Extension)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">copy %(FullPath) $(OutDir)%(Filename)%(Extension)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Filename)%(Extension)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">copy %(FullPath) $(OutDir)%(Filename)%(Extension)</Message>
-    </CustomBuild>
+    <None Include="Log4cxxConfig.xml" />
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
