@@ -8,7 +8,6 @@
 #include "NetServiceErr.h"
 #include "UrlHelper.h"
 #include "FBUserModel.h"
-//#include "..\..\Utility\Debug.h"
 
 #include <cassert>
 #include <sstream>
@@ -18,6 +17,7 @@ using systypes::EnHttpMethod;
 using util::CMapHelper;
 using std::stringstream;
 using namespace model;
+
 
 const string CFacebookService::S_STR_URL_PREFIX = "https://";
 
@@ -59,8 +59,6 @@ int CFacebookService::CallGraphAPI(HttpRespValObj& cHttpRespVO, string szId /*= 
 		+ "/"
 		+ CMapHelper::GetValue(S_MAP_CATEGORY,enCatogory)
 		+ (mapParams.empty()? "" :"?"+ CMapHelper::ToParamString(mapParams));
-
-	//dprintf("Composed Url is [%s]",szComposedUrl.c_str());
 	
 	int nResult = OpenUrl(cHttpRespVO, szComposedUrl);
 

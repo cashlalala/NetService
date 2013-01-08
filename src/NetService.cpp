@@ -3,6 +3,7 @@
 #include "stdafx.h"
 #include "NetService.h"
 #include "SocialServiceFactory.h"
+#include "LoggerMgr.h"
 
 #ifdef _MANAGED
 #pragma managed(push, off)
@@ -16,9 +17,13 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
+		util::CLoggerMgr::Config(util::Log4Cxx);
+		break;
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:
+		break;
 	case DLL_PROCESS_DETACH:
+		util::CLoggerMgr::CleanLoggers();
 		break;
 	}
     return TRUE;

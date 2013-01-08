@@ -6,6 +6,7 @@
 
 #include "NetKernelLoader.h"
 #include "..\..\NetKernel\Src\INetKernel.h"
+#include "ILogger.h"
 
 using std::list;
 using std::string;
@@ -31,5 +32,6 @@ private:
 	string m_szProxyDetectUrl;
 	list<INetKernel*> m_listINetKernel;
 	NetKernelLoader m_cNetKernelLoader;
+	util::ILogger* S_LOGGER;
 
 };
