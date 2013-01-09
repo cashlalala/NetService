@@ -15,6 +15,8 @@ namespace util
 
 		virtual ~ILogger(){} ;
 
+		virtual void Trace(const char* lpszFormat, ...) = 0;
+
 		virtual void Debug(const char* lpszFormat, ...) = 0;
 
 		virtual void Info(const char* lpszFormat, ...) = 0;

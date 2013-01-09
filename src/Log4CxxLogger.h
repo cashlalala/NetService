@@ -18,6 +18,8 @@ namespace util
 
 		virtual ~CCxxLogger();
 
+		virtual void Trace(const char* lpszFormat, ...);
+
 		virtual void Debug( const char* lpszFormat, ... );
 
 		virtual void Info( const char* lpszFormat, ... );

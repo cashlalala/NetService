@@ -107,7 +107,7 @@ int CInternetConnectService::OpenUrl( HttpRespValObj& cHttpRespVO, string szUrl,
 	//}
 	else
 	{
-		S_LOGGER->Debug("Response: [ %s ]", cHttpRespVO.szResp.c_str());
+		S_LOGGER->Trace("Response: [ %s ]", cHttpRespVO.szResp.c_str());
 		nResult = S_OK;
 	}
 

@@ -58,4 +58,14 @@ char* util::CCxxLogger::MsgFormat(const char* lpszFormat, va_list args)
 	return lpszBuffer;
 }
 
+void util::CCxxLogger::Trace( const char* lpszFormat, ... )
+{
+	va_list args;
+	va_start(args, lpszFormat);
+	char* lpszMsg = MsgFormat(lpszFormat,args);
+	m_pCurrentLogger->trace(lpszMsg);
+	va_end(args);
+	free(lpszMsg);
+}
+
 
