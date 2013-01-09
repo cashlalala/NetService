@@ -87,6 +87,7 @@ int CInternetConnectService::OpenUrl( HttpRespValObj& cHttpRespVO, string szUrl,
 
 	//HttpResponseValueObject cHttpRespVO;
 	string szEncodedUrl = util::CUrlHelper::EncodeUrl(szUrl);
+	S_LOGGER->Debug("Encoded URL: [ %s ]", szEncodedUrl.c_str());
 	pINetKernel->OpenUrl(cHttpRespVO,szEncodedUrl.c_str(),szHttpMethod.c_str(), 
 										NULL,NULL,wszCookieFilePath.c_str());
 

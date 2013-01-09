@@ -204,7 +204,9 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CodecHelperTest.cpp" />
     <ClCompile Include="FacebookServiceTest.cpp" />
+    <ClCompile Include="FlickRServiceTest.cpp" />
     <ClCompile Include="InternetConnectTest.cpp" />
     <ClCompile Include="JSonCppMgrTest.cpp" />
     <ClCompile Include="OnlinemgrTest.cpp" />
@@ -220,7 +222,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CodecHelperTest.h" />
     <ClInclude Include="FacebookServiceTest.h" />
+    <ClInclude Include="FlickRServiceTest.h" />
     <ClInclude Include="InternetConnectTest.h" />
     <ClInclude Include="JSonCppMgrTest.h" />
     <ClInclude Include="OnlinemgrTest.h" />

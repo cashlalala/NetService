@@ -32,6 +32,9 @@ namespace util
 		virtual int ParseAlbumList(IAlbumList& iAlbumList, string szInput, EnDataOwner enDataOwner, IError& iError) = 0;
 		virtual int ParseProfile(IProfile& iProfile, string szInput, EnDataOwner enDataOwner, IError& iError) = 0;
 
+		virtual int ParseFkrFrob(string& szFrob, string szInput, IError& iError) = 0;
+		virtual int ParseFkrAuthToken(string& szAuthToken, string szInput,IError& iError) = 0;
+
 		virtual int ParseError(IError& iError, string szInput, EnDataOwner enDataOwner) = 0;
 	};
 

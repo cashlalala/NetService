@@ -29,6 +29,10 @@ namespace util
 
 		virtual int ParseProfile(IProfile& iProfile, string szInput, EnDataOwner enDataOwner, IError& iError);
 
+		virtual int ParseFkrFrob(string& szFrob, string szInput, IError& iError) ;
+
+		virtual int ParseFkrAuthToken(string& szAuthToken, string szInput,IError& iError) ;
+
 	private:
 		//To keep the physical linkage isolated, don't specify the explicit type of the interface among the parameters.
 		// Even the function name is specified with exact targets like "FB" "FLICKR";
@@ -42,6 +46,8 @@ namespace util
 		void TravFBAlbumList(Json::Value& jvRoot, IAlbumList* pIAlbumList);
 		void TravFBAlbum(Json::Value& jvRoot, IAlbum* pIAlbum);
 		int TravFBProfile( Json::Value& jvRoot, IProfile* pIProfile, IError& iError );
+
+		int TravFkrErr(Json::Value& jvRoot, IError& iError);
 
 	};
 }

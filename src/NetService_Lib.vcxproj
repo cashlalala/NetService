@@ -116,12 +116,14 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CodecHelper.cpp" />
     <ClCompile Include="FlickrService.cpp" />
     <ClCompile Include="InternetConnectService.cpp" />
     <ClCompile Include="Log4CxxLogger.cpp" />
     <ClCompile Include="LoggerMgr.cpp" />
     <ClCompile Include="NetKernelLoader.cpp" />
     <ClCompile Include="NetService.cpp" />
+    <ClCompile Include="OAuthHelper.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -142,6 +144,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\NetKernel\Src\INetKernel.h" />
+    <ClInclude Include="CodecHelper.h" />
+    <ClInclude Include="FkRErrorModel.h" />
+    <ClInclude Include="FkRPhotoModel.h" />
+    <ClInclude Include="FlickrFields.h" />
     <ClInclude Include="FlickrService.h" />
     <ClInclude Include="ILogger.h" />
     <ClInclude Include="InternetConnectService.h" />
@@ -150,6 +156,7 @@
     <ClInclude Include="NetKernelLoader.h" />
     <ClInclude Include="NetService.h" />
     <ClInclude Include="NetServiceErr.h" />
+    <ClInclude Include="OAuthHelper.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="DataMgrFactory.h" />
     <ClInclude Include="IDataManager.h" />
@@ -176,7 +183,15 @@
     <ClInclude Include="FBVideoModel.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Log4cxxConfig.xml" />
+    <CustomBuild Include="Log4cxxConfig.xml">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">copy %(FullPath) $(OutDir)%(Filename)%(Extension)</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">copy %(FullPath) $(OutDir)%(Filename)%(Extension)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Filename)%(Extension)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">copy %(FullPath) $(OutDir)%(Filename)%(Extension)</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">copy %(FullPath) $(OutDir)%(Filename)%(Extension)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Filename)%(Extension)</Outputs>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </CustomBuild>
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

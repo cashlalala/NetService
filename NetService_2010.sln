@@ -8,6 +8,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestLib_CPPunitDll", "TestLib\TestLib_CPPunitDll.vcxproj", "{059CD848-42A9-40A4-A064-8C4D15BAEBE1}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestLib_Main", "TestLib\TestLib_Main.vcxproj", "{27F845DB-93B1-41A3-87B9-615AAEAD7E23}"
+	ProjectSection(ProjectDependencies) = postProject
+		{91BB77C4-F39E-48E6-A4CB-417B82A34110} = {91BB77C4-F39E-48E6-A4CB-417B82A34110}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestDLL_Main", "TestDLL\TestDLL_Main.vcxproj", "{904D4213-537B-4993-A0B5-0CE7B18532E0}"
 EndProject

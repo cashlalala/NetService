@@ -87,11 +87,6 @@ void CSocialServiceTest::setUp()
 	cCnctInfoVO.szAccessToken = string(lpszTmp);
 	cout << "Get Access Token: " << cCnctInfoVO.szAccessToken << endl;
 
-	memset(lpszTmp,0x0,1025);
-	GetPrivateProfileStringA("FBService","uid",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
-	cCnctInfoVO.szUid = string(lpszTmp);
-	cout << "Get szUid: " << cCnctInfoVO.szUid << endl;
-
 	pSocialService->SetConnectionInfo(cCnctInfoVO);
 }
 

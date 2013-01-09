@@ -38,12 +38,7 @@ void CFacebookServiceTest::setUp()
 	GetPrivateProfileStringA("FBService","access_token",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
 	cCnctInfoVO.szAccessToken = string(lpszTmp);
 	cout << cCnctInfoVO.szAccessToken  << endl;
-
-	memset(lpszTmp,0x0,1025);
-	GetPrivateProfileStringA("FBService","uid",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
-	cCnctInfoVO.szUid = string(lpszTmp);
-	cout << cCnctInfoVO.szUid  << endl;
-
+	
 	delete[] lpszTmp;
 
 	m_pFacebookService->SetConnectionInfo(cCnctInfoVO);

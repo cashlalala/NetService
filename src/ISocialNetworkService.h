@@ -46,6 +46,8 @@ struct ISocialNetworkService
 	/*
 	* ----------------Media getter Functions----------------
 	*/
+	//for facebook : the id can be user id, album id, ... etc., and other ids who have photos
+	//for flickr: the id only means user id. If you want to specify other ids, put them into parameters map
 	virtual int GetPhotos( IPhotoList& iPhotoLst, IError& iErr, string szId = "me", SysMaps::Str2Str& mapQryCriteria=SysMaps::Str2Str()) = 0;
 
 	virtual int GetVideos(IVideoList& iVideoList, IError& iErr, string szId="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str()) = 0;

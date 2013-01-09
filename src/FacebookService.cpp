@@ -53,7 +53,7 @@ int CFacebookService::CallGraphAPI(HttpRespValObj& cHttpRespVO, string szId /*= 
 		CFacebookService::S_STR_URL_PREFIX 
 		+	S_SERVER_INFO.szServerName
 		+ "/"
-		+ ((szId=="")? (m_cConnectInfo.szUid=="")? "me": m_cConnectInfo.szUid : szId)
+		+ ((szId=="")? "me": szId)
 		+ "/"
 		+ CMapHelper::GetValue(S_MAP_CATEGORY,enCatogory)
 		+ (mapParams.empty()? "" :"?"+ CMapHelper::ToParamString(mapParams));
@@ -79,13 +79,12 @@ int CFacebookService::GetPhotos(  IPhotoList& iPhotoLst, IError& iErr, string sz
 	int nResult = E_FAIL;
 	model::CFBPhotoList listPhoto;
 	HttpRespValObj cHttpResp;
-	CFBError* cFBErr = dynamic_cast<CFBError*>(&iErr);
 	do 
 	{
 		nResult = CallGraphAPI(cHttpResp, szId, Photo,mapQryCriteria);
 		EXCEPTION_HANDLING(nResult)
 
-		nResult = m_pIDataMgr->ParsePhotoList(iPhotoLst,cHttpResp.szResp,util::Facebook,*cFBErr);
+		nResult = m_pIDataMgr->ParsePhotoList(iPhotoLst,cHttpResp.szResp,util::Facebook,iErr);
 	} while (false);
 	
 	//Error Handling

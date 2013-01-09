@@ -20,7 +20,7 @@
   </appender>
 
   <root>
-    <priority value="all" />
+    <priority value="DEBUG" />
     <appender-ref ref="appxNormalAppender"/>
     <appender-ref ref="appxConsoleAppender"/>
   </root>

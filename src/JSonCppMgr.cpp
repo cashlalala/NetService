@@ -8,13 +8,17 @@
 #include "FBVideoModel.h"
 #include "FBAlbumModel.h"
 
+#include "FlickrFields.h"
+#include "FkRErrorModel.h"
+#include "FkRPhotoModel.h"
+
 #include <typeinfo>
 #include <sstream>
 #include <assert.h>
 
 #include <json/json.h>
 
-#define FB_ERROR_RETURN(retVal,retCondition) if (retVal == retCondition) return retVal;
+#define ERROR_RETURN(retVal,retCondition) if (retVal == retCondition) return retVal;
 
 using std::stringstream;
 using util::CJsonCppMgr;
@@ -38,7 +42,7 @@ int util::CJsonCppMgr::ParsePhotoList( IPhotoList& iPhotoList, string szInput, E
 		{
 		case Facebook:
 			nResult = TravFBErr(jvRoot,iError);
-			FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+			ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 			TravFBPhotoList(jvRoot, iPhotoList);
 			break;
 		case Flickr:
@@ -68,7 +72,7 @@ int util::CJsonCppMgr::ParsePhoto( IPhoto& iPhoto, string szInput, EnDataOwner e
 		case Facebook:
 			{
 				nResult = TravFBErr(jvRoot,iError);
-				FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 				TravFBPhoto(jvRoot,&iPhoto);
 				nResult = S_OK;
 				break;
@@ -97,7 +101,7 @@ int util::CJsonCppMgr::ParseUser( IUser& iUser, string szInput, EnDataOwner enDa
 		case Facebook:
 			{
 				nResult = TravFBErr(jvRoot,iError);
-				FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 				TravFBUser(jvRoot,&iUser);
 				nResult = S_OK;
 				break;
@@ -177,7 +181,7 @@ int util::CJsonCppMgr::ParseError( IError& iError, string szInput, EnDataOwner e
 		case Facebook:
 			{
 				nResult = TravFBErr(jvRoot,iError);
-				FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 				nResult = S_OK;
 				break;
 			}
@@ -203,7 +207,7 @@ int util::CJsonCppMgr::ParseFriendList( IUserList& iUserList, string szInput, En
 		if (typeid(iUserList)==typeid(CFBUserList))
 		{
 			nResult = TravFBErr(jvRoot,iError);
-			FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+			ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 
 			TravFBFriendList(jvRoot,&iUserList);
 			nResult = S_OK;
@@ -245,7 +249,7 @@ int util::CJsonCppMgr::ParseVideoList( IVideoList&iVideoList, string szInput, En
 		case Facebook:
 			{
 				nResult = TravFBErr(jvRoot,iError);
-				FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 
 				TravFBVideoList(jvRoot,&iVideoList);
 				nResult = S_OK;
@@ -309,7 +313,7 @@ int util::CJsonCppMgr::ParseAlbumList( IAlbumList& iAlbumList, string szInput, E
 		case Facebook:
 			{
 				nResult = TravFBErr(jvRoot,iError);
-				FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 
 				TravFBAlbumList(jvRoot,&iAlbumList);
 				nResult = S_OK;
@@ -362,10 +366,10 @@ int util::CJsonCppMgr::ParseProfile( IProfile& iProfile, string szInput, EnDataO
 		case Facebook:
 			{
 				nResult = TravFBErr(jvRoot,iError);
-				FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 
 				nResult = TravFBProfile(jvRoot,&iProfile,iError);
-				FB_ERROR_RETURN(nResult,NS_E_DMGR_WRONG_DATA_SIZE)
+				ERROR_RETURN(nResult,NS_E_DMGR_WRONG_DATA_SIZE)
 
 				nResult = S_OK;
 				break;
@@ -395,4 +399,53 @@ int util::CJsonCppMgr::TravFBProfile( Json::Value& jvRoot, IProfile* pIProfile, 
 	}
 	else
 		return NS_E_DMGR_WRONG_DATA_SIZE;
+}
+
+int util::CJsonCppMgr::TravFkrErr(Json::Value& jvRoot, IError& iError)
+{
+	model::CFkRError* pFkrErr = dynamic_cast<model::CFkRError*>(&iError);
+	pFkrErr->szStat = jvRoot[FLICK_ERROR_STAT].asString();
+	if (pFkrErr->szStat == "ok") return S_OK;
+	pFkrErr->szCode = jvRoot[FLICK_ERROR_CODE].asString();
+	pFkrErr->szMsg = jvRoot[FLICK_ERROR_MSG].asString();
+	return NS_E_DMGR_BAD_REQUEST_PARAMS;
+}
+
+int util::CJsonCppMgr::ParseFkrFrob( string& szFrob, string szInput, IError& iError )
+{
+	int nResult = E_FAIL;
+	Json::Reader jrReader;
+	Json::Value jvRoot;
+
+	if (jrReader.parse(szInput.c_str(),jvRoot))
+	{
+		nResult = TravFkrErr(jvRoot,iError);
+		ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+
+		szFrob = jvRoot[FLICK_FIELD_FROB][FLICK_FIELD_CONTENT].asString();
+		nResult = S_OK;
+	}
+	else
+		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
+
+	return nResult;
+}
+
+int util::CJsonCppMgr::ParseFkrAuthToken( string& szAuthToken, string szInput,IError& iError )
+{
+	int nResult = E_FAIL;
+	Json::Reader jrReader;
+	Json::Value jvRoot;
+	if (jrReader.parse(szInput.c_str(),jvRoot))
+	{
+		nResult = TravFkrErr(jvRoot,iError);
+		ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+
+		szAuthToken = jvRoot[FLICK_AUTH][FLICK_AUTH_TOKEN][FLICK_AUTH_TOKEN_CONTENT].asString();
+		nResult = S_OK;
+	}
+	else
+		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
+
+	return nResult;
 }

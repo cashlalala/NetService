@@ -19,6 +19,15 @@
     <Filter Include="SocialNetwork\interface">
       <UniqueIdentifier>{607dc0fa-b32c-49bc-a2b6-bbb4e4d605a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Model\Flickr">
+      <UniqueIdentifier>{4946b20c-8102-4821-bd68-f2409ccd1e98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util\DataMgr">
+      <UniqueIdentifier>{67d38d39-164a-44a1-9e5e-9fd6811239ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util\Logger">
+      <UniqueIdentifier>{b703055c-5468-4447-9ecf-c1114096afac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InternetConnectService.cpp">
@@ -32,12 +41,6 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="DataMgrFactory.cpp">
-      <Filter>Util</Filter>
-    </ClCompile>
-    <ClCompile Include="JSonCppMgr.cpp">
-      <Filter>Util</Filter>
     </ClCompile>
     <ClCompile Include="MapHelper.cpp">
       <Filter>Util</Filter>
@@ -69,14 +72,26 @@
     <ClCompile Include="FBVideoModel.cpp">
       <Filter>Model\Facebook</Filter>
     </ClCompile>
-    <ClCompile Include="Log4CxxLogger.cpp">
-      <Filter>Util</Filter>
-    </ClCompile>
-    <ClCompile Include="LoggerMgr.cpp">
-      <Filter>Util</Filter>
-    </ClCompile>
     <ClCompile Include="FlickrService.cpp">
       <Filter>SocialNetwork</Filter>
+    </ClCompile>
+    <ClCompile Include="DataMgrFactory.cpp">
+      <Filter>Util\DataMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="JSonCppMgr.cpp">
+      <Filter>Util\DataMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Log4CxxLogger.cpp">
+      <Filter>Util\Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="LoggerMgr.cpp">
+      <Filter>Util\Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="CodecHelper.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="OAuthHelper.cpp">
+      <Filter>Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -97,15 +112,6 @@
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="DataMgrFactory.h">
-      <Filter>Util</Filter>
-    </ClInclude>
-    <ClInclude Include="IDataManager.h">
-      <Filter>Util</Filter>
-    </ClInclude>
-    <ClInclude Include="JSonCppMgr.h">
-      <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="MapHelper.h">
       <Filter>Util</Filter>
@@ -161,15 +167,6 @@
     <ClInclude Include="FBVideoModel.h">
       <Filter>Model\Facebook</Filter>
     </ClInclude>
-    <ClInclude Include="ILogger.h">
-      <Filter>Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Log4CxxLogger.h">
-      <Filter>Util</Filter>
-    </ClInclude>
-    <ClInclude Include="LoggerMgr.h">
-      <Filter>Util</Filter>
-    </ClInclude>
     <ClInclude Include="IConnectionInfo.h">
       <Filter>SocialNetwork\interface</Filter>
     </ClInclude>
@@ -179,9 +176,44 @@
     <ClInclude Include="FlickrService.h">
       <Filter>SocialNetwork</Filter>
     </ClInclude>
+    <ClInclude Include="FlickrFields.h">
+      <Filter>Model\Flickr</Filter>
+    </ClInclude>
+    <ClInclude Include="FkRErrorModel.h">
+      <Filter>Model\Flickr</Filter>
+    </ClInclude>
+    <ClInclude Include="FkRPhotoModel.h">
+      <Filter>Model\Flickr</Filter>
+    </ClInclude>
+    <ClInclude Include="IDataManager.h">
+      <Filter>Util\DataMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="DataMgrFactory.h">
+      <Filter>Util\DataMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="JSonCppMgr.h">
+      <Filter>Util\DataMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="ILogger.h">
+      <Filter>Util\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="Log4CxxLogger.h">
+      <Filter>Util\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggerMgr.h">
+      <Filter>Util\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="CodecHelper.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="OAuthHelper.h">
+      <Filter>Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
-    <None Include="Log4cxxConfig.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Log4cxxConfig.xml" />
   </ItemGroup>
 </Project>
