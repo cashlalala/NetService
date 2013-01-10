@@ -10,14 +10,6 @@ namespace util
 		static CCodecHelper* GetInstance();
 
 		std::string ToMD5(const systypes::SysMaps::Str2Str& param, const char* sharedSecret);
-		systypes::SysMaps::Str2Str CreateApiSignatureHMACSHA1(const systypes::SysMaps::Str2Str& param, 
-			const string& serviceSharedSecret,
-			const string& apiKey,
-			const string& oauthToken,
-			const string& tokenSecret = "",
-			const string& httpMethod = "GET",
-			const string& url = "",
-			bool bReturnOAuthParam = false);
 
 		std::string ToBase64( const std::string& szSrc);
 		std::string FromBase64(const std::string& szSrc);
