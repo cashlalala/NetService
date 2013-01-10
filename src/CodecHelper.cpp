@@ -59,7 +59,7 @@ util::CCodecHelper* util::CCodecHelper::GetInstance()
 	return &cCodecHelper;
 }
 
-std::string util::CCodecHelper::CreateApiSignature( const systypes::SysMaps::Str2Str& param, const char* sharedSecret)
+std::string util::CCodecHelper::ToMD5( const systypes::SysMaps::Str2Str& param, const char* sharedSecret)
 {
 	assert(sharedSecret);
 	MD5_CTX md5Ctx;

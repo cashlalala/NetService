@@ -70,7 +70,7 @@ void CCodecHelperTest::testCreateApiSignature()
 	mapStr[FLICK_PARAM_API_KEY] = "3d62624979ceb69ee5adea9120adabf2";
 	mapStr[FLICK_PARAM_METHOD] = "flickr.auth.getFrob";
 	string szResult;
-	szResult = m_pCodecHelper->CreateApiSignature(mapStr,"4aa693db92b1cf27");
+	szResult = m_pCodecHelper->ToMD5(mapStr,"4aa693db92b1cf27");
 	CPPUNIT_ASSERT_MESSAGE("Sigs don't equal",szResult==szExpectSig);
 }
 

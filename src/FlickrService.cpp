@@ -61,7 +61,7 @@ int CFlickrService::CallApi( HttpRespValObj& cHttpRespVO, SysMaps::Str2Str& mapP
 		return NS_E_SN_FLICKR_NO_METHOD;
 	MAP_STRING_WITH_CONDITION(mapParams,"",FLICK_PARAM_AUTH_TOKEN,m_cConnectInfo.szAuthToken)
 	MAP_STRING_WITH_CONDITION(mapParams,"",FLICK_PARAM_API_KEY,m_cConnectInfo.lpcszApiKey)
-	mapParams[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->CreateApiSignature(mapParams,m_cConnectInfo.szAppSecret.c_str());
+	mapParams[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapParams,m_cConnectInfo.szAppSecret.c_str());
 
 	//http:// api.flickr.com/services/rest/?method=flickr.people.getInfo&api_key=29ad045368681f23ec8bba5b2ac99a07&user_id=91328748%40N02&format=rest&auth_token=72157632466031231-b19acae054059fc1&api_sig=c9719ae3bd5191234082488a9f371ad6
 	string szComposedUrl = ComposeUrl(mapParams);
@@ -86,7 +86,7 @@ string CFlickrService::GetLoginURL( string szAppId, string szScope /*= "write" *
 		mapParams[FLICK_PARAM_API_KEY] = szAppId;
 		mapParams[FLICK_PARAM_PERMISSION] = szScope;
 		mapParams[FLICK_PARAM_FROB] = m_cConnectInfo.szFrob;
-		mapParams[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->CreateApiSignature(mapParams,m_cConnectInfo.szAppSecret.c_str());
+		mapParams[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapParams,m_cConnectInfo.szAppSecret.c_str());
 
 		szUrl = "http://flickr.com/services/auth/?"  + util::CMapHelper::ToParamString(mapParams);
 		m_pILogger->Debug("Get Login Url :[%s]",szUrl.c_str());
@@ -134,7 +134,7 @@ int CFlickrService::GetFrob( std::string& szFrob, IError& iErr )
 	mapParams[FLICK_PARAM_API_KEY] = m_cConnectInfo.lpcszApiKey;
 	mapParams[FLICK_PARAM_METHOD] = FLICK_METHOD_AUTH_GETFROB;
 	mapParams[FLICK_PARAM_FORMAT] = FLICK_FORMAT_JSON;
-	mapParams[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->CreateApiSignature(mapParams,m_cConnectInfo.szAppSecret.c_str());
+	mapParams[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapParams,m_cConnectInfo.szAppSecret.c_str());
 
 	string szComposedUrl = ComposeUrl(mapParams);
 	do 
@@ -160,7 +160,7 @@ int CFlickrService::GetFlickRAuthToken( string& szAuthTok, IError& iErr )
 		mapParams[FLICK_PARAM_METHOD] = FLICK_METHOD_AUTH_GETTOKEN;
 		mapParams[FLICK_PARAM_FROB] = m_cConnectInfo.szFrob; //the user must be loged in and authorizing the app to get frob
 		mapParams[FLICK_PARAM_FORMAT] = FLICK_FORMAT_JSON;
-		mapParams[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->CreateApiSignature(mapParams,m_cConnectInfo.szAppSecret.c_str());
+		mapParams[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapParams,m_cConnectInfo.szAppSecret.c_str());
 		
 		string szComposedUrl = ComposeUrl(mapParams);
 

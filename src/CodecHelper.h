@@ -9,7 +9,7 @@ namespace util
 	public:
 		static CCodecHelper* GetInstance();
 
-		std::string CreateApiSignature(const systypes::SysMaps::Str2Str& param, const char* sharedSecret);
+		std::string ToMD5(const systypes::SysMaps::Str2Str& param, const char* sharedSecret);
 		systypes::SysMaps::Str2Str CreateApiSignatureHMACSHA1(const systypes::SysMaps::Str2Str& param, 
 			const string& serviceSharedSecret,
 			const string& apiKey,
