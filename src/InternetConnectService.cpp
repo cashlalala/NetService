@@ -17,7 +17,7 @@ m_cNetKernelLoader()
 	m_szServerAddr = "";
 	m_szApName = "";
 	m_szProxyDetectUrl = "";
-	S_LOGGER = util::CLoggerMgr::GetLogger(util::Log4Cxx,typeid(CInternetConnectService).name());
+	S_LOGGER = util::CLoggerMgr::GetLogger(util::Log4Cxx,"CInternetConnectService");
 }
 
 CInternetConnectService::~CInternetConnectService(void)
