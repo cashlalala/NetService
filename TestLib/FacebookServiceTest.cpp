@@ -19,6 +19,8 @@ using std::endl;
 
 CPPUNIT_TEST_SUITE_REGISTRATION( CFacebookServiceTest );
 
+static CFBConnectionInfo g_CFBConnectInfo;
+
 CFacebookServiceTest::CFacebookServiceTest(void)
 {
 	m_pFacebookService= NULL;
@@ -32,16 +34,15 @@ void CFacebookServiceTest::setUp()
 {
 	m_pFacebookService = new CFacebookService();
 
-	CFBConnectionInfo cCnctInfoVO;
 	char* lpszTmp = new char[1025];
 	memset(lpszTmp,0x0,1025);
 	GetPrivateProfileStringA("FBService","access_token",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
-	cCnctInfoVO.szAccessToken = string(lpszTmp);
-	cout << cCnctInfoVO.szAccessToken  << endl;
+	g_CFBConnectInfo.szAccessToken = string(lpszTmp);
+	cout << g_CFBConnectInfo.szAccessToken  << endl;
 	
 	delete[] lpszTmp;
 
-	m_pFacebookService->SetConnectionInfo(cCnctInfoVO);
+	m_pFacebookService->SetConnectionInfo(g_CFBConnectInfo);
 }
 
 void CFacebookServiceTest::tearDown()
@@ -58,11 +59,11 @@ void CFacebookServiceTest::testCallGraphApi()
 
 void CFacebookServiceTest::testGetLoginUrl()
 {
-	string szLoginUrl = m_pFacebookService->GetLoginURL("215921841875602","read_stream ");
+	string szLoginUrl ;
+	CFBError cFkErr;
+	int nResult = m_pFacebookService->GetLoginURL(szLoginUrl, "215921841875602", cFkErr,"read_stream");
 	string szExpectLoginUrl = "https://www.facebook.com/dialog/oauth?client_id=215921841875602&redirect_uri=http://www.facebook.com/connect/login_success.html&response_type=token&display=popup&scope=read_stream%20";
 	string szRes = util::CUrlHelper::EncodeUrl(szExpectLoginUrl);
-	cout << endl << szLoginUrl << endl;
-	cout << endl << szRes << endl;
 	CPPUNIT_ASSERT(szExpectLoginUrl==szRes);
 }
 

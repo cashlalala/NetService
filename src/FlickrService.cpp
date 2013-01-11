@@ -89,11 +89,10 @@ int CFlickrService::CallApi( HttpRespValObj& cHttpRespVO, SysMaps::Str2Str& mapP
 	return nResult;
 }
 
-string CFlickrService::GetLoginURL( string szAppId, string szScope /*= "write" */ )
+int CFlickrService::GetLoginURL(string& szLoginUrl, const string& szAppId, IError& iErr, string szScope /*= "write" */ )
 {
 	int nResult = E_FAIL;
 	model::CFkRError cFkrErr;
-	string szUrl ;
 	do 
 	{
 		//Normally, there are only two scenarios when you need to get url. First, you don't have the auth token; Second, you need refresh the token
@@ -107,11 +106,11 @@ string CFlickrService::GetLoginURL( string szAppId, string szScope /*= "write" *
 		mapParams[FLICK_PARAM_FROB] = m_cConnectInfo.szFrob;
 		mapParams[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapParams,m_cConnectInfo.szAppSecret.c_str());
 
-		szUrl = "http://flickr.com/services/auth/?"  + util::CMapHelper::ToParamString(mapParams);
-		m_pILogger->Debug("Get Login Url :[%s]",szUrl.c_str());
+		szLoginUrl = "http://flickr.com/services/auth/?"  + util::CMapHelper::ToParamString(mapParams);
+		m_pILogger->Debug("Get Login Url :[%s]",szLoginUrl.c_str());
 	} while (false);
 
-	return szUrl;
+	return nResult;
 }
 
 int CFlickrService::GetVideos( IVideoList& iVideoList, IError& iErr, string szId/*="me"*/, SysMaps::Str2Str& mapQryCriteria /*= SysMaps::Str2Str()*/ )

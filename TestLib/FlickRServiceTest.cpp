@@ -9,7 +9,7 @@
 #include "shellapi.h"
 
 using namespace systypes;
-static string g_szAuthTokenBuf ;
+static CFlickrConnectionInfo m_cCnctInfoVO;
 static bool bIsConfiged = false;
 
 CPPUNIT_TEST_SUITE_REGISTRATION( CFlickRServiceTest );
@@ -42,8 +42,9 @@ void CFlickRServiceTest::setUp()
 
 		m_pFlickrService->SetConnectionInfo(m_cCnctInfoVO);
 
-
-		string szLoginUrl = m_pFlickrService->GetLoginURL(m_cCnctInfoVO.lpcszApiKey,"write");
+		CFkRError cFkrErr;
+		string szLoginUrl ;
+		int nResult	= m_pFlickrService->GetLoginURL(szLoginUrl ,m_cCnctInfoVO.lpcszApiKey,cFkrErr,"write");
 		ShellExecuteA(NULL, "open", szLoginUrl.c_str(), NULL, NULL, SW_SHOW);
 		MessageBoxA(NULL,"Please authorize the login request in your web browse.\n\nAfter authorizing it, click OK to continue.","Authorize Login Request", MB_OK);
 		bIsConfiged = true;
@@ -70,6 +71,7 @@ void CFlickRServiceTest::testGetForb()
 {
 	model::CFkRError cFkrErr;
 	string szFrob;
+	m_pFlickrService->SetConnectionInfo(m_cCnctInfoVO);
 	int nResult = m_pFlickrService->GetFlickrAuthFrob(szFrob,cFkrErr);
 	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg,nResult==S_OK);
 }
@@ -79,6 +81,7 @@ void CFlickRServiceTest::testGetToken()
 	model::CFkRError cFkrErr;
 	string szRqstToken;
 	string szUrl;
+	m_pFlickrService->SetConnectionInfo(m_cCnctInfoVO);
 	int nResult = m_pFlickrService->GetFlickrAuthToken(m_cCnctInfoVO.szAuthToken, cFkrErr);
 	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg,nResult==S_OK);
 }

@@ -64,14 +64,15 @@ int CFacebookService::CallGraphAPI(HttpRespValObj& cHttpRespVO, string szId /*= 
 
 }
 
-string CFacebookService::GetLoginURL( string szAppId, string szScope /*= "read_stream,publish_stream,user_photos,friends_photos,user_videos,friends_videos,offline_access"*/ )
+int CFacebookService::GetLoginURL( string& szLoginUrl, const string& szAppId, IError& iErr, string szScope /*= "read_stream,publish_stream,user_photos,friends_photos,user_videos,friends_videos,offline_access"*/ )
 {
 	string szUrl = "https://www.facebook.com/dialog/oauth?";
 	szUrl	 += "&client_id=" + szAppId;
 	szUrl += "&redirect_uri=http://www.facebook.com/connect/login_success.html" ;
 	szUrl += "&display=popup";
 	szUrl += "&scope=" + szScope;
-	return util::CUrlHelper::EncodeUrl(szUrl);
+	szLoginUrl = util::CUrlHelper::EncodeUrl(szUrl);
+	return S_OK;
 }
 
 int CFacebookService::GetPhotos(  IPhotoList& iPhotoLst, IError& iErr, string szId, SysMaps::Str2Str& mapQryCriteria)

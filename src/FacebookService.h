@@ -15,7 +15,7 @@ public:
 
 	virtual void SetConnectionInfo(IConnectionInfo& cConectInfoVO);
 
-	virtual string GetLoginURL( string szAppId, string szScope = "read_stream,publish_stream,user_photos,friends_photos,user_videos,friends_videos,offline_access" );
+	virtual int GetLoginURL(string& szLoginUrl, const string& szAppId, IError& iErr, string szScope = "read_stream,publish_stream,user_photos,friends_photos,user_videos,friends_videos,offline_access");
 
 	virtual int GetPhotos(  IPhotoList& iPhotoLst, IError& iErr, string szId = "me", SysMaps::Str2Str& mapQryCriteria=SysMaps::Str2Str());
 
