@@ -93,6 +93,9 @@
     <ClCompile Include="OAuthHelper.cpp">
       <Filter>Util</Filter>
     </ClCompile>
+    <ClCompile Include="StringHelper.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\NetKernel\Src\INetKernel.h">
@@ -207,6 +210,9 @@
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="OAuthHelper.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="StringHelper.h">
       <Filter>Util</Filter>
     </ClInclude>
   </ItemGroup>

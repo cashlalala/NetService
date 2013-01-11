@@ -15,7 +15,6 @@ namespace util
 		static string GetValue( const SysMaps::HttpMethod2Str& map, EnHttpMethod enMethod );
 		static string GetValue( const SysMaps::EnCat2Str& map, EnCategory enCat );
 		static string ToParamString( const SysMaps::Str2Str& map);
-
 	};
 
 }

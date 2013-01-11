@@ -11,6 +11,7 @@ namespace model
 {
 
 	struct IImage : public IModel{
+		IImage():nHeight(0),nWidth(0){};
 		virtual ~IImage() = 0;
 		int nHeight;
 		int nWidth;
@@ -19,7 +20,7 @@ namespace model
 
 	inline IImage::~IImage(){};
 
-	struct IPhoto : public IImage{
+	struct IPhoto : virtual public IImage{
 		virtual ~IPhoto() = 0;
 		string szId;
 		string szLink;

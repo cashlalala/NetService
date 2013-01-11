@@ -44,10 +44,12 @@ private:
 	util::ILogger* m_pILogger;
 
 	string ExtractJsonStrFromReply(const string& szReply);
+	string ComposeUrl( SysMaps::Str2Str& mapParams );
+	void ComposePagingUrl(IPhotoList& iPhotoLst, const SysMaps::Str2Str& mapParams );
 public:
 	int CallApi(HttpRespValObj& cHttpRespVO, SysMaps::Str2Str& mapParams = SysMaps::Str2Str(), EnHttpMethod enMethod = systypes::Get);
 
-	string ComposeUrl( SysMaps::Str2Str& mapParams );
+
 
 	//For flickr authorization
 	int GetFrob(std::string& szFrob, IError& iErr);

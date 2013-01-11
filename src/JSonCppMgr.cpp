@@ -25,6 +25,18 @@ using util::CJsonCppMgr;
 
 CJsonCppMgr::CJsonCppMgr(void)
 {
+	m_listFkrPhotSizes.push_back(FLICK_PHOTO_SQ);
+	m_listFkrPhotSizes.push_back(FLICK_PHOTO_T);
+	m_listFkrPhotSizes.push_back(FLICK_PHOTO_S);
+	m_listFkrPhotSizes.push_back(FLICK_PHOTO_Q);
+	m_listFkrPhotSizes.push_back(FLICK_PHOTO_M);
+	m_listFkrPhotSizes.push_back(FLICK_PHOTO_N);
+	m_listFkrPhotSizes.push_back(FLICK_PHOTO_Z);
+	m_listFkrPhotSizes.push_back(FLICK_PHOTO_C);
+	m_listFkrPhotSizes.push_back(FLICK_PHOTO_L);
+	m_listFkrPhotSizes.push_back(FLICK_PHOTO_O);
+
+	m_pLogger = util::CLoggerMgr::GetLogger(Log4Cxx,"CJsonCppMgr");
 }
 
 CJsonCppMgr::~CJsonCppMgr(void)
@@ -46,6 +58,9 @@ int util::CJsonCppMgr::ParsePhotoList( IPhotoList& iPhotoList, string szInput, E
 			TravFBPhotoList(jvRoot, iPhotoList);
 			break;
 		case Flickr:
+			nResult = TravFkrErr(jvRoot,iError);
+			ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+			TravrFkrPhotoList(jvRoot, iPhotoList);
 			break;
 		default:
 			nResult = NS_S_DMGR_NO_DATA_OWNER;
@@ -448,4 +463,52 @@ int util::CJsonCppMgr::ParseFkrAuthToken( string& szAuthToken, string szInput,IE
 		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
 
 	return nResult;
+}
+
+void util::CJsonCppMgr::TravrFkrPhotoList( Json::Value &jvRoot, IPhotoList &iPhotoList )
+{
+	model::CFkRPhotoList* cFkrPhotoLst  = dynamic_cast<model::CFkRPhotoList*>( &iPhotoList);
+	//for composing the next & prev page url
+	cFkrPhotoLst->nPage = jvRoot[FLICK_PHOTOS][FLICK_PHOTOS_PAGE].asInt();
+	cFkrPhotoLst->nPages = jvRoot[FLICK_PHOTOS][FLICK_PHOTOS_PAGES].asInt();
+	cFkrPhotoLst->nPerpage = jvRoot[FLICK_PHOTOS][FLICK_PHOTOS_PERPAGE].asInt();
+	cFkrPhotoLst->nTotal = atoi(jvRoot[FLICK_PHOTOS][FLICK_PHOTOS_TOTAL].asString().c_str());
+
+	int nPhotoNum = jvRoot[FLICK_PHOTOS][FLICK_PHOTO].size();
+	for (int i=0;i<nPhotoNum;++i)
+	{
+		Json::Value item = jvRoot[FLICK_PHOTOS][FLICK_PHOTO][i];
+		model::CFkRPhoto* cFkrPhoto = new model::CFkRPhoto();
+		TravFkrPhoto(item,cFkrPhoto);
+		cFkrPhotoLst->listPhoto.push_back(cFkrPhoto);
+	}
+}
+
+void util::CJsonCppMgr::TravFkrPhoto( Json::Value &jvRoot, IPhoto* pIPhoto )
+{
+	model::CFkRPhoto* pFkrPhto = dynamic_cast<model::CFkRPhoto*>(pIPhoto);
+	pFkrPhto->bIsFamily = jvRoot[FLICK_PHOTO_ISFAMILY].asBool();
+	pFkrPhto->bIsFriend = jvRoot[FLICK_PHOTO_ISFRIEND].asBool();
+	pFkrPhto->bIsPublic = jvRoot[FLICK_PHOTO_ISPUBLIC].asBool();
+	pFkrPhto->szId = jvRoot[FLICK_PHOTO_ID].asString();
+	pFkrPhto->szTitle = jvRoot[FLICK_PHOTO_TITLE].asString();
+	pFkrPhto->szOwner = jvRoot[FLICK_PHOTO_OWNER].asString();
+	pFkrPhto->szLink = "http://www.flickr.com/photos/" + pFkrPhto->szOwner + pFkrPhto->szId;
+	pFkrPhto->szMedia = jvRoot[FLICK_PHOTO_MEDIA].asString();
+
+	//the original size if only available for pro user
+	pFkrPhto->szSource = jvRoot[FLICK_PHOTO_URL_O].asString();
+	pFkrPhto->nHeight = jvRoot[FLICK_PHOTO_HEIGHT_O].asInt();
+	pFkrPhto->nWidth = jvRoot[FLICK_PHOTO_WIDTH_O].asInt();
+	pFkrPhto->szThumbNail = jvRoot[FLICK_PHOTO_URL_T].asString();	
+
+	std::list<string>::iterator it = m_listFkrPhotSizes.begin();
+	for (;it!=m_listFkrPhotSizes.end();++it)
+	{
+		model::CFkRImage* pFkrImg = new model::CFkRImage();
+		pFkrImg->szSource = jvRoot[FLICK_PHOTO_URL + *it].asString();
+		pFkrImg->nWidth = atoi(jvRoot[FLICK_PHOTO_WIDTH + *it].asString().c_str());
+		pFkrImg->nHeight = atoi(jvRoot[FLICK_PHOTO_HEIGHT + *it].asString().c_str());
+		pFkrPhto->listImages.push_back(pFkrImg);
+	}
 }

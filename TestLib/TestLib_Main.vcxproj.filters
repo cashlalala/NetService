@@ -83,6 +83,6 @@
     <CustomBuild Include="..\TestData\TestConfig.ini">
       <Filter>TestData</Filter>
     </CustomBuild>
-    <CustomBuild Include="Log4cxxConfig.xml" />
+    <CustomBuild Include="..\TestData\Log4cxxConfig.xml" />
   </ItemGroup>
 </Project>

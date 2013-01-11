@@ -132,6 +132,7 @@
     <ClCompile Include="DataMgrFactory.cpp" />
     <ClCompile Include="JSonCppMgr.cpp" />
     <ClCompile Include="MapHelper.cpp" />
+    <ClCompile Include="StringHelper.cpp" />
     <ClCompile Include="UrlHelper.cpp" />
     <ClCompile Include="BaseService.cpp" />
     <ClCompile Include="FacebookService.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="IDataManager.h" />
     <ClInclude Include="JSonCppMgr.h" />
     <ClInclude Include="MapHelper.h" />
+    <ClInclude Include="StringHelper.h" />
     <ClInclude Include="UrlHelper.h" />
     <ClInclude Include="BaseService.h" />
     <ClInclude Include="FacebookService.h" />

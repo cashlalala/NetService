@@ -9,6 +9,8 @@
 #include "DataMgrFactory.h"
 #include "LoggerMgr.h"
 #include "FkRErrorModel.h"
+#include "FkRPhotoModel.h"
+#include "StringHelper.h"
 
 #include <assert.h>
 
@@ -51,7 +53,23 @@ int CFlickrService::GetPhotos( IPhotoList& iPhotoLst, IError& iErr, string szId 
 	if (!szId.empty() && mapQryCriteria[FLICK_PARAM_USER_ID].empty()) 
 		mapQryCriteria[FLICK_PARAM_USER_ID] = szId;
 	mapQryCriteria[FLICK_PARAM_METHOD] = FLICK_METHOD_PHOTO_SEARCH;
-	nResult = CallApi(cHttpResp,mapQryCriteria);
+	mapQryCriteria[FLICK_FIELD_EXTRA] = util::CStringHelper::Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
+																			FLICK_PHOTO_URL_C,FLICK_PHOTO_URL_O,
+																			FLICK_PHOTO_URL_T,FLICK_PHOTO_URL_L,
+																			FLICK_PHOTO_URL_M,FLICK_PHOTO_URL_Q,
+																			FLICK_PHOTO_URL_S,FLICK_PHOTO_URL_SQ,
+																			FLICK_PHOTO_URL_N,FLICK_PHOTO_ORIGINAL_FORMAT,
+																			FLICK_PHOTO_MEDIA);
+	do 
+	{
+		nResult = CallApi(cHttpResp,mapQryCriteria);
+		EXCEPTION_HANDLING(nResult)
+
+		m_pIDataMgr->ParsePhotoList(iPhotoLst,ExtractJsonStrFromReply(cHttpResp.szResp),util::Flickr,iErr);
+		EXCEPTION_HANDLING(nResult)
+
+		ComposePagingUrl(iPhotoLst,mapQryCriteria);
+	} while (false);
 	return nResult;
 }
 
@@ -61,6 +79,7 @@ int CFlickrService::CallApi( HttpRespValObj& cHttpRespVO, SysMaps::Str2Str& mapP
 		return NS_E_SN_FLICKR_NO_METHOD;
 	MAP_STRING_WITH_CONDITION(mapParams,"",FLICK_PARAM_AUTH_TOKEN,m_cConnectInfo.szAuthToken)
 	MAP_STRING_WITH_CONDITION(mapParams,"",FLICK_PARAM_API_KEY,m_cConnectInfo.lpcszApiKey)
+	MAP_STRING_WITH_CONDITION(mapParams,"",FLICK_PARAM_FORMAT,FLICK_FORMAT_JSON)
 	mapParams[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapParams,m_cConnectInfo.szAppSecret.c_str());
 
 	//http:// api.flickr.com/services/rest/?method=flickr.people.getInfo&api_key=29ad045368681f23ec8bba5b2ac99a07&user_id=91328748%40N02&format=rest&auth_token=72157632466031231-b19acae054059fc1&api_sig=c9719ae3bd5191234082488a9f371ad6
@@ -269,7 +288,34 @@ int CFlickrService::GetOAuthAuthorizeToken( string& szOAuthAuthorizeToken, IErro
 
 string CFlickrService::ExtractJsonStrFromReply( const string& szReply )
 {
-	size_t nObjBegin = szReply.find_first_of("{");
-	size_t nObjEnd = szReply.find_last_of(")");
-	return szReply.substr(nObjBegin,nObjEnd-nObjBegin);
+	if (szReply.find("jsonFlickrApi")!=string::npos)
+	{
+		size_t nObjBegin = szReply.find_first_of("{");
+		size_t nObjEnd = szReply.find_last_of(")");
+		return szReply.substr(nObjBegin,nObjEnd-nObjBegin);
+	}
+	return szReply;
+}
+
+void CFlickrService::ComposePagingUrl( IPhotoList& iPhotoLst, const SysMaps::Str2Str& mapParams )
+{
+	model::CFkRPhotoList* cFkrPhotoLst = dynamic_cast<model::CFkRPhotoList*>( &iPhotoLst);
+	SysMaps::Str2Str mapCpy(mapParams);
+	SysMaps::Str2Str::const_iterator cit;
+	if (cFkrPhotoLst->nPage<cFkrPhotoLst->nPages/*next page*/)
+	{
+		mapCpy[FLICK_PHOTOS_PAGE] = util::CStringHelper::Format("%d",  cFkrPhotoLst->nPage+1);
+		cit = mapCpy.find(FLICK_PARAM_API_SIG);
+		mapCpy.erase(cit);
+		mapCpy[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapCpy,m_cConnectInfo.szAppSecret.c_str());
+		iPhotoLst.szNext = ComposeUrl(mapCpy);
+	}
+	if (cFkrPhotoLst->nPage>1 /*prev page*/)
+	{
+		mapCpy[FLICK_PHOTOS_PAGE] = util::CStringHelper::Format("%d",  cFkrPhotoLst->nPage-1);
+		cit = mapCpy.find(FLICK_PARAM_API_SIG);
+		mapCpy.erase(cit);
+		mapCpy[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapCpy,m_cConnectInfo.szAppSecret.c_str());
+		iPhotoLst.szPrevious = ComposeUrl(mapCpy);	
+	}
 }

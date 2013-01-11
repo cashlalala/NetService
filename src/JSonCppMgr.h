@@ -1,5 +1,7 @@
 #pragma once
 #include "IDataManager.h"
+#include "LoggerMgr.h"
+#include <list>
 #include <json/json.h>
 
 using util::IDataManager;
@@ -48,7 +50,11 @@ namespace util
 		int TravFBProfile( Json::Value& jvRoot, IProfile* pIProfile, IError& iError );
 
 		int TravFkrErr(Json::Value& jvRoot, IError& iError);
+		void TravrFkrPhotoList( Json::Value &jvRoot, IPhotoList &iPhotoList);
+		void TravFkrPhoto( Json::Value &jvRoot, IPhoto* pIPhoto );
 
+		util::ILogger* m_pLogger;
+		std::list<string> m_listFkrPhotSizes;
 	};
 }
 

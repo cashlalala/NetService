@@ -4,8 +4,11 @@
 #include <NetServiceErr.h>
 #include <WinBase.h>
 #include <WinUser.h>
+#include <SysTypes.h>
+#include <FlickrFields.h>
 #include "shellapi.h"
 
+using namespace systypes;
 static string g_szAuthTokenBuf ;
 
 CPPUNIT_TEST_SUITE_REGISTRATION( CFlickRServiceTest );
@@ -46,9 +49,12 @@ void CFlickRServiceTest::testGetPhotos()
 {
 	model::CFkRPhotoList cFBPhotoList;
 	model::CFkRError cFbErr;
+	SysMaps::Str2Str mapQryParams;
+	mapQryParams[FLICK_PARAM_PERPAGE] = "1";
+	mapQryParams[FLICK_PARAM_PAGE] = "3";
 	m_cCnctInfoVO.szAuthToken = g_szAuthTokenBuf;
 	m_pFlickrService->SetConnectionInfo(m_cCnctInfoVO);
-	int nResult = m_pFlickrService->GetPhotos(cFBPhotoList,cFbErr);
+	int nResult = m_pFlickrService->GetPhotos(cFBPhotoList,cFbErr,"me",mapQryParams);
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
 }
 //
