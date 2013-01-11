@@ -129,6 +129,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\NetKernel\Src\INetKernel.h" />
+    <ClInclude Include="CodecHelper.h" />
+    <ClInclude Include="FkRErrorModel.h" />
+    <ClInclude Include="FkRPhotoModel.h" />
+    <ClInclude Include="FlickrFields.h" />
+    <ClInclude Include="FlickrService.h" />
     <ClInclude Include="ILogger.h" />
     <ClInclude Include="InternetConnectService.h" />
     <ClInclude Include="Log4CxxLogger.h" />
@@ -136,11 +141,13 @@
     <ClInclude Include="NetKernelLoader.h" />
     <ClInclude Include="NetService.h" />
     <ClInclude Include="NetServiceErr.h" />
+    <ClInclude Include="OAuthHelper.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="DataMgrFactory.h" />
     <ClInclude Include="IDataManager.h" />
     <ClInclude Include="JSonCppMgr.h" />
     <ClInclude Include="MapHelper.h" />
+    <ClInclude Include="StringHelper.h" />
     <ClInclude Include="UrlHelper.h" />
     <ClInclude Include="BaseService.h" />
     <ClInclude Include="FacebookService.h" />
@@ -162,11 +169,14 @@
     <ClInclude Include="FBVideoModel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CodecHelper.cpp" />
+    <ClCompile Include="FlickrService.cpp" />
     <ClCompile Include="InternetConnectService.cpp" />
     <ClCompile Include="Log4CxxLogger.cpp" />
     <ClCompile Include="LoggerMgr.cpp" />
     <ClCompile Include="NetKernelLoader.cpp" />
     <ClCompile Include="NetService.cpp" />
+    <ClCompile Include="OAuthHelper.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='TestRelease|Win32'">Create</PrecompiledHeader>
@@ -174,6 +184,7 @@
     <ClCompile Include="DataMgrFactory.cpp" />
     <ClCompile Include="JSonCppMgr.cpp" />
     <ClCompile Include="MapHelper.cpp" />
+    <ClCompile Include="StringHelper.cpp" />
     <ClCompile Include="UrlHelper.cpp" />
     <ClCompile Include="BaseService.cpp" />
     <ClCompile Include="FacebookService.cpp" />

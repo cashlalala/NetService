@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "SocialServiceFactory.h"
 #include "FacebookService.h"
+#include "FlickrService.h"
 
 
 map<EnServiceType,ISocialNetworkService*> CSocialServiceFactory::S_MAP_SERVICES;
@@ -24,6 +25,7 @@ ISocialNetworkService* CSocialServiceFactory::GetInstance( EnServiceType enServT
 			pInst = new CFacebookService();
 			break;
 		case FLICKR:
+			pInst = new CFlickrService();
 			break;
 		default:
 			break;
