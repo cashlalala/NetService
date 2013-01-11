@@ -12,13 +12,13 @@ using model::IPhotoList;
 namespace model
 {
 
-	struct CFBImage : public IImage
+	struct CFBImage : virtual public IImage
 	{
 		virtual ~CFBImage(void){};
 	};
 
 
-	struct CFBPhoto : public IPhoto
+	struct CFBPhoto : public IPhoto, public CFBImage
 	{
 		virtual ~CFBPhoto(void){};
 	};
