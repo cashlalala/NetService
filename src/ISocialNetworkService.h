@@ -30,9 +30,6 @@ struct ISocialNetworkService
 {	
 	virtual ~ISocialNetworkService() = 0;
 
-
-	virtual void SetConnectionInfo(IConnectionInfo& cConectInfoVO) = 0;
-
 	/*
 	* ----------------Mighty Functions----------------
 	*/
@@ -41,7 +38,17 @@ struct ISocialNetworkService
 	/*
 	* ----------------Logging Functions----------------
 	*/
+	//Normally, there are usually two scenarios that you need to get login url. 
+	//First, you don't have the auth token; 
+	//Second, you need to refresh the token
+	//Both of these may set your original auth token to empty
 	virtual string GetLoginURL(string szAppId, string szScope = "read_stream,publish_stream,user_photos,friends_photos,user_videos,friends_videos,offline_access") = 0;
+	
+	//Normally, there are usually three scenarios that you may need to set connection info
+	//First, you initialize the service;
+	//Second, you need to refresh the token; 
+	//Third, the app id and secret change
+	virtual void SetConnectionInfo(IConnectionInfo& cConectInfoVO) = 0;
 
 	/*
 	* ----------------Media getter Functions----------------
