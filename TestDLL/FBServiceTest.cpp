@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "SocialServiceTest.h"
+#include "FBServiceTest.h"
 
 #include <IConnectionInfo.h>
 #include <FBUserModel.h>
@@ -13,18 +13,18 @@
 
 using namespace std;
 
-CPPUNIT_TEST_SUITE_REGISTRATION( CSocialServiceTest );
+CPPUNIT_TEST_SUITE_REGISTRATION( CFBServiceTest );
 
-CSocialServiceTest::CSocialServiceTest(void)
+CFBServiceTest::CFBServiceTest(void)
 {
 	pSocialService = NULL;
 }
 
-CSocialServiceTest::~CSocialServiceTest(void)
+CFBServiceTest::~CFBServiceTest(void)
 {
 }
 
-void CSocialServiceTest::testGetFriends()
+void CFBServiceTest::testGetFriends()
 {
 	model::CFBUserList cFbUsrLst;
 	model::CFBError cFbErr;
@@ -39,7 +39,7 @@ void CSocialServiceTest::testGetFriends()
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
 }
 
-void CSocialServiceTest::testFBGetPhotos()
+void CFBServiceTest::testFBGetPhotos()
 {
 	model::CFBPhotoList cFBPhotoList;
 	model::CFBError cFbErr;
@@ -48,7 +48,7 @@ void CSocialServiceTest::testFBGetPhotos()
 }
 
 
-void CSocialServiceTest::testFBGetUser()
+void CFBServiceTest::testFBGetUser()
 {
 	model::CFBUser cFbUsr;
 	model::CFBError cFbErr;
@@ -57,7 +57,7 @@ void CSocialServiceTest::testFBGetUser()
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
 }
 
-void CSocialServiceTest::testFBGetProfile()
+void CFBServiceTest::testFBGetProfile()
 {
 	model::CFBProfile cFbProfile;
 	model::CFBError cFbErr;
@@ -66,7 +66,7 @@ void CSocialServiceTest::testFBGetProfile()
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
 }
 
-void CSocialServiceTest::testFBGetAlbumList()
+void CFBServiceTest::testFBGetAlbumList()
 {
 	model::CFBAlbumList cFbAlbumList;
 	model::CFBError cFbErr;
@@ -75,7 +75,7 @@ void CSocialServiceTest::testFBGetAlbumList()
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
 }
 
-void CSocialServiceTest::setUp()
+void CFBServiceTest::setUp()
 {
 	ISocialNetworkService::PFNGETINSTANCE pfn = (ISocialNetworkService::PFNGETINSTANCE) GetProcAddress(g_hNerServ,"GetInstance");
 	pSocialService = pfn(FACEBOOK);
@@ -90,7 +90,7 @@ void CSocialServiceTest::setUp()
 	pSocialService->SetConnectionInfo(cCnctInfoVO);
 }
 
-void CSocialServiceTest::tearDown()
+void CFBServiceTest::tearDown()
 {
 	ISocialNetworkService::PFNDELINSTANCE pfn = (ISocialNetworkService::PFNDELINSTANCE) GetProcAddress(g_hNerServ,"DelInstance");
 	pfn(pSocialService);

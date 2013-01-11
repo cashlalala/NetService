@@ -10,6 +10,7 @@
 
 using namespace systypes;
 static string g_szAuthTokenBuf ;
+static bool bIsConfiged = false;
 
 CPPUNIT_TEST_SUITE_REGISTRATION( CFlickRServiceTest );
 
@@ -25,19 +26,28 @@ void CFlickRServiceTest::setUp()
 {
 	m_pFlickrService = new CFlickrService();
 	//CFlickrConnectionInfo cCnctInfoVO;
-	char* lpszTmp = new char[1025];
+	if (!bIsConfiged)
+	{
+		char* lpszTmp = new char[1025];
 
-	memset(lpszTmp,0x0,1025);
-	GetPrivateProfileStringA("FlickRService","api_key",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
-	m_cCnctInfoVO.lpcszApiKey = string(lpszTmp);
+		memset(lpszTmp,0x0,1025);
+		GetPrivateProfileStringA("FlickRService","api_key",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
+		m_cCnctInfoVO.lpcszApiKey = string(lpszTmp);
 
-	memset(lpszTmp,0x0,1025);
-	GetPrivateProfileStringA("FlickRService","shared_secret",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
-	m_cCnctInfoVO.szAppSecret = string(lpszTmp);
+		memset(lpszTmp,0x0,1025);
+		GetPrivateProfileStringA("FlickRService","shared_secret",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
+		m_cCnctInfoVO.szAppSecret = string(lpszTmp);
 
-	delete[] lpszTmp;
+		delete[] lpszTmp;
 
-	m_pFlickrService->SetConnectionInfo(m_cCnctInfoVO);
+		m_pFlickrService->SetConnectionInfo(m_cCnctInfoVO);
+
+
+		string szLoginUrl = m_pFlickrService->GetLoginURL(m_cCnctInfoVO.lpcszApiKey,"write");
+		ShellExecuteA(NULL, "open", szLoginUrl.c_str(), NULL, NULL, SW_SHOW);
+		MessageBoxA(NULL,"Please authorize the login request in your web browse.\n\nAfter authorizing it, click OK to continue.","Authorize Login Request", MB_OK);
+		bIsConfiged = true;
+	}
 }
 
 void CFlickRServiceTest::tearDown()
@@ -52,8 +62,6 @@ void CFlickRServiceTest::testGetPhotos()
 	SysMaps::Str2Str mapQryParams;
 	mapQryParams[FLICK_PARAM_PERPAGE] = "1";
 	mapQryParams[FLICK_PARAM_PAGE] = "3";
-	m_cCnctInfoVO.szAuthToken = g_szAuthTokenBuf;
-	m_pFlickrService->SetConnectionInfo(m_cCnctInfoVO);
 	int nResult = m_pFlickrService->GetPhotos(cFBPhotoList,cFbErr,"me",mapQryParams);
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
 }
@@ -62,7 +70,7 @@ void CFlickRServiceTest::testGetForb()
 {
 	model::CFkRError cFkrErr;
 	string szFrob;
-	int nResult = m_pFlickrService->GetFrob(szFrob,cFkrErr);
+	int nResult = m_pFlickrService->GetFlickrAuthFrob(szFrob,cFkrErr);
 	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg,nResult==S_OK);
 }
 
@@ -71,13 +79,7 @@ void CFlickRServiceTest::testGetToken()
 	model::CFkRError cFkrErr;
 	string szRqstToken;
 	string szUrl;
-	szUrl = m_pFlickrService->GetLoginURL(m_cCnctInfoVO.lpcszApiKey,"write");
-	ShellExecuteA(NULL, "open", szUrl.c_str(), NULL, NULL, SW_SHOW);
-	MessageBoxA(NULL,"Please authorize the login request in your web browse.\n\nAfter authorizing it, click OK to continue.","Authorize Login Request", MB_OK);
-	int nResult = m_pFlickrService->GetFlickRAuthToken(m_cCnctInfoVO.szAuthToken, cFkrErr);
-
-	g_szAuthTokenBuf = m_cCnctInfoVO.szAuthToken;
-
+	int nResult = m_pFlickrService->GetFlickrAuthToken(m_cCnctInfoVO.szAuthToken, cFkrErr);
 	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg,nResult==S_OK);
 }
 

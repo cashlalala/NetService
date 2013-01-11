@@ -11,7 +11,7 @@ class CFlickRServiceTest
 	CPPUNIT_TEST( testGetForb );
 	CPPUNIT_TEST( testGetToken );
 	CPPUNIT_TEST( testGetPhotos );
-	CPPUNIT_TEST( testGetOAuthRqstToken );
+	//CPPUNIT_TEST( testGetOAuthRqstToken );
 	CPPUNIT_TEST_SUITE_END();
 
 public:

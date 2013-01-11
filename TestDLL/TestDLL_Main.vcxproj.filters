@@ -12,17 +12,23 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SocialServiceTest.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="TestDLL_Main.cpp" />
+    <ClCompile Include="FBServiceTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="FlickrServiceTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SocialServiceTest.h">
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="FBServiceTest.h">
       <Filter>Tests</Filter>
     </ClInclude>
-    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="FlickrServiceTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\TestData\10photos.txt">
@@ -34,6 +40,6 @@
     <CustomBuild Include="..\TestData\TestConfig.ini">
       <Filter>TestData</Filter>
     </CustomBuild>
-    <CustomBuild Include="Log4cxxConfig.xml" />
+    <CustomBuild Include="..\TestData\Log4cxxConfig.xml" />
   </ItemGroup>
 </Project>

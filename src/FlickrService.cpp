@@ -63,10 +63,10 @@ int CFlickrService::GetPhotos( IPhotoList& iPhotoLst, IError& iErr, string szId 
 	do 
 	{
 		nResult = CallApi(cHttpResp,mapQryCriteria);
-		EXCEPTION_HANDLING(nResult)
+		EXCEPTION_BREAK(nResult)
 
-		m_pIDataMgr->ParsePhotoList(iPhotoLst,ExtractJsonStrFromReply(cHttpResp.szResp),util::Flickr,iErr);
-		EXCEPTION_HANDLING(nResult)
+		nResult = m_pIDataMgr->ParsePhotoList(iPhotoLst,ExtractJsonStrFromReply(cHttpResp.szResp),util::Flickr,iErr);
+		EXCEPTION_BREAK(nResult)
 
 		ComposePagingUrl(iPhotoLst,mapQryCriteria);
 	} while (false);
@@ -75,16 +75,17 @@ int CFlickrService::GetPhotos( IPhotoList& iPhotoLst, IError& iErr, string szId 
 
 int CFlickrService::CallApi( HttpRespValObj& cHttpRespVO, SysMaps::Str2Str& mapParams /*= SysMaps::Str2Str()*/, EnHttpMethod enMethod /*= Get*/ )
 {
-	if (mapParams[FLICK_PARAM_METHOD]=="")
-		return NS_E_SN_FLICKR_NO_METHOD;
-	MAP_STRING_WITH_CONDITION(mapParams,"",FLICK_PARAM_AUTH_TOKEN,m_cConnectInfo.szAuthToken)
-	MAP_STRING_WITH_CONDITION(mapParams,"",FLICK_PARAM_API_KEY,m_cConnectInfo.lpcszApiKey)
-	MAP_STRING_WITH_CONDITION(mapParams,"",FLICK_PARAM_FORMAT,FLICK_FORMAT_JSON)
-	mapParams[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapParams,m_cConnectInfo.szAppSecret.c_str());
+	int nResult = E_FAIL;
+	do 
+	{
+		nResult = PreCallApi(mapParams);
+		EXCEPTION_BREAK(nResult)
 
-	//http:// api.flickr.com/services/rest/?method=flickr.people.getInfo&api_key=29ad045368681f23ec8bba5b2ac99a07&user_id=91328748%40N02&format=rest&auth_token=72157632466031231-b19acae054059fc1&api_sig=c9719ae3bd5191234082488a9f371ad6
-	string szComposedUrl = ComposeUrl(mapParams);
-	int nResult = OpenUrl(cHttpRespVO,szComposedUrl);
+		//http:// api.flickr.com/services/rest/?method=flickr.people.getInfo&api_key=29ad045368681f23ec8bba5b2ac99a07&user_id=91328748%40N02&format=rest&auth_token=72157632466031231-b19acae054059fc1&api_sig=c9719ae3bd5191234082488a9f371ad6
+		string szComposedUrl = ComposeUrl(mapParams);
+		nResult = OpenUrl(cHttpRespVO,szComposedUrl);
+	} while (false);
+
 	return nResult;
 }
 
@@ -95,11 +96,10 @@ string CFlickrService::GetLoginURL( string szAppId, string szScope /*= "write" *
 	string szUrl ;
 	do 
 	{
-		if (m_cConnectInfo.szFrob.empty())
-		{
-			nResult = GetFrob(m_cConnectInfo.szFrob,cFkrErr);
-			EXCEPTION_HANDLING(nResult);
-		}
+		//Normally, there are only two scenarios when you need to get url. First, you don't have the auth token; Second, you need refresh the token
+		m_cConnectInfo.szAuthToken = "";
+		nResult = GetFlickrAuthFrob(m_cConnectInfo.szFrob,cFkrErr);
+		EXCEPTION_BREAK(nResult);
 
 		SysMaps::Str2Str mapParams;
 		mapParams[FLICK_PARAM_API_KEY] = szAppId;
@@ -144,7 +144,7 @@ int CFlickrService::GetProfile( IProfile& iProfile, IError& iErr, string szId/*=
 	return 0;
 }
 
-int CFlickrService::GetFrob( std::string& szFrob, IError& iErr )
+int CFlickrService::GetFlickrAuthFrob( std::string& szFrob, IError& iErr )
 {
 	int nResult = E_FAIL;
 	HttpRespValObj cHttpRespVO;
@@ -159,7 +159,7 @@ int CFlickrService::GetFrob( std::string& szFrob, IError& iErr )
 	do 
 	{
 		nResult = OpenUrl(cHttpRespVO,szComposedUrl);
-		EXCEPTION_HANDLING(nResult)
+		EXCEPTION_BREAK(nResult)
 
 		nResult = m_pIDataMgr->ParseFkrFrob(szFrob,ExtractJsonStrFromReply(cHttpRespVO.szResp),iErr);
 	} while (false);
@@ -168,7 +168,7 @@ int CFlickrService::GetFrob( std::string& szFrob, IError& iErr )
 }
 
 //This api can't be tested alone
-int CFlickrService::GetFlickRAuthToken( string& szAuthTok, IError& iErr )
+int CFlickrService::GetFlickrAuthToken( string& szAuthTok, IError& iErr )
 {
 	int nResult = E_FAIL;
 	HttpRespValObj cHttpRespVO;
@@ -184,7 +184,7 @@ int CFlickrService::GetFlickRAuthToken( string& szAuthTok, IError& iErr )
 		string szComposedUrl = ComposeUrl(mapParams);
 
 		nResult = OpenUrl(cHttpRespVO,szComposedUrl);
-		EXCEPTION_HANDLING(nResult);
+		EXCEPTION_BREAK(nResult);
 
 		nResult = m_pIDataMgr->ParseFkrAuthToken(szAuthTok,ExtractJsonStrFromReply(cHttpRespVO.szResp),iErr);
 	} while (false);
@@ -273,7 +273,7 @@ int CFlickrService::GetOAuthAuthorizeToken( string& szOAuthAuthorizeToken, IErro
 		string szOAuthRqstToken;
 		string szOAuthRqstTokenSecret;
 		nResult = GetOAuthRqstToken(szOAuthRqstToken, szOAuthRqstTokenSecret, iErr);
-		EXCEPTION_HANDLING(nResult);
+		EXCEPTION_BREAK(nResult);
 
 		SysMaps::Str2Str mapParams;
 		mapParams[FLICK_PARAM_PERMISSION] = "write";
@@ -318,4 +318,34 @@ void CFlickrService::ComposePagingUrl( IPhotoList& iPhotoLst, const SysMaps::Str
 		mapCpy[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapCpy,m_cConnectInfo.szAppSecret.c_str());
 		iPhotoLst.szPrevious = ComposeUrl(mapCpy);	
 	}
+}
+
+int CFlickrService::PreCallApi( SysMaps::Str2Str &mapParams )
+{
+	int nResult = E_FAIL;
+
+	do 
+	{
+		if (mapParams[FLICK_PARAM_METHOD]=="")
+		{
+			nResult = NS_E_SN_FLICKR_NO_METHOD;
+			EXCEPTION_BREAK(nResult)
+		}
+		if (mapParams[FLICK_PARAM_AUTH_TOKEN].empty())
+		{
+			if (m_cConnectInfo.szAuthToken.empty())
+			{
+				CFkRError cFkrErr;
+				nResult = GetFlickrAuthToken(m_cConnectInfo.szAuthToken,cFkrErr);
+				m_pILogger->Trace("Get Auth Token: [%s]",m_cConnectInfo.szAuthToken.c_str());
+				EXCEPTION_BREAK(nResult)
+			}
+			mapParams[FLICK_PARAM_AUTH_TOKEN] = m_cConnectInfo.szAuthToken;
+		}
+		MAP_STRING_WITH_CONDITION(mapParams,"",FLICK_PARAM_API_KEY,m_cConnectInfo.lpcszApiKey)
+		MAP_STRING_WITH_CONDITION(mapParams,"",FLICK_PARAM_FORMAT,FLICK_FORMAT_JSON)
+		mapParams[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapParams,m_cConnectInfo.szAppSecret.c_str());
+	} while (false);
+
+	return nResult;
 }

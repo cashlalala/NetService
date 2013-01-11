@@ -4,7 +4,7 @@
 
 using systypes::SysMaps;
 
-#define EXCEPTION_HANDLING(result) if (!SUCCEEDED(result)) break;
+#define EXCEPTION_BREAK(result) if (!SUCCEEDED(result)) break;
 
 typedef struct {
 	const char* szServerName;

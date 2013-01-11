@@ -3,9 +3,9 @@
 #include <ISocialNetworkService.h>
 #include <cppunit/extensions/HelperMacros.h>
 
-class CSocialServiceTest: public CPPUNIT_NS::TestFixture
+class CFBServiceTest: public CPPUNIT_NS::TestFixture
 {
-	CPPUNIT_TEST_SUITE( CSocialServiceTest );
+	CPPUNIT_TEST_SUITE( CFBServiceTest );
 	CPPUNIT_TEST( testFBGetProfile );
 	CPPUNIT_TEST( testFBGetAlbumList );
 	CPPUNIT_TEST( testFBGetUser );
@@ -14,8 +14,8 @@ class CSocialServiceTest: public CPPUNIT_NS::TestFixture
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	CSocialServiceTest(void);
-	~CSocialServiceTest(void);
+	CFBServiceTest(void);
+	~CFBServiceTest(void);
 	void setUp();
 	void tearDown();
 
