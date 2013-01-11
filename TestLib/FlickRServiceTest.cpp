@@ -42,7 +42,7 @@ void CFlickRServiceTest::setUp()
 
 		m_pFlickrService->SetConnectionInfo(m_cCnctInfoVO);
 
-		CFkRError cFkrErr;
+		CFkrError cFkrErr;
 		string szLoginUrl ;
 		int nResult	= m_pFlickrService->GetLoginURL(szLoginUrl ,m_cCnctInfoVO.lpcszApiKey,cFkrErr,"write");
 		ShellExecuteA(NULL, "open", szLoginUrl.c_str(), NULL, NULL, SW_SHOW);
@@ -58,8 +58,8 @@ void CFlickRServiceTest::tearDown()
 
 void CFlickRServiceTest::testGetPhotos()
 {
-	model::CFkRPhotoList cFBPhotoList;
-	model::CFkRError cFbErr;
+	model::CFkrPhotoList cFBPhotoList;
+	model::CFkrError cFbErr;
 	SysMaps::Str2Str mapQryParams;
 	mapQryParams[FLICK_PARAM_PERPAGE] = "1";
 	mapQryParams[FLICK_PARAM_PAGE] = "3";
@@ -67,28 +67,28 @@ void CFlickRServiceTest::testGetPhotos()
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
 }
 //
-void CFlickRServiceTest::testGetForb()
-{
-	model::CFkRError cFkrErr;
-	string szFrob;
-	m_pFlickrService->SetConnectionInfo(m_cCnctInfoVO);
-	int nResult = m_pFlickrService->GetFlickrAuthFrob(szFrob,cFkrErr);
-	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg,nResult==S_OK);
-}
-
-void CFlickRServiceTest::testGetToken()
-{
-	model::CFkRError cFkrErr;
-	string szRqstToken;
-	string szUrl;
-	m_pFlickrService->SetConnectionInfo(m_cCnctInfoVO);
-	int nResult = m_pFlickrService->GetFlickrAuthToken(m_cCnctInfoVO.szAuthToken, cFkrErr);
-	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg,nResult==S_OK);
-}
+//void CFlickRServiceTest::testGetForb()
+//{
+//	model::CFkrError cFkrErr;
+//	string szFrob;
+//	m_pFlickrService->SetConnectionInfo(m_cCnctInfoVO);
+//	int nResult = m_pFlickrService->GetFlickrAuthFrob(szFrob,cFkrErr);
+//	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg,nResult==S_OK);
+//}
+//
+//void CFlickRServiceTest::testGetToken()
+//{
+//	model::CFkrError cFkrErr;
+//	string szRqstToken;
+//	string szUrl;
+//	m_pFlickrService->SetConnectionInfo(m_cCnctInfoVO);
+//	int nResult = m_pFlickrService->GetFlickrAuthToken(m_cCnctInfoVO.szAuthToken, cFkrErr);
+//	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg,nResult==S_OK);
+//}
 
 void CFlickRServiceTest::testGetOAuthRqstToken()
 {
-	model::CFkRError cFkrErr;
+	model::CFkrError cFkrErr;
 	string szRqstToken;
 	string szRqstTokenSecret;
 	int nResult = m_pFlickrService->GetOAuthRqstToken(szRqstToken,szRqstTokenSecret,cFkrErr);

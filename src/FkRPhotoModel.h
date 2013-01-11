@@ -12,19 +12,19 @@ using model::IPhotoList;
 namespace model
 {
 
-	struct CFkRImage : virtual public IImage
+	struct CFkrImage : virtual public IImage
 	{
-		virtual ~CFkRImage(void){};
+		virtual ~CFkrImage(void){};
 		string szLabel;
 		string szMedia;
 	};
 
 
-	struct CFkRPhoto : public IPhoto , public CFkRImage
+	struct CFkrPhoto : public IPhoto , public CFkrImage
 	{
-		CFkRPhoto():bIsPublic(false),bIsFriend(false),
+		CFkrPhoto():bIsPublic(false),bIsFriend(false),
 			bIsFamily(false),bCanBlog(false),bCanPrint(false),bCanDownload(false){};
-		virtual ~CFkRPhoto(void){};
+		virtual ~CFkrPhoto(void){};
 		string szOwner;
 		string szTitle;
 		bool bIsPublic;
@@ -35,10 +35,10 @@ namespace model
 		bool bCanDownload;
 	};
 
-	struct CFkRPhotoList : public IPhotoList
+	struct CFkrPhotoList : public IPhotoList
 	{
-		CFkRPhotoList():nPage(0),nPages(0),nPerpage(0),nTotal(0){};
-		virtual ~CFkRPhotoList(void){};
+		CFkrPhotoList():nPage(0),nPages(0),nPerpage(0),nTotal(0){};
+		virtual ~CFkrPhotoList(void){};
 		int nPage;
 		int nPages;
 		int nPerpage;

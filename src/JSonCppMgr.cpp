@@ -418,7 +418,7 @@ int util::CJsonCppMgr::TravFBProfile( Json::Value& jvRoot, IProfile* pIProfile, 
 
 int util::CJsonCppMgr::TravFkrErr(Json::Value& jvRoot, IError& iError)
 {
-	model::CFkRError* pFkrErr = dynamic_cast<model::CFkRError*>(&iError);
+	model::CFkrError* pFkrErr = dynamic_cast<model::CFkrError*>(&iError);
 	pFkrErr->szStat = jvRoot[FLICK_ERROR_STAT].asString();
 	if (pFkrErr->szStat == "ok") return S_OK;
 	pFkrErr->szCode = jvRoot[FLICK_ERROR_CODE].asString();
@@ -467,7 +467,7 @@ int util::CJsonCppMgr::ParseFkrAuthToken( string& szAuthToken, string szInput,IE
 
 void util::CJsonCppMgr::TravrFkrPhotoList( Json::Value &jvRoot, IPhotoList &iPhotoList )
 {
-	model::CFkRPhotoList* cFkrPhotoLst  = dynamic_cast<model::CFkRPhotoList*>( &iPhotoList);
+	model::CFkrPhotoList* cFkrPhotoLst  = dynamic_cast<model::CFkrPhotoList*>( &iPhotoList);
 	//for composing the next & prev page url
 	cFkrPhotoLst->nPage = jvRoot[FLICK_PHOTOS][FLICK_PHOTOS_PAGE].asInt();
 	cFkrPhotoLst->nPages = jvRoot[FLICK_PHOTOS][FLICK_PHOTOS_PAGES].asInt();
@@ -478,7 +478,7 @@ void util::CJsonCppMgr::TravrFkrPhotoList( Json::Value &jvRoot, IPhotoList &iPho
 	for (int i=0;i<nPhotoNum;++i)
 	{
 		Json::Value item = jvRoot[FLICK_PHOTOS][FLICK_PHOTO][i];
-		model::CFkRPhoto* cFkrPhoto = new model::CFkRPhoto();
+		model::CFkrPhoto* cFkrPhoto = new model::CFkrPhoto();
 		TravFkrPhoto(item,cFkrPhoto);
 		cFkrPhotoLst->listPhoto.push_back(cFkrPhoto);
 	}
@@ -486,7 +486,7 @@ void util::CJsonCppMgr::TravrFkrPhotoList( Json::Value &jvRoot, IPhotoList &iPho
 
 void util::CJsonCppMgr::TravFkrPhoto( Json::Value &jvRoot, IPhoto* pIPhoto )
 {
-	model::CFkRPhoto* pFkrPhto = dynamic_cast<model::CFkRPhoto*>(pIPhoto);
+	model::CFkrPhoto* pFkrPhto = dynamic_cast<model::CFkrPhoto*>(pIPhoto);
 	pFkrPhto->bIsFamily = jvRoot[FLICK_PHOTO_ISFAMILY].asBool();
 	pFkrPhto->bIsFriend = jvRoot[FLICK_PHOTO_ISFRIEND].asBool();
 	pFkrPhto->bIsPublic = jvRoot[FLICK_PHOTO_ISPUBLIC].asBool();
@@ -505,7 +505,7 @@ void util::CJsonCppMgr::TravFkrPhoto( Json::Value &jvRoot, IPhoto* pIPhoto )
 	std::list<string>::iterator it = m_listFkrPhotSizes.begin();
 	for (;it!=m_listFkrPhotSizes.end();++it)
 	{
-		model::CFkRImage* pFkrImg = new model::CFkRImage();
+		model::CFkrImage* pFkrImg = new model::CFkrImage();
 		pFkrImg->szSource = jvRoot[FLICK_PHOTO_URL + *it].asString();
 		pFkrImg->nWidth = atoi(jvRoot[FLICK_PHOTO_WIDTH + *it].asString().c_str());
 		pFkrImg->nHeight = atoi(jvRoot[FLICK_PHOTO_HEIGHT + *it].asString().c_str());

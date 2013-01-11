@@ -92,7 +92,7 @@ int CFlickrService::CallApi( HttpRespValObj& cHttpRespVO, SysMaps::Str2Str& mapP
 int CFlickrService::GetLoginURL(string& szLoginUrl, const string& szAppId, IError& iErr, string szScope /*= "write" */ )
 {
 	int nResult = E_FAIL;
-	model::CFkRError cFkrErr;
+	model::CFkrError cFkrErr;
 	do 
 	{
 		//Normally, there are only two scenarios when you need to get url. First, you don't have the auth token; Second, you need refresh the token
@@ -298,7 +298,7 @@ string CFlickrService::ExtractJsonStrFromReply( const string& szReply )
 
 void CFlickrService::ComposePagingUrl( IPhotoList& iPhotoLst, const SysMaps::Str2Str& mapParams )
 {
-	model::CFkRPhotoList* cFkrPhotoLst = dynamic_cast<model::CFkRPhotoList*>( &iPhotoLst);
+	model::CFkrPhotoList* cFkrPhotoLst = dynamic_cast<model::CFkrPhotoList*>( &iPhotoLst);
 	SysMaps::Str2Str mapCpy(mapParams);
 	SysMaps::Str2Str::const_iterator cit;
 	if (cFkrPhotoLst->nPage<cFkrPhotoLst->nPages/*next page*/)
@@ -334,7 +334,7 @@ int CFlickrService::PreCallApi( SysMaps::Str2Str &mapParams )
 		{
 			if (m_cConnectInfo.szAuthToken.empty())
 			{
-				CFkRError cFkrErr;
+				CFkrError cFkrErr;
 				nResult = GetFlickrAuthToken(m_cConnectInfo.szAuthToken,cFkrErr);
 				m_pILogger->Trace("Get Auth Token: [%s]",m_cConnectInfo.szAuthToken.c_str());
 				EXCEPTION_BREAK(nResult)

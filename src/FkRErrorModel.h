@@ -4,10 +4,10 @@
 namespace model
 {
 
-	struct CFkRError :
+	struct CFkrError :
 		public IError
 	{
-		virtual ~CFkRError(void) {};
+		virtual ~CFkrError(void) {};
 		string szStat;
 	};
 

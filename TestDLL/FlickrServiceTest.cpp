@@ -46,7 +46,7 @@ void CFlickrServiceTest::setUp()
 	pSocialService->SetConnectionInfo(cCnctInfoVO);
 
 	string szLoginUrl ;
-	model::CFkRError cFkErr;
+	model::CFkrError cFkErr;
 	int nResult = pSocialService->GetLoginURL(szLoginUrl, cCnctInfoVO.lpcszApiKey, cFkErr,"write");
 	ShellExecuteA(NULL, "open", szLoginUrl.c_str(), NULL, NULL, SW_SHOW);
 	MessageBoxA(NULL,"Please authorize the login request in your web browse.\n\nAfter authorizing it, click OK to continue.","Authorize Login Request", MB_OK);
@@ -77,8 +77,8 @@ void CFlickrServiceTest::testFkrGetUser()
 
 void CFlickrServiceTest::testFkrGetPhotos()
 {
-	model::CFkRPhotoList cFBPhotoList;
-	model::CFkRError cFbErr;
+	model::CFkrPhotoList cFBPhotoList;
+	model::CFkrError cFbErr;
 	SysMaps::Str2Str mapQryParams;
 	mapQryParams[FLICK_PARAM_PERPAGE] = "1";
 	mapQryParams[FLICK_PARAM_PAGE] = "3";

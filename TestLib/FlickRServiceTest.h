@@ -9,9 +9,9 @@ class CFlickRServiceTest
 {
 	CPPUNIT_TEST_SUITE( CFlickRServiceTest );
 	CPPUNIT_TEST( testGetPhotos );
-	CPPUNIT_TEST( testGetForb );
-	CPPUNIT_TEST( testGetToken );
-	//CPPUNIT_TEST( testGetOAuthRqstToken );
+	//CPPUNIT_TEST( testGetForb ); //only for development testing
+	//CPPUNIT_TEST( testGetToken ); //only for development testing
+	//CPPUNIT_TEST( testGetOAuthRqstToken ); //only for development testing
 	CPPUNIT_TEST_SUITE_END();
 
 public:
