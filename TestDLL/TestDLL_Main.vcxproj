@@ -188,11 +188,13 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='TestRelease|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TestDLL_Main.cpp" />
+    <ClCompile Include="URLWatchDog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FBServiceTest.h" />
     <ClInclude Include="FlickrServiceTest.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="URLWatchDog.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

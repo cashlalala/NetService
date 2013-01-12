@@ -7,6 +7,9 @@
     <Filter Include="Tests">
       <UniqueIdentifier>{7d261ec2-4875-4396-a7fd-1b9ab2db5e58}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{2ae058df-6b50-46db-a6e6-d4e49174604b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -20,6 +23,9 @@
     <ClCompile Include="FlickrServiceTest.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="URLWatchDog.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -28,6 +34,9 @@
     </ClInclude>
     <ClInclude Include="FlickrServiceTest.h">
       <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="URLWatchDog.h">
+      <Filter>Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

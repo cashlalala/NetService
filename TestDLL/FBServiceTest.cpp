@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "FBServiceTest.h"
+#include "URLWatchDog.h"
 
 #include <IConnectionInfo.h>
 #include <FBUserModel.h>
@@ -79,19 +80,44 @@ void CFBServiceTest::setUp()
 {
 	ISocialNetworkService::PFNGETINSTANCE pfn = (ISocialNetworkService::PFNGETINSTANCE) GetProcAddress(g_hNerServ,"GetInstance");
 	pSocialService = pfn(FACEBOOK);
-	CFBConnectionInfo cCnctInfoVO;
 
 	char lpszTmp[1025];
-	memset(lpszTmp,0x0,1025);
-	GetPrivateProfileStringA("FBService","access_token",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
-	cCnctInfoVO.szAccessToken = string(lpszTmp);
-	cout << "Get Access Token: " << cCnctInfoVO.szAccessToken << endl;
 
-	pSocialService->SetConnectionInfo(cCnctInfoVO);
+	memset(lpszTmp,0x0,1025);
+	GetPrivateProfileStringA("FBService","api_key",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
+	m_cCnctInfoVO.lpcszApiKey = string(lpszTmp);
+
+	if (!g_szToken.empty())
+		m_cCnctInfoVO.szAccessToken = g_szToken;
+
+	pSocialService->SetConnectionInfo(m_cCnctInfoVO);
 }
 
 void CFBServiceTest::tearDown()
 {
 	ISocialNetworkService::PFNDELINSTANCE pfn = (ISocialNetworkService::PFNDELINSTANCE) GetProcAddress(g_hNerServ,"DelInstance");
 	pfn(pSocialService);
+}
+
+
+/*
+* This must be the first function to test, because it get the auth token for the consequent tests
+*/
+void CFBServiceTest::testFBGetLoginURL()
+{
+	string szLoginUrl ;
+	model::CFBError cFbErr;
+	int nResult = pSocialService->GetLoginURL(szLoginUrl, m_cCnctInfoVO.lpcszApiKey, cFbErr,"user_photos");
+	szLoginUrl += "\r\n";
+	ShellExecuteA(NULL, "open", szLoginUrl.c_str(), NULL, NULL, SW_SHOW);
+
+	/*
+	* This watch dog is just a workaround for unit tests for the purpose of fully automatically testing with chrome.
+	* You should figure out how to get the redirected url parameters and pass to net service by yourself.
+	*/
+	BeginMonitorUrlThread();
+
+	WaitForAuthorization();
+
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK && !g_szToken.empty());
 }

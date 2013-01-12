@@ -71,6 +71,7 @@ int CFacebookService::GetLoginURL( string& szLoginUrl, const string& szAppId, IE
 	szUrl += "&redirect_uri=http://www.facebook.com/connect/login_success.html" ;
 	szUrl += "&display=popup";
 	szUrl += "&scope=" + szScope;
+	szUrl += "&response_type=token";
 	szLoginUrl = util::CUrlHelper::EncodeUrl(szUrl);
 	return S_OK;
 }

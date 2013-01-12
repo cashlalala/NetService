@@ -6,6 +6,14 @@
 class CFBServiceTest: public CPPUNIT_NS::TestFixture
 {
 	CPPUNIT_TEST_SUITE( CFBServiceTest );
+	/*
+	* testFBGetLoginURL must be the first function to test, 
+	* because it get the auth token for the consequent tests
+	* Do not alter the order of testFBGetLoginURL
+	* ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ
+	*/
+	CPPUNIT_TEST( testFBGetLoginURL );
+	// ¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô
 	CPPUNIT_TEST( testFBGetProfile );
 	CPPUNIT_TEST( testFBGetAlbumList );
 	CPPUNIT_TEST( testFBGetUser );
@@ -19,6 +27,7 @@ public:
 	void setUp();
 	void tearDown();
 
+	void testFBGetLoginURL();
 	void testFBGetProfile();
 	void testFBGetAlbumList();
 	void testFBGetUser();
@@ -26,5 +35,5 @@ public:
 	void testGetFriends();
 private:
 	ISocialNetworkService* pSocialService;
-
+	CFBConnectionInfo m_cCnctInfoVO;
 };
