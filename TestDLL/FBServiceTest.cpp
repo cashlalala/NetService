@@ -115,7 +115,9 @@ void CFBServiceTest::testFBGetLoginURL()
 	* This watch dog is just a workaround for unit tests for the purpose of fully automatically testing with chrome.
 	* You should figure out how to get the redirected url parameters and pass to net service by yourself.
 	*/
-	BeginMonitorUrlThread();
+	ThreadParams cThreadParam;
+	cThreadParam.enService =  testutil::FB;
+	BeginMonitorUrlThread(cThreadParam);
 
 	WaitForAuthorization();
 

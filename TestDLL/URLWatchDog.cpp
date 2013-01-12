@@ -5,16 +5,19 @@
 
 std::string g_szToken;
 
-HANDLE g_hThread;
+HANDLE g_hThread = NULL;
+
+bool g_bFkrAuthFlow1stStep = false;
 
 int nCountDown = DEFAULT_COUNT_DOWN;
 
 unsigned int __stdcall Monitoring(void * pParm = NULL);
 
-void BeginMonitorUrlThread()
+void BeginMonitorUrlThread(ThreadParams& params)
 {
 	g_szToken.clear();
-	g_hThread = (HANDLE) _beginthreadex(NULL,0,Monitoring,NULL,0,NULL);
+	g_bFkrAuthFlow1stStep = false;
+	g_hThread = (HANDLE) _beginthreadex(NULL,0,Monitoring,(void*)&params,0,NULL);
 }
 
 /*
@@ -32,19 +35,39 @@ unsigned int __stdcall Monitoring(void * pParm)
 		HWND hWndUrl = FindWindowExA(hWndWeb, 0, "Chrome_OmniboxView",NULL);
 		if (hWndUrl)
 		{
+			ThreadParams* pParams = (ThreadParams*) pParm;
 			char lpszText[1000];
 			memset(lpszText,0x0,1000);
 			SendMessageA(hWndUrl,WM_GETTEXT,999,(long)lpszText);
-			char* lpszBegin = strstr(lpszText,"#access_token=");
-			if (lpszBegin)
+			switch (pParams->enService)
 			{
-				char* lpszTokenBegin = lpszBegin + strlen("#access_token=");
-				char* lpszEnd = strstr(lpszText,"&expires_in=");
-				char szToken[300];
-				memset(szToken,0x0,300);
-				strncpy_s(szToken,299,lpszTokenBegin,lpszEnd-lpszTokenBegin);
-				g_szToken = szToken;
-				return 0;
+			case testutil::FB:
+				{
+					char* lpszBegin = strstr(lpszText,"#access_token=");
+					if (lpszBegin)
+					{
+						char* lpszTokenBegin = lpszBegin + strlen("#access_token=");
+						char* lpszEnd = strstr(lpszText,"&expires_in=");
+						char szToken[300];
+						memset(szToken,0x0,300);
+						strncpy_s(szToken,299,lpszTokenBegin,lpszEnd-lpszTokenBegin);
+						g_szToken = szToken;
+						return 0;
+					}
+				}
+				break;
+			case testutil::Fkr:
+				{
+					if (!g_bFkrAuthFlow1stStep &&
+						strcmp(pParams->szLoginUrl.c_str(),lpszText)==0)
+						g_bFkrAuthFlow1stStep = true;
+					if (g_bFkrAuthFlow1stStep && 
+						strcmp(pParams->szLoginUrl.c_str(),"http://www.flickr.com/services/auth/")==0)
+						return 0;
+				}
+				break;
+			default:
+				break;
 			}
 		}
 		Sleep(500);
