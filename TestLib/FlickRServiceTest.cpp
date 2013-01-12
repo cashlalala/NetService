@@ -45,6 +45,7 @@ void CFlickRServiceTest::setUp()
 		CFkrError cFkrErr;
 		string szLoginUrl ;
 		int nResult	= m_pFlickrService->GetLoginURL(szLoginUrl ,m_cCnctInfoVO.lpcszApiKey,cFkrErr,"write");
+		szLoginUrl += "\r\n";
 		ShellExecuteA(NULL, "open", szLoginUrl.c_str(), NULL, NULL, SW_SHOW);
 		MessageBoxA(NULL,"Please authorize the login request in your web browse.\n\nAfter authorizing it, click OK to continue.","Authorize Login Request", MB_OK);
 		bIsConfiged = true;

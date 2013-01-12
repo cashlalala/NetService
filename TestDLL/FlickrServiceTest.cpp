@@ -48,6 +48,7 @@ void CFlickrServiceTest::setUp()
 	string szLoginUrl ;
 	model::CFkrError cFkErr;
 	int nResult = pSocialService->GetLoginURL(szLoginUrl, cCnctInfoVO.lpcszApiKey, cFkErr,"write");
+	szLoginUrl += "\r\n";
 	ShellExecuteA(NULL, "open", szLoginUrl.c_str(), NULL, NULL, SW_SHOW);
 	MessageBoxA(NULL,"Please authorize the login request in your web browse.\n\nAfter authorizing it, click OK to continue.","Authorize Login Request", MB_OK);
 	bIsConfiged = true;
