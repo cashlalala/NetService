@@ -41,7 +41,10 @@ private:
 	static const string S_OAUTH_CALLBACK_URL;
 	static const ServerInfo S_SERVER_INFO;
 
+	static string S_FROB;
+
 	CFlickrConnectionInfo m_cConnectInfo;
+	
 	util::IDataManager* m_pIDataMgr;
 	util::ILogger* m_pILogger;
 

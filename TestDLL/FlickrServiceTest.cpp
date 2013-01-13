@@ -28,21 +28,6 @@ void CFlickrServiceTest::setUp()
 {
 	ISocialNetworkService::PFNGETINSTANCE pfn = (ISocialNetworkService::PFNGETINSTANCE) GetProcAddress(g_hNerServ,"GetInstance");
 	pSocialService = pfn(FLICKR);
-
-
-		char lpszTmp[1025];
-		memset(lpszTmp,0x0,1025);
-		GetPrivateProfileStringA("FlickRService","api_key",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
-		cCnctInfoVO.lpcszApiKey = string(lpszTmp);
-		cout << "Get APP id: " << cCnctInfoVO.lpcszApiKey << endl;
-
-		memset(lpszTmp,0x0,1025);
-		GetPrivateProfileStringA("FlickRService","shared_secret",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
-		cCnctInfoVO.szAppSecret = string(lpszTmp);
-		cout << "Get secret : " << cCnctInfoVO.szAppSecret << endl;
-
-		if (!g_bIsAuthFlowDone)
-			pSocialService->SetConnectionInfo(cCnctInfoVO);
 }
 
 void CFlickrServiceTest::tearDown()
@@ -84,9 +69,21 @@ void CFlickrServiceTest::testGetFriends()
 
 void CFlickrServiceTest::testFkrGetLoginUrl()
 {
+
+	char lpszTmp[1025];
+	memset(lpszTmp,0x0,1025);
+	GetPrivateProfileStringA("FlickRService","api_key",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
+	m_cCnctInfoVO.lpcszApiKey = string(lpszTmp);
+	cout << "Get APP id: " << m_cCnctInfoVO.lpcszApiKey << endl;
+
+	memset(lpszTmp,0x0,1025);
+	GetPrivateProfileStringA("FlickRService","shared_secret",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
+	m_cCnctInfoVO.szAppSecret = string(lpszTmp);
+	cout << "Get secret : " << m_cCnctInfoVO.szAppSecret << endl;
+
 	string szLoginUrl ;
 	model::CFkrError cFkErr;
-	int nResult = pSocialService->GetLoginURL(szLoginUrl, cCnctInfoVO.lpcszApiKey, cCnctInfoVO.szAppSecret, cFkErr,"write");
+	int nResult = pSocialService->GetLoginURL(szLoginUrl, m_cCnctInfoVO.lpcszApiKey, m_cCnctInfoVO.szAppSecret, cFkErr,"write");
 	ShellExecuteA(NULL, "open", (szLoginUrl + "\r\n").c_str(), NULL, NULL, SW_SHOW);
 	
 	ThreadParams cThreadParams;
@@ -95,10 +92,15 @@ void CFlickrServiceTest::testFkrGetLoginUrl()
 	BeginMonitorUrlThread(cThreadParams);
 	WaitForAuthorization();
 
+	pSocialService->SetConnectionInfo(m_cCnctInfoVO);
+
 	CPPUNIT_ASSERT_MESSAGE(cFkErr.szMsg.c_str(),nResult==S_OK && g_bIsAuthFlowDone);
 }
 
 void CFlickrServiceTest::terminate()
 {
 	g_bIsAuthFlowDone = false;
+	g_szToken = "";
 }
+
+CFlickrConnectionInfo CFlickrServiceTest::m_cCnctInfoVO;

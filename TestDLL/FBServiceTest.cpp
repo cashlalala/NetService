@@ -81,15 +81,6 @@ void CFBServiceTest::setUp()
 	ISocialNetworkService::PFNGETINSTANCE pfn = (ISocialNetworkService::PFNGETINSTANCE) GetProcAddress(g_hNerServ,"GetInstance");
 	pSocialService = pfn(FACEBOOK);
 
-	char lpszTmp[1025];
-
-	memset(lpszTmp,0x0,1025);
-	GetPrivateProfileStringA("FBService","api_key",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
-	m_cCnctInfoVO.lpcszApiKey = string(lpszTmp);
-
-	if (!g_szToken.empty() && g_bIsAuthFlowDone)
-		m_cCnctInfoVO.szAccessToken = g_szToken;
-
 	pSocialService->SetConnectionInfo(m_cCnctInfoVO);
 }
 
@@ -105,6 +96,17 @@ void CFBServiceTest::tearDown()
 */
 void CFBServiceTest::testFBGetLoginURL()
 {
+
+	char lpszTmp[1025];
+
+	memset(lpszTmp,0x0,1025);
+	GetPrivateProfileStringA("FBService","api_key",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
+	m_cCnctInfoVO.lpcszApiKey = string(lpszTmp);
+
+	memset(lpszTmp,0x0,1025);
+	GetPrivateProfileStringA("FBService","app_secret",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
+	m_cCnctInfoVO.szAppSecret = string(lpszTmp);
+
 	string szLoginUrl ;
 	model::CFBError cFbErr;
 	int nResult = pSocialService->GetLoginURL(szLoginUrl, m_cCnctInfoVO.lpcszApiKey, m_cCnctInfoVO.szAppSecret, cFbErr,"user_photos");
@@ -120,10 +122,15 @@ void CFBServiceTest::testFBGetLoginURL()
 
 	WaitForAuthorization();
 
+	m_cCnctInfoVO.szAccessToken = g_szToken;
+
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK && !g_szToken.empty() && g_bIsAuthFlowDone);
 }
 
 void CFBServiceTest::terminate()
 {
 	g_bIsAuthFlowDone = false;
+	g_szToken = "";
 }
+
+CFBConnectionInfo CFBServiceTest::m_cCnctInfoVO;

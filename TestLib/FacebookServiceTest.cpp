@@ -58,6 +58,10 @@ void CFacebookServiceTest::testGetLoginUrl()
 	GetPrivateProfileStringA("FBService","api_key",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
 	m_cCnctInfoVO.lpcszApiKey = string(lpszTmp);
 
+	memset(lpszTmp,0x0,1025);
+	GetPrivateProfileStringA("FBService","app_secret",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
+	m_cCnctInfoVO.szAppSecret = string(lpszTmp);
+
 	string szLoginUrl ;
 	CFBError cFkErr;
 	int nResult = m_pFacebookService->GetLoginURL(szLoginUrl, m_cCnctInfoVO.lpcszApiKey, m_cCnctInfoVO.szAppSecret, cFkErr,"user_photos,user_videos,friends_videos,friends_photos,friends_about_me");

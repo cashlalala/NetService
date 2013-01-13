@@ -8,8 +8,10 @@ class CFBServiceTest: public CPPUNIT_NS::TestFixture
 	CPPUNIT_TEST_SUITE( CFBServiceTest );
 	/*
 	* testFBGetLoginURL must be the first function to test, 
-	* because it get the auth token for the consequent tests
-	* Do not alter the order of testFBGetLoginURL
+	* because it gets the auth token for the consequent tests.
+	* Further, it's the simulation of ui flow, so the ut of this function 
+	* contains some unnecessary code like the value settings.
+	* Do not alter the order of testGetLoginUrl
 	* ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ
 	*/
 	CPPUNIT_TEST( testFBGetLoginURL );
@@ -38,5 +40,5 @@ public:
 	void terminate();
 private:
 	ISocialNetworkService* pSocialService;
-	CFBConnectionInfo m_cCnctInfoVO;
+	static CFBConnectionInfo m_cCnctInfoVO;
 };
