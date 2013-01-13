@@ -11,10 +11,10 @@ using std::list;
 class CSocialServiceFactory
 {
 public:
-	static ISocialNetworkService* GetInstance(EnServiceType enServTp);
+	static ISocialNetworkService* GetSingletonInstance(EnServiceType enServTp);
 	static list<ISocialNetworkService*> GetAllServices();
 	static void CloseServices();
-	static int DeleteInstance( ISocialNetworkService* pISNS );
+	//static int DeleteInstance( ISocialNetworkService* pISNS );
 
 private:
 	CSocialServiceFactory(void);

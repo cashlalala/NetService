@@ -5,6 +5,7 @@
 
 //expose the symbol for compiler use
 extern std::string g_szToken;
+extern bool g_bIsAuthFlowDone;
 
 namespace testutil{
 	enum ServiceType {

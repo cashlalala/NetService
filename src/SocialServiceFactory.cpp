@@ -14,25 +14,29 @@ CSocialServiceFactory::~CSocialServiceFactory(void)
 {
 }
 
-ISocialNetworkService* CSocialServiceFactory::GetInstance( EnServiceType enServTp )
+ISocialNetworkService* CSocialServiceFactory::GetSingletonInstance( EnServiceType enServTp )
 {
-	ISocialNetworkService* pInst = S_MAP_SERVICES[enServTp];
-	if (pInst == NULL)
+	if ( NULL == S_MAP_SERVICES[enServTp] )
 	{
 		switch (enServTp)
 		{
 		case FACEBOOK:
-			pInst = new CFacebookService();
+			{
+				static CFacebookService cFbServicePrototype;
+				S_MAP_SERVICES[enServTp] = &cFbServicePrototype;
+			}
 			break;
 		case FLICKR:
-			pInst = new CFlickrService();
+			{
+				static CFlickrService cFkrServicePrototype;
+				S_MAP_SERVICES[enServTp] =  &cFkrServicePrototype;
+			}
 			break;
 		default:
 			break;
 		}
-		S_MAP_SERVICES[enServTp] = pInst;
 	}
-	return pInst;
+	return S_MAP_SERVICES[enServTp];
 }
 
 list<ISocialNetworkService*> CSocialServiceFactory::GetAllServices()
@@ -58,20 +62,20 @@ void CSocialServiceFactory::CloseServices()
 	S_MAP_SERVICES.clear();
 }
 
-int CSocialServiceFactory::DeleteInstance( ISocialNetworkService* pISNS )
-{
-	int nResuilt = E_FAIL;
-	map<EnServiceType,ISocialNetworkService*>::iterator it = S_MAP_SERVICES.begin();
-	for (;it!=S_MAP_SERVICES.end();++it)
-	{
-		if (pISNS == it->second)
-		{
-			delete it->second;
-			it->second = NULL;
-			S_MAP_SERVICES.erase(it);
-			nResuilt = S_OK;
-			break;
-		}
-	}
-	return nResuilt;
-}
+//int CSocialServiceFactory::DeleteInstance( ISocialNetworkService* pISNS )
+//{
+//	int nResuilt = E_FAIL;
+//	map<EnServiceType,ISocialNetworkService*>::iterator it = S_MAP_SERVICES.begin();
+//	for (;it!=S_MAP_SERVICES.end();++it)
+//	{
+//		if (pISNS == it->second)
+//		{
+//			delete it->second;
+//			it->second = NULL;
+//			S_MAP_SERVICES.erase(it);
+//			nResuilt = S_OK;
+//			break;
+//		}
+//	}
+//	return nResuilt;
+//}

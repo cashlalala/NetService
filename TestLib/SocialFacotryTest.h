@@ -8,7 +8,7 @@ class CSocialFacotryTest : public CPPUNIT_NS::TestFixture
 {
 	CPPUNIT_TEST_SUITE( CSocialFacotryTest );
 	CPPUNIT_TEST( testGetServiceFacebook );
-	CPPUNIT_TEST( testCloseServices );
+	//CPPUNIT_TEST( testCloseServices ); no more used after apply prototype pattern
 	CPPUNIT_TEST_SUITE_END();
 
 public:

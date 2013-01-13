@@ -106,7 +106,7 @@ int CFlickrService::GetLoginURL(string& szLoginUrl, const string& szAppId, IErro
 		mapParams[FLICK_PARAM_FROB] = m_cConnectInfo.szFrob;
 		mapParams[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapParams,m_cConnectInfo.szAppSecret.c_str());
 
-		szLoginUrl = "http://flickr.com/services/auth/?"  + util::CMapHelper::ToParamString(mapParams);
+		szLoginUrl = "http://www.flickr.com/services/auth/?"  + util::CMapHelper::ToParamString(mapParams);
 		m_pILogger->Debug("Get Login Url :[%s]",szLoginUrl.c_str());
 	} while (false);
 

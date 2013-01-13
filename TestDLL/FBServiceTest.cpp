@@ -87,7 +87,7 @@ void CFBServiceTest::setUp()
 	GetPrivateProfileStringA("FBService","api_key",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
 	m_cCnctInfoVO.lpcszApiKey = string(lpszTmp);
 
-	if (!g_szToken.empty())
+	if (!g_szToken.empty() && g_bIsAuthFlowDone)
 		m_cCnctInfoVO.szAccessToken = g_szToken;
 
 	pSocialService->SetConnectionInfo(m_cCnctInfoVO);
@@ -95,8 +95,8 @@ void CFBServiceTest::setUp()
 
 void CFBServiceTest::tearDown()
 {
-	ISocialNetworkService::PFNDELINSTANCE pfn = (ISocialNetworkService::PFNDELINSTANCE) GetProcAddress(g_hNerServ,"DelInstance");
-	pfn(pSocialService);
+	//ISocialNetworkService::PFNDELINSTANCE pfn = (ISocialNetworkService::PFNDELINSTANCE) GetProcAddress(g_hNerServ,"DelInstance");
+	//pfn(pSocialService);
 }
 
 
@@ -108,8 +108,7 @@ void CFBServiceTest::testFBGetLoginURL()
 	string szLoginUrl ;
 	model::CFBError cFbErr;
 	int nResult = pSocialService->GetLoginURL(szLoginUrl, m_cCnctInfoVO.lpcszApiKey, cFbErr,"user_photos");
-	szLoginUrl += "\r\n";
-	ShellExecuteA(NULL, "open", szLoginUrl.c_str(), NULL, NULL, SW_SHOW);
+	ShellExecuteA(NULL, "open", (szLoginUrl + "\r\n").c_str(), NULL, NULL, SW_SHOW);
 
 	/*
 	* This watch dog is just a workaround for unit tests for the purpose of fully automatically testing with chrome.
@@ -121,5 +120,10 @@ void CFBServiceTest::testFBGetLoginURL()
 
 	WaitForAuthorization();
 
-	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK && !g_szToken.empty());
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK && !g_szToken.empty() && g_bIsAuthFlowDone);
+}
+
+void CFBServiceTest::terminate()
+{
+	g_bIsAuthFlowDone = false;
 }

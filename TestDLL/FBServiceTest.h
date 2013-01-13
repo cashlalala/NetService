@@ -19,6 +19,7 @@ class CFBServiceTest: public CPPUNIT_NS::TestFixture
 	CPPUNIT_TEST( testFBGetUser );
 	CPPUNIT_TEST( testFBGetPhotos );
 	CPPUNIT_TEST( testGetFriends );
+	CPPUNIT_TEST( terminate );
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -33,6 +34,8 @@ public:
 	void testFBGetUser();
 	void testFBGetPhotos();
 	void testGetFriends();
+
+	void terminate();
 private:
 	ISocialNetworkService* pSocialService;
 	CFBConnectionInfo m_cCnctInfoVO;

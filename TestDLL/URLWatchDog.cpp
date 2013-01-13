@@ -9,6 +9,8 @@ HANDLE g_hThread = NULL;
 
 bool g_bFkrAuthFlow1stStep = false;
 
+bool g_bIsAuthFlowDone = false;
+
 int nCountDown = DEFAULT_COUNT_DOWN;
 
 unsigned int __stdcall Monitoring(void * pParm = NULL);
@@ -17,6 +19,7 @@ void BeginMonitorUrlThread(ThreadParams& params)
 {
 	g_szToken.clear();
 	g_bFkrAuthFlow1stStep = false;
+	g_bIsAuthFlowDone = false;
 	g_hThread = (HANDLE) _beginthreadex(NULL,0,Monitoring,(void*)&params,0,NULL);
 }
 
@@ -31,8 +34,9 @@ unsigned int __stdcall Monitoring(void * pParm)
 		if (nCountDown==0) return 1;
 		HWND hDeskTop = GetDesktopWindow();
 		HWND hWndChrome = FindWindowExA(hDeskTop, 0, "Chrome_WidgetWin_1", NULL);
-		HWND hWndWeb = FindWindowExA(hDeskTop, hWndChrome, "Chrome_WidgetWin_1", NULL);
-		HWND hWndUrl = FindWindowExA(hWndWeb, 0, "Chrome_OmniboxView",NULL);
+		//HWND hWndWeb = FindWindowExA(hDeskTop, hWndChrome, "Chrome_WidgetWin_1", NULL);
+		//HWND hWndUrl = FindWindowExA(hWndWeb, 0, "Chrome_OmniboxView",NULL);
+		HWND hWndUrl = FindWindowExA(hWndChrome, 0, "Chrome_OmniboxView",NULL);
 		if (hWndUrl)
 		{
 			ThreadParams* pParams = (ThreadParams*) pParm;
@@ -52,18 +56,23 @@ unsigned int __stdcall Monitoring(void * pParm)
 						memset(szToken,0x0,300);
 						strncpy_s(szToken,299,lpszTokenBegin,lpszEnd-lpszTokenBegin);
 						g_szToken = szToken;
+						g_bIsAuthFlowDone = true;
 						return 0;
 					}
 				}
 				break;
 			case testutil::Fkr:
 				{
+					std::string szUrl = "http://" + std::string(lpszText);
 					if (!g_bFkrAuthFlow1stStep &&
-						strcmp(pParams->szLoginUrl.c_str(),lpszText)==0)
+						pParams->szLoginUrl == szUrl)
 						g_bFkrAuthFlow1stStep = true;
 					if (g_bFkrAuthFlow1stStep && 
-						strcmp(pParams->szLoginUrl.c_str(),"http://www.flickr.com/services/auth/")==0)
+						szUrl == "http://www.flickr.com/services/auth/")
+					{
+						g_bIsAuthFlowDone = true;
 						return 0;
+					}
 				}
 				break;
 			default:
