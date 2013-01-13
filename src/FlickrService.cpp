@@ -38,7 +38,8 @@ CFlickrService::CFlickrService(void)
 
 CFlickrService::~CFlickrService(void)
 {
-	util::CDataMgrFactory::DeleteInstance(m_pIDataMgr);
+	//util::CDataMgrFactory::DeleteInstance(m_pIDataMgr);
+	delete m_pIDataMgr;
 }
 
 void CFlickrService::SetConnectionInfo( IConnectionInfo& cConectInfoVO )

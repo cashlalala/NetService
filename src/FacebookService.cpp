@@ -34,7 +34,8 @@ m_pIDataMgr(NULL)
 
 CFacebookService::~CFacebookService(void)
 {
-	util::CDataMgrFactory::DeleteInstance(m_pIDataMgr);
+	//util::CDataMgrFactory::DeleteInstance(m_pIDataMgr);
+	delete m_pIDataMgr;
 }
 
 void CFacebookService::SetConnectionInfo( IConnectionInfo& cConectInfoVO )
