@@ -86,7 +86,7 @@ void CFlickrServiceTest::testFkrGetLoginUrl()
 {
 	string szLoginUrl ;
 	model::CFkrError cFkErr;
-	int nResult = pSocialService->GetLoginURL(szLoginUrl, cCnctInfoVO.lpcszApiKey, cFkErr,"write");
+	int nResult = pSocialService->GetLoginURL(szLoginUrl, cCnctInfoVO.lpcszApiKey, cCnctInfoVO.szAppSecret, cFkErr,"write");
 	ShellExecuteA(NULL, "open", (szLoginUrl + "\r\n").c_str(), NULL, NULL, SW_SHOW);
 	
 	ThreadParams cThreadParams;

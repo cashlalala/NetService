@@ -18,7 +18,7 @@ public:
 
 	virtual void SetConnectionInfo(IConnectionInfo& cConectInfoVO);
 
-	virtual int GetLoginURL( string& szLoginUrl, const string& szAppId, IError& iErr, string szScope = "write" );
+	virtual int GetLoginURL( string& szLoginUrl, const string& szAppId, const string& szAppSecret, IError& iErr, string szScope = "write" );
 
 	virtual int GetPhotos(  IPhotoList& iPhotoLst, IError& iErr, string szId = "me", SysMaps::Str2Str& mapQryCriteria=SysMaps::Str2Str());
 
@@ -52,7 +52,7 @@ private:
 	int PreCallApi( SysMaps::Str2Str &mapParams );
 public:
 	//For flickr authorization
-	int GetFlickrAuthFrob(std::string& szFrob, IError& iErr);
+	int GetFlickrAuthFrob(std::string& szFrob, const std::string& szAppId, const string& szAppSecret, IError& iErr);
 
 	int GetFlickrAuthToken(string& szAuthTok, IError& iErr );
 

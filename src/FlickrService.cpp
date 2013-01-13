@@ -90,7 +90,7 @@ int CFlickrService::CallApi( HttpRespValObj& cHttpRespVO, SysMaps::Str2Str& mapP
 	return nResult;
 }
 
-int CFlickrService::GetLoginURL(string& szLoginUrl, const string& szAppId, IError& iErr, string szScope /*= "write" */ )
+int CFlickrService::GetLoginURL(string& szLoginUrl, const string& szAppId, const string& szAppSecret, IError& iErr, string szScope /*= "write" */ )
 {
 	int nResult = E_FAIL;
 	model::CFkrError cFkrErr;
@@ -98,14 +98,14 @@ int CFlickrService::GetLoginURL(string& szLoginUrl, const string& szAppId, IErro
 	{
 		//Normally, there are only two scenarios when you need to get url. First, you don't have the auth token; Second, you need refresh the token
 		m_cConnectInfo.szAuthToken = "";
-		nResult = GetFlickrAuthFrob(m_cConnectInfo.szFrob,cFkrErr);
+		nResult = GetFlickrAuthFrob(m_cConnectInfo.szFrob, szAppId, szAppSecret, cFkrErr);
 		EXCEPTION_BREAK(nResult);
 
 		SysMaps::Str2Str mapParams;
 		mapParams[FLICK_PARAM_API_KEY] = szAppId;
 		mapParams[FLICK_PARAM_PERMISSION] = szScope;
 		mapParams[FLICK_PARAM_FROB] = m_cConnectInfo.szFrob;
-		mapParams[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapParams,m_cConnectInfo.szAppSecret.c_str());
+		mapParams[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapParams,szAppSecret.c_str());
 
 		szLoginUrl = "http://www.flickr.com/services/auth/?"  + util::CMapHelper::ToParamString(mapParams);
 		m_pILogger->Debug("Get Login Url :[%s]",szLoginUrl.c_str());
@@ -144,16 +144,16 @@ int CFlickrService::GetProfile( IProfile& iProfile, IError& iErr, string szId/*=
 	return 0;
 }
 
-int CFlickrService::GetFlickrAuthFrob( std::string& szFrob, IError& iErr )
+int CFlickrService::GetFlickrAuthFrob( std::string& szFrob, const std::string& szAppId, const string& szAppSecret, IError& iErr )
 {
 	int nResult = E_FAIL;
 	HttpRespValObj cHttpRespVO;
 
 	SysMaps::Str2Str mapParams;
-	mapParams[FLICK_PARAM_API_KEY] = m_cConnectInfo.lpcszApiKey;
+	mapParams[FLICK_PARAM_API_KEY] = szAppId;
 	mapParams[FLICK_PARAM_METHOD] = FLICK_METHOD_AUTH_GETFROB;
 	mapParams[FLICK_PARAM_FORMAT] = FLICK_FORMAT_JSON;
-	mapParams[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapParams,m_cConnectInfo.szAppSecret.c_str());
+	mapParams[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapParams,szAppSecret.c_str());
 
 	string szComposedUrl = ComposeUrl(mapParams);
 	do 

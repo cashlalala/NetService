@@ -65,7 +65,7 @@ int CFacebookService::CallGraphAPI(HttpRespValObj& cHttpRespVO, string szId /*= 
 
 }
 
-int CFacebookService::GetLoginURL( string& szLoginUrl, const string& szAppId, IError& iErr, string szScope /*= "read_stream,publish_stream,user_photos,friends_photos,user_videos,friends_videos,offline_access"*/ )
+int CFacebookService::GetLoginURL( string& szLoginUrl, const string& szAppId, const string& szAppSecret, IError& iErr, string szScope /*= "read_stream,publish_stream,user_photos,friends_photos,user_videos,friends_videos,offline_access"*/ )
 {
 	string szUrl = "https://www.facebook.com/dialog/oauth?";
 	szUrl	 += "&client_id=" + szAppId;

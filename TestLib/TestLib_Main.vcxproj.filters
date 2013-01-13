@@ -10,6 +10,9 @@
     <Filter Include="TestData">
       <UniqueIdentifier>{9bfddbd9-6b48-413f-9b90-d73e627120c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{4e99741a-424d-4934-b237-359c9a30d55c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FacebookServiceTest.cpp">
@@ -36,6 +39,9 @@
     </ClCompile>
     <ClCompile Include="CodecHelperTest.cpp">
       <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TestDLL\URLWatchDog.cpp">
+      <Filter>Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +74,9 @@
     </ClInclude>
     <ClInclude Include="CodecHelperTest.h">
       <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TestDLL\URLWatchDog.h">
+      <Filter>Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

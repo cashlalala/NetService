@@ -107,7 +107,7 @@ void CFBServiceTest::testFBGetLoginURL()
 {
 	string szLoginUrl ;
 	model::CFBError cFbErr;
-	int nResult = pSocialService->GetLoginURL(szLoginUrl, m_cCnctInfoVO.lpcszApiKey, cFbErr,"user_photos");
+	int nResult = pSocialService->GetLoginURL(szLoginUrl, m_cCnctInfoVO.lpcszApiKey, m_cCnctInfoVO.szAppSecret, cFbErr,"user_photos");
 	ShellExecuteA(NULL, "open", (szLoginUrl + "\r\n").c_str(), NULL, NULL, SW_SHOW);
 
 	/*

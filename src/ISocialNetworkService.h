@@ -42,7 +42,7 @@ struct ISocialNetworkService
 	//First, you don't have the auth token; 
 	//Second, you need to refresh the token
 	//Both of these may set your original auth token to empty
-	virtual int GetLoginURL(string& szLoginUrl, const string& szAppId, IError& iErr, string szScope = "") = 0;
+	virtual int GetLoginURL(string& szLoginUrl, const string& szAppId, const string& szAppSecret, IError& iErr, string szScope = "") = 0;
 	
 	//Normally, there are usually three scenarios that you may need to set connection info
 	//First, you initialize the service;
