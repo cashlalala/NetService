@@ -6,16 +6,18 @@
 #include <WinUser.h>
 #include <SysTypes.h>
 #include <FlickrFields.h>
+#include "..\TestDLL\URLWatchDog.h"
 #include "shellapi.h"
+#include <iostream>
 
+using namespace std;
 using namespace systypes;
-static CFlickrConnectionInfo m_cCnctInfoVO;
-static bool bIsConfiged = false;
 
 CPPUNIT_TEST_SUITE_REGISTRATION( CFlickRServiceTest );
 
 CFlickRServiceTest::CFlickRServiceTest(void)
 {
+	m_pFlickrService = NULL;
 }
 
 CFlickRServiceTest::~CFlickRServiceTest(void)
@@ -25,31 +27,8 @@ CFlickRServiceTest::~CFlickRServiceTest(void)
 void CFlickRServiceTest::setUp()
 {
 	m_pFlickrService = new CFlickrService();
-	//CFlickrConnectionInfo cCnctInfoVO;
-	if (!bIsConfiged)
-	{
-		char* lpszTmp = new char[1025];
 
-		memset(lpszTmp,0x0,1025);
-		GetPrivateProfileStringA("FlickRService","api_key",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
-		m_cCnctInfoVO.lpcszApiKey = string(lpszTmp);
-
-		memset(lpszTmp,0x0,1025);
-		GetPrivateProfileStringA("FlickRService","shared_secret",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
-		m_cCnctInfoVO.szAppSecret = string(lpszTmp);
-
-		delete[] lpszTmp;
-
-		m_pFlickrService->SetConnectionInfo(m_cCnctInfoVO);
-
-		CFkrError cFkrErr;
-		string szLoginUrl ;
-		int nResult	= m_pFlickrService->GetLoginURL(szLoginUrl ,m_cCnctInfoVO.lpcszApiKey,cFkrErr,"write");
-		szLoginUrl += "\r\n";
-		ShellExecuteA(NULL, "open", szLoginUrl.c_str(), NULL, NULL, SW_SHOW);
-		MessageBoxA(NULL,"Please authorize the login request in your web browse.\n\nAfter authorizing it, click OK to continue.","Authorize Login Request", MB_OK);
-		bIsConfiged = true;
-	}
+	m_pFlickrService->SetConnectionInfo(m_cCnctInfoVO);
 }
 
 void CFlickRServiceTest::tearDown()
@@ -95,3 +74,45 @@ void CFlickRServiceTest::testGetOAuthRqstToken()
 	int nResult = m_pFlickrService->GetOAuthRqstToken(szRqstToken,szRqstTokenSecret,cFkrErr);
 	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg,nResult==S_OK);
 }
+
+void CFlickRServiceTest::terminate()
+{
+	g_bIsAuthFlowDone = false;
+	g_szToken = "";
+}
+
+void CFlickRServiceTest::tetGetLoginUrl()
+{
+
+	char lpszTmp[1025];
+	memset(lpszTmp,0x0,1025);
+	GetPrivateProfileStringA("FlickRService","api_key",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
+	m_cCnctInfoVO.lpcszApiKey = string(lpszTmp);
+	cout << "Get APP id: " << m_cCnctInfoVO.lpcszApiKey << endl;
+
+	memset(lpszTmp,0x0,1025);
+	GetPrivateProfileStringA("FlickRService","shared_secret",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
+	m_cCnctInfoVO.szAppSecret = string(lpszTmp);
+	cout << "Get secret : " << m_cCnctInfoVO.szAppSecret << endl;
+
+	string szLoginUrl ;
+	model::CFkrError cFkErr;
+	int nResult = m_pFlickrService->GetLoginURL(szLoginUrl, m_cCnctInfoVO.lpcszApiKey, m_cCnctInfoVO.szAppSecret, cFkErr,"write");
+
+	//If you call the "GetLoginURL" from dll interface, there is no need to write the following two lines.
+	//The only one thing you need to do is set the connection info which contains app id and secret to the service
+	CFlickrConnectionInfo* pIConInfo = dynamic_cast<CFlickrConnectionInfo*>(m_pFlickrService->GetConnectionInfo());
+	m_cCnctInfoVO.szFrob = pIConInfo->szFrob;
+
+	ShellExecuteA(NULL, "open", (szLoginUrl + "\r\n").c_str(), NULL, NULL, SW_SHOW);
+
+	ThreadParams cThreadParams;
+	cThreadParams.enService = testutil::Fkr;
+	cThreadParams.szLoginUrl = szLoginUrl;
+	BeginMonitorUrlThread(cThreadParams);
+	WaitForAuthorization();
+
+	CPPUNIT_ASSERT_MESSAGE(cFkErr.szMsg.c_str(),nResult==S_OK && g_bIsAuthFlowDone);
+}
+
+CFlickrConnectionInfo CFlickRServiceTest::m_cCnctInfoVO;

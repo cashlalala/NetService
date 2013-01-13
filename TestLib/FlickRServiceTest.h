@@ -8,10 +8,21 @@ class CFlickRServiceTest
 	: public CPPUNIT_NS::TestFixture
 {
 	CPPUNIT_TEST_SUITE( CFlickRServiceTest );
+	/*
+	* testFBGetLoginURL must be the first function to test, 
+	* because it gets the auth token for the consequent tests.
+	* Further, it's the simulation of ui flow, so the ut of this function 
+	* contains some unnecessary code like the value settings.
+	* Do not alter the order of testGetLoginUrl
+	* ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ
+	*/
+	CPPUNIT_TEST( tetGetLoginUrl );
+	// ¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô
 	CPPUNIT_TEST( testGetPhotos );
 	//CPPUNIT_TEST( testGetForb ); //only for development testing
 	//CPPUNIT_TEST( testGetToken ); //only for development testing
 	//CPPUNIT_TEST( testGetOAuthRqstToken ); //only for development testing
+	CPPUNIT_TEST( terminate );
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -21,12 +32,17 @@ public:
 
 	void setUp();
 	void tearDown();
+
+	void tetGetLoginUrl();
 	void testGetPhotos();
 	void testGetForb();
 	void testGetOAuthRqstToken();
 	void testGetToken();
 
+	void terminate();
+
 private:
 	CFlickrService* m_pFlickrService;
+	static CFlickrConnectionInfo m_cCnctInfoVO;
 };
 

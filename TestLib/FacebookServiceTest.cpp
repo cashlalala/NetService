@@ -1,4 +1,6 @@
 #include "FacebookServiceTest.h"
+#include "..\TestDLL\URLWatchDog.h"
+#include <Shellapi.h>
 #include <UrlHelper.h>
 #include <NetServiceErr.h>
 #include <iostream>
@@ -19,8 +21,6 @@ using std::endl;
 
 CPPUNIT_TEST_SUITE_REGISTRATION( CFacebookServiceTest );
 
-static CFBConnectionInfo g_CFBConnectInfo;
-
 CFacebookServiceTest::CFacebookServiceTest(void)
 {
 	m_pFacebookService= NULL;
@@ -34,15 +34,7 @@ void CFacebookServiceTest::setUp()
 {
 	m_pFacebookService = new CFacebookService();
 
-	char* lpszTmp = new char[1025];
-	memset(lpszTmp,0x0,1025);
-	GetPrivateProfileStringA("FBService","access_token",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
-	g_CFBConnectInfo.szAccessToken = string(lpszTmp);
-	cout << g_CFBConnectInfo.szAccessToken  << endl;
-	
-	delete[] lpszTmp;
-
-	m_pFacebookService->SetConnectionInfo(g_CFBConnectInfo);
+	m_pFacebookService->SetConnectionInfo(m_cCnctInfoVO);
 }
 
 void CFacebookServiceTest::tearDown()
@@ -59,12 +51,27 @@ void CFacebookServiceTest::testCallGraphApi()
 
 void CFacebookServiceTest::testGetLoginUrl()
 {
+
+	char lpszTmp[1025];
+
+	memset(lpszTmp,0x0,1025);
+	GetPrivateProfileStringA("FBService","api_key",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
+	m_cCnctInfoVO.lpcszApiKey = string(lpszTmp);
+
 	string szLoginUrl ;
 	CFBError cFkErr;
-	int nResult = m_pFacebookService->GetLoginURL(szLoginUrl, "215921841875602", cFkErr,"read_stream");
-	string szExpectLoginUrl = "https://www.facebook.com/dialog/oauth?client_id=215921841875602&redirect_uri=http://www.facebook.com/connect/login_success.html&response_type=token&display=popup&scope=read_stream%20";
-	string szRes = util::CUrlHelper::EncodeUrl(szExpectLoginUrl);
-	CPPUNIT_ASSERT(szExpectLoginUrl==szRes);
+	int nResult = m_pFacebookService->GetLoginURL(szLoginUrl, m_cCnctInfoVO.lpcszApiKey, m_cCnctInfoVO.szAppSecret, cFkErr,"user_photos,user_videos,friends_videos,friends_photos,friends_about_me");
+	
+	ShellExecuteA(NULL, "open", (szLoginUrl +"\r\n").c_str(), NULL, NULL, SW_SHOW);
+	ThreadParams cThreadParam;
+	cThreadParam.enService =  testutil::FB;
+	BeginMonitorUrlThread(cThreadParam);
+	WaitForAuthorization();
+	//This is a workaround for ut, you should figure out your way to get the access_token in url and set to connection info.
+	//In the future, this will be done by netservice.
+	m_cCnctInfoVO.szAccessToken = g_szToken;
+
+	CPPUNIT_ASSERT(nResult==S_OK && !g_szToken.empty() && g_bIsAuthFlowDone);
 }
 
 void CFacebookServiceTest::testGetUserInfo()
@@ -148,4 +155,12 @@ void CFacebookServiceTest::testGetProfile()
 	int nResult = m_pFacebookService->GetProfile(cFbVideoLst,cFbErr);
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
 }
+
+void CFacebookServiceTest::terminate()
+{
+	g_bIsAuthFlowDone = false;
+	g_szToken = "";
+}
+
+CFBConnectionInfo CFacebookServiceTest::m_cCnctInfoVO;
 
