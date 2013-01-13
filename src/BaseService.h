@@ -20,6 +20,8 @@ class CBaseSocialService :
 public:
 	virtual ~CBaseSocialService() = 0;
 
+	virtual IConnectionInfo* GetConnectionInfo() = 0;
+
 	static const SysMaps::HttpMethod2Str S_MAP_HTTP_METHOD;
 
 };

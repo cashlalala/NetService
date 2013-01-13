@@ -14,6 +14,8 @@ public:
 	CFlickrService(void);
 	virtual ~CFlickrService(void);
 
+	virtual IConnectionInfo* GetConnectionInfo();
+
 	virtual void SetConnectionInfo(IConnectionInfo& cConectInfoVO);
 
 	virtual int GetLoginURL( string& szLoginUrl, const string& szAppId, IError& iErr, string szScope = "write" );

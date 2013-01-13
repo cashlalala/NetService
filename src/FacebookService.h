@@ -13,6 +13,8 @@ public:
 	CFacebookService(void);
 	virtual ~CFacebookService(void);
 
+	virtual IConnectionInfo* GetConnectionInfo();
+
 	virtual void SetConnectionInfo(IConnectionInfo& cConectInfoVO);
 
 	virtual int GetLoginURL(string& szLoginUrl, const string& szAppId, IError& iErr, string szScope = "read_stream,publish_stream,user_photos,friends_photos,user_videos,friends_videos,offline_access");

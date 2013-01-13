@@ -263,3 +263,9 @@ int CFacebookService::CallFQLQuery(HttpRespValObj& cHttpRespVO,  string szQry )
 	int nResult = OpenUrl(cHttpRespVO, szComposedUrl);
 	return nResult;
 }
+
+IConnectionInfo* CFacebookService::GetConnectionInfo()
+{
+	return &m_cConnectInfo;
+}
+

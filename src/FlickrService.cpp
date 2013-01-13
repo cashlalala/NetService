@@ -349,3 +349,8 @@ int CFlickrService::PreCallApi( SysMaps::Str2Str &mapParams )
 
 	return nResult;
 }
+
+IConnectionInfo* CFlickrService::GetConnectionInfo()
+{
+	return &m_cConnectInfo;
+}
