@@ -225,7 +225,4 @@
   <ItemGroup>
     <None Include="ReadMe.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="Log4cxxConfig.xml" />
-  </ItemGroup>
 </Project>

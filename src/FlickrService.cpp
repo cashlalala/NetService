@@ -57,6 +57,7 @@ int CFlickrService::GetPhotos( IPhotoList& iPhotoLst, IError& iErr, string szId 
 	HttpRespValObj cHttpResp;
 	if (!szId.empty() && mapQryCriteria[FLICK_PARAM_USER_ID].empty()) 
 		mapQryCriteria[FLICK_PARAM_USER_ID] = szId;
+	mapQryCriteria[FLICK_PARAM_MEDIA] = FLICK_VALUE_MEDIA_PHOTO;
 	mapQryCriteria[FLICK_PARAM_METHOD] = FLICK_METHOD_PHOTO_SEARCH;
 	mapQryCriteria[FLICK_FIELD_EXTRA] = util::CStringHelper::Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
 																			FLICK_PHOTO_URL_C,FLICK_PHOTO_URL_O,
