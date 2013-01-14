@@ -11,6 +11,7 @@
 #include "FkRErrorModel.h"
 #include "FkRPhotoModel.h"
 #include "FkrAlbumModel.h"
+#include "FkrUserModel.h"
 #include "StringHelper.h"
 
 #include <sstream>
@@ -133,9 +134,29 @@ int CFlickrService::GetUserInfo( IUser& iUser, IError& iErr, string szUid/*="me"
 	return 0;
 }
 
-int CFlickrService::GetFriends( IUserList& iUserLst, IError& iErr, string szUid/*="me"*/, SysMaps::Str2Str& mapQryCriteria /*= SysMaps::Str2Str()*/ )
+int CFlickrService::GetFriends( IUserList& iUserLst, IError& iErr, string szUid/*=""*/, SysMaps::Str2Str& mapQryCriteria /*= SysMaps::Str2Str()*/ )
 {
-	return 0;
+	int nResult = E_FAIL;
+	HttpRespValObj cHttpResp;
+
+	if (!szUid.empty() && mapQryCriteria[FLICK_PARAM_USER_ID].empty()) 
+		mapQryCriteria[FLICK_PARAM_USER_ID] = szUid;
+	mapQryCriteria[FLICK_PARAM_METHOD] = FLICK_METHOD_CONTACTS_GETLIST;
+	do 
+	{
+		nResult = CallApi(cHttpResp, iErr, mapQryCriteria);
+		EXCEPTION_BREAK(nResult);
+
+		nResult = m_pIDataMgr->ParseFriendList(iUserLst,cHttpResp.szResp,util::Flickr,iErr);
+
+		CFkrUserList* pAlbLst = dynamic_cast<CFkrUserList*>(&iUserLst);
+		ComposePagingUrl(iUserLst,pAlbLst->nPage,pAlbLst->nPages,mapQryCriteria);
+	} while (false);
+
+	//Error Handling
+	ExceptionHandler(nResult, cHttpResp, iErr);
+
+	return nResult;
 }
 
 int CFlickrService::GetAlbums( IAlbumList& iAlbumLst, IError& iErr, string szUid/*="me"*/, SysMaps::Str2Str& mapQryCriteria /*= SysMaps::Str2Str()*/ )
@@ -156,6 +177,10 @@ int CFlickrService::GetAlbums( IAlbumList& iAlbumLst, IError& iErr, string szUid
 		CFkrAlbumList* pAlbLst = dynamic_cast<CFkrAlbumList*>(&iAlbumLst);
 		ComposePagingUrl(iAlbumLst,pAlbLst->nPage,pAlbLst->nPages,mapQryCriteria);
 	} while (false);
+
+		//Error Handling
+	ExceptionHandler(nResult, cHttpResp, iErr);
+
 	return nResult;
 }
 

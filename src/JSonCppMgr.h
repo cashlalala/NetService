@@ -54,6 +54,8 @@ namespace util
 		void TravFkrPhoto( Json::Value &jvRoot, IPhoto* pIPhoto );
 		void TravFkrAlbumList( Json::Value& jvRoot, IAlbumList& iAlbumList );
 		void TravFkrAlbum( Json::Value& item,IAlbum* pIAlbum );
+		void TravFkrFriendList( Json::Value& jvRoot, IUserList& iUserList );
+		void TravFkrFriend( Json::Value& item, IUser* pIUsr );
 		util::ILogger* m_pLogger;
 		std::list<string> m_listFkrPhotSizes;
 	};

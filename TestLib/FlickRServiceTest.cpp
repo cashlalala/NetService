@@ -2,6 +2,7 @@
 #include <FkRErrorModel.h>
 #include <FkRPhotoModel.h>
 #include <FkrAlbumModel.h>
+#include <FkrUserModel.h>
 #include <NetServiceErr.h>
 #include <WinBase.h>
 #include <WinUser.h>
@@ -123,6 +124,18 @@ void CFlickRServiceTest::testGetAlbums()
 	mapQryParams[FLICK_PARAM_PERPAGE] = "1";
 	mapQryParams[FLICK_PARAM_PAGE] = "2";
 	int nResult = m_pFlickrService->GetAlbums(cFkrAlbumList,cFkrErr,"91328748@N02",mapQryParams);
+	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK);
+}
+
+void CFlickRServiceTest::testGetFriends()
+{
+	model::CFkrUserList cFkrUsrList;
+	model::CFkrError cFkrErr;
+	SysMaps::Str2Str mapQryParams;
+	mapQryParams[FLICK_PARAM_PERPAGE] = "1";
+	mapQryParams[FLICK_PARAM_PAGE] = "2";
+	//always the friends of yourself
+	int nResult = m_pFlickrService->GetFriends(cFkrUsrList,cFkrErr,"",mapQryParams);
 	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK);
 }
 

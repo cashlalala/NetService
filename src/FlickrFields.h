@@ -42,6 +42,21 @@
 #define FLICK_PHOTOSET_TITLE "title"
 #define FLICK_PHOTOSET_DESCRIPTION "description"
 
+#define FLICK_CONTACTS "contacts"
+#define FLICK_CONTACTS_PAGE FLICK_PARAM_PAGE
+#define FLICK_CONTACTS_PAGES FLICK_PARAM_PAGES
+#define FLICK_CONTACTS_PERPAGE FLICK_PHOTOSETS_PERPAGE
+#define FLICK_CONTACTS_TOTAL FLICK_PHOTOSETS_TOTAL
+#define FLICK_CONTACTS_CONTACT "contact"
+#define FLICK_CONTACT_NSID "nsid"
+#define FLICK_CONTACT_USR_NAME "username"
+#define FLICK_CONTACT_ICON_SVR "iconserver"
+#define FLICK_CONTACT_ICON_FARM "iconfarm"
+#define FLICK_CONTACT_REAL_NAME "realname"
+#define FLICK_CONTACT_FRIEND "friend"
+#define FLICK_CONTACT_FAMILY "family"
+
+
 #define FLICK_PHOTOS	"photos"
 #define FLICK_PHOTOS_PAGE  FLICK_PARAM_PAGE
 #define FLICK_PHOTOS_PAGES  FLICK_PARAM_PAGES
@@ -113,3 +128,4 @@
 #define FLICK_METHOD_AUTH_GETFROB "flickr.auth.getFrob"
 #define FLICK_METHOD_AUTH_GETTOKEN "flickr.auth.getToken"
 #define FLICK_METHOD_PHOTOSET_GETLIST "flickr.photosets.getList"
+#define FLICK_METHOD_CONTACTS_GETLIST "flickr.contacts.getList"

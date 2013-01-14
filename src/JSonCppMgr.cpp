@@ -12,6 +12,7 @@
 #include "FkRErrorModel.h"
 #include "FkRPhotoModel.h"
 #include "FkrAlbumModel.h"
+#include "FkrUserModel.h"
 
 #include "StringHelper.h"
 
@@ -222,13 +223,29 @@ int util::CJsonCppMgr::ParseFriendList( IUserList& iUserList, string szInput, En
 
 	if (jrReader.parse(szInput.c_str(),jvRoot))
 	{
-		if (typeid(iUserList)==typeid(CFBUserList))
+		switch(enDataOwner)
 		{
-			nResult = TravFBErr(jvRoot,iError);
-			ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+		case Facebook:
+			{
+				nResult = TravFBErr(jvRoot,iError);
+				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 
-			TravFBFriendList(jvRoot,&iUserList);
-			nResult = S_OK;
+				TravFBFriendList(jvRoot,&iUserList);
+				nResult = S_OK;
+			}
+			break;
+		case Flickr:
+			{
+				nResult = TravFkrErr(jvRoot,iError);
+				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+
+				TravFkrFriendList(jvRoot,iUserList);
+				nResult = S_OK;
+			}
+			break;
+		default: 
+			nResult = NS_S_DMGR_NO_DATA_OWNER;
+			break;
 		}
 	}
 	else
@@ -557,4 +574,38 @@ void util::CJsonCppMgr::TravFkrAlbum( Json::Value& item,IAlbum* pIAlbum )
 																							item[FLICK_PHOTOSET_SERVER].asString().c_str(),
 																							pFkrAlbum->szCoverPhotoId.c_str(),
 																							item[FLICK_PHOTOSET_SECRET].asString().c_str());
+}
+
+void util::CJsonCppMgr::TravFkrFriendList( Json::Value& jvRoot, IUserList& iUserList )
+{
+	model::CFkrUserList* pFrkUsrLst = dynamic_cast<model::CFkrUserList*>(&iUserList);
+	pFrkUsrLst->nPage = atoi(jvRoot[FLICK_CONTACTS][FLICK_CONTACTS_PAGE].asString().c_str());
+	pFrkUsrLst->nPages = atoi(jvRoot[FLICK_CONTACTS][FLICK_CONTACTS_PAGES].asString().c_str());
+	pFrkUsrLst->nPerpage = atoi(jvRoot[FLICK_CONTACTS][FLICK_CONTACTS_PERPAGE].asString().c_str());
+	pFrkUsrLst->nTotal = atoi(jvRoot[FLICK_CONTACTS][FLICK_CONTACTS_TOTAL].asString().c_str());
+
+	int nFriends = jvRoot[FLICK_CONTACTS][FLICK_CONTACTS_CONTACT].size();
+	for (int i =0;i<nFriends;++i)
+	{
+		Json::Value item = jvRoot[FLICK_CONTACTS][FLICK_CONTACTS_CONTACT][i];
+		model::CFkrUser* cFkrUsr = new model::CFkrUser();
+		TravFkrFriend(item,cFkrUsr);
+		iUserList.listOfItem.push_back(cFkrUsr);
+	}
+}
+
+void util::CJsonCppMgr::TravFkrFriend( Json::Value& item, model::IUser* pIUsr )
+{
+	model::CFkrUser* pFkrUsr = dynamic_cast<model::CFkrUser*>(pIUsr);
+	pFkrUsr->szId = item[FLICK_CONTACT_NSID].asString();
+	pFkrUsr->szFullName = item[FLICK_CONTACT_REAL_NAME].asString();
+	pFkrUsr->szUsrName = item[FLICK_CONTACT_USR_NAME].asString();
+	pFkrUsr->bIsFriend = item[FLICK_CONTACT_FRIEND].asBool();
+	pFkrUsr->bIsFamily = item[FLICK_CONTACT_FAMILY].asBool();
+	pFkrUsr->pProfile = new CFkrProfile();
+	pFkrUsr->pProfile->szThumNail = util::CStringHelper::Format("http://farm%s.staticflickr.com/%s/buddyicons/%s.jpg", 
+		item[FLICK_CONTACT_ICON_FARM].asString().c_str(),
+		item[FLICK_CONTACT_ICON_SVR].asString().c_str(),
+		pFkrUsr->szId.c_str());
+	
 }

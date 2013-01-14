@@ -20,6 +20,7 @@ class CFlickRServiceTest
 	// ＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃
 	CPPUNIT_TEST( testGetPhotos );
 	CPPUNIT_TEST( testGetAlbums );
+	CPPUNIT_TEST( testGetFriends );
 	//CPPUNIT_TEST( testGetForb ); //only for development testing
 	//CPPUNIT_TEST( testGetToken ); //only for development testing
 	//CPPUNIT_TEST( testGetOAuthRqstToken ); //only for development testing
@@ -37,6 +38,7 @@ public:
 	void tetGetLoginUrl();
 	void testGetPhotos();
 	void testGetAlbums();
+	void testGetFriends();
 	void testGetForb();
 	void testGetOAuthRqstToken();
 	void testGetToken();
