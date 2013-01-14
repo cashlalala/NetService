@@ -17,10 +17,7 @@ namespace model
 	inline IProfile::~IProfile(){};
 
 	struct IUser : public IModel{
-		IUser()
-		{
-			pProfile = 0;
-		};
+		IUser() : pProfile(NULL){};
 		virtual ~IUser() = 0;
 		string szId;
 		string szFullName;

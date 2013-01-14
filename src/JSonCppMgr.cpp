@@ -125,6 +125,14 @@ int util::CJsonCppMgr::ParseUser( IUser& iUser, string szInput, EnDataOwner enDa
 				nResult = S_OK;
 				break;
 			}
+		case Flickr:
+			{
+				nResult = TravFkrErr(jvRoot,iError);
+				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+				TravFkrUser(jvRoot,iUser);
+				nResult = S_OK;
+				break;
+			}
 		default: 
 			nResult = NS_S_DMGR_NO_DATA_OWNER;
 			break;
@@ -601,11 +609,38 @@ void util::CJsonCppMgr::TravFkrFriend( Json::Value& item, model::IUser* pIUsr )
 	pFkrUsr->szFullName = item[FLICK_CONTACT_REAL_NAME].asString();
 	pFkrUsr->szUsrName = item[FLICK_CONTACT_USR_NAME].asString();
 	pFkrUsr->bIsFriend = item[FLICK_CONTACT_FRIEND].asBool();
-	pFkrUsr->bIsFamily = item[FLICK_CONTACT_FAMILY].asBool();
-	pFkrUsr->pProfile = new CFkrProfile();
-	pFkrUsr->pProfile->szThumNail = util::CStringHelper::Format("http://farm%s.staticflickr.com/%s/buddyicons/%s.jpg", 
-		item[FLICK_CONTACT_ICON_FARM].asString().c_str(),
-		item[FLICK_CONTACT_ICON_SVR].asString().c_str(),
-		pFkrUsr->szId.c_str());
+	pFkrUsr->bIsFamily = item[FLICK_CONTACT_FAMILY].asBool();	
+	if (item[FLICK_CONTACT_ICON_FARM].asString()!="0" && 
+		item[FLICK_CONTACT_ICON_SVR].asString()!="0")
+	{
+		pFkrUsr->pProfile = new CFkrProfile();
+		pFkrUsr->pProfile->szThumNail = util::CStringHelper::Format("http://farm%s.staticflickr.com/%s/buddyicons/%s.jpg", 
+			item[FLICK_CONTACT_ICON_FARM].asString().c_str(),
+			item[FLICK_CONTACT_ICON_SVR].asString().c_str(),
+			pFkrUsr->szId.c_str());
+	}
+
+	
+}
+
+void util::CJsonCppMgr::TravFkrUser( Json::Value& jvRoot, IUser& iUser )
+{
+	model::CFkrUser* pFkrUser = dynamic_cast<model::CFkrUser*>(&iUser);
+	pFkrUser->bIsFamily = atoi(jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ISFAMILY].asString().c_str()) != 0;
+	pFkrUser->bIsFriend = atoi(jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ISFRIEND].asString().c_str()) != 0;
+	pFkrUser->bIsProUsr = atoi(jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ISPRO].asString().c_str()) != 0;
+	pFkrUser->szFullName = jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_REAL_NAME][FLICK_FIELD_CONTENT].asString();
+	pFkrUser->szId = jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ID].asString();
+	pFkrUser->szUsrName = jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_USR_NAME][FLICK_FIELD_CONTENT].asString();
+	if (jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ICONFARM].asString()!="0" && 
+		jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ICONSVR].asString()!="0")
+	{
+		pFkrUser->pProfile = new CFkrProfile();
+		pFkrUser->pProfile->szThumNail = util::CStringHelper::Format("http://farm%s.staticflickr.com/%s/buddyicons/%s.jpg", 
+			jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ICONFARM].asString().c_str(),
+			jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ICONSVR].asString().c_str(),
+			pFkrUser->szId.c_str());
+	}
+
 	
 }

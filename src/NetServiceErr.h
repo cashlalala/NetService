@@ -67,7 +67,9 @@
 // ISOCIALNETWORKSERVICE
 //
 ///////////////////////////////////////////////////////////////////////////////
-#define  NS_E_SN_FLICKR_NO_METHOD				MAKE_NETSERVICE_ERROR(ITF_SOCIALNETWORKSERVICE,0x001)
+#define NS_E_SN_SERVICE_NOT_ON_THE_SPEC		MAKE_NETSERVICE_ERROR(ITF_SOCIALNETWORKSERVICE,0x001)
+
+#define  NS_E_SN_FLICKR_NO_METHOD					MAKE_NETSERVICE_ERROR(ITF_SOCIALNETWORKSERVICE,0x002)
 
 ///////////////////////////////////////////////////////////////////////////////
 //

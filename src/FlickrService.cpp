@@ -121,7 +121,9 @@ int CFlickrService::GetLoginURL(string& szLoginUrl, const string& szAppId, const
 
 int CFlickrService::GetVideos( IVideoList& iVideoList, IError& iErr, string szId/*="me"*/, SysMaps::Str2Str& mapQryCriteria /*= SysMaps::Str2Str()*/ )
 {
-	return 0;
+	iErr.szCode = util::CStringHelper::Format("%d",NS_E_SN_SERVICE_NOT_ON_THE_SPEC);
+	iErr.szMsg = "No Service provided!!!";
+	return NS_E_SN_SERVICE_NOT_ON_THE_SPEC;
 }
 
 int CFlickrService::GetUsersInfo( IUserList& iUserLst, IError& iErr, SysList::StrList& listUid, SysMaps::Str2Str& mapQryCriteria /*= SysMaps::Str2Str()*/ )
@@ -131,7 +133,27 @@ int CFlickrService::GetUsersInfo( IUserList& iUserLst, IError& iErr, SysList::St
 
 int CFlickrService::GetUserInfo( IUser& iUser, IError& iErr, string szUid/*="me"*/, SysMaps::Str2Str& mapQryCriteria /*= SysMaps::Str2Str()*/ )
 {
-	return 0;
+	int nResult = E_FAIL;
+	HttpRespValObj cHttpResp;
+
+	if (!szUid.empty() && mapQryCriteria[FLICK_PARAM_USER_ID].empty()) 
+		mapQryCriteria[FLICK_PARAM_USER_ID] = szUid;
+	mapQryCriteria[FLICK_PARAM_METHOD] = FLICK_METHOD_PEOPLE_GETINFO;
+	do 
+	{
+		nResult = CallApi(cHttpResp, iErr, mapQryCriteria);
+		EXCEPTION_BREAK(nResult);
+
+		nResult = m_pIDataMgr->ParseUser(iUser,cHttpResp.szResp,util::Flickr,iErr);
+		EXCEPTION_BREAK(nResult);
+
+		nResult = S_OK;
+	} while (false);
+
+	//Error Handling
+	ExceptionHandler(nResult, cHttpResp, iErr);
+
+	return nResult;
 }
 
 int CFlickrService::GetFriends( IUserList& iUserLst, IError& iErr, string szUid/*=""*/, SysMaps::Str2Str& mapQryCriteria /*= SysMaps::Str2Str()*/ )
