@@ -69,7 +69,7 @@ struct ISocialNetworkService
 
 	virtual int GetFriends(IUserList& iUserLst, IError& iErr, string szUid="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str()) = 0;
 
-	virtual int GetAlbums(IAlbumList& iAlbumLst, IError& iErr, string szUid="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str()) = 0;
+	virtual int GetAlbums(IAlbumList& iAlbumLst, IError& iErr, string szUid="", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str()) = 0;
 
 	/*
 	* ----------------Profile Functions----------------

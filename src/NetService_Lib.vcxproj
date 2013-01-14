@@ -146,6 +146,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\NetKernel\Src\INetKernel.h" />
     <ClInclude Include="CodecHelper.h" />
+    <ClInclude Include="FkrAlbumModel.h" />
     <ClInclude Include="FkRErrorModel.h" />
     <ClInclude Include="FkRPhotoModel.h" />
     <ClInclude Include="FlickrFields.h" />

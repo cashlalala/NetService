@@ -30,7 +30,7 @@ public:
 
 	virtual int GetFriends(IUserList& iUserLst, IError& iErr, string szUid="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str()) ;
 
-	virtual int GetAlbums(IAlbumList& iAlbumLst, IError& iErr, string szUid="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str());
+	virtual int GetAlbums(IAlbumList& iAlbumLst, IError& iErr, string szUid="", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str());
 
 	virtual int GetProfile(IProfile& iProfile, IError& iErr, string szId="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str());
 
@@ -41,14 +41,11 @@ private:
 	static const string S_OAUTH_CALLBACK_URL;
 	static const ServerInfo S_SERVER_INFO;
 
-	static string S_FROB;
-
 	CFlickrConnectionInfo m_cConnectInfo;
 	
 	util::IDataManager* m_pIDataMgr;
 	util::ILogger* m_pILogger;
 
-	string ExtractJsonStrFromReply(const string& szReply);
 	string ComposeUrl( SysMaps::Str2Str& mapParams );
 	void ComposePagingUrl(IPage& iPhotoLst, int nCurPage, int nTotalPage, const SysMaps::Str2Str& mapParams );
 	int CallApi(HttpRespValObj& cHttpRespVO, IError& iErr, SysMaps::Str2Str& mapParams = SysMaps::Str2Str(), EnHttpMethod enMethod = systypes::Get);

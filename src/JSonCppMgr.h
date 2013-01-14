@@ -52,7 +52,8 @@ namespace util
 		int TravFkrErr(Json::Value& jvRoot, IError& iError);
 		void TravrFkrPhotoList( Json::Value &jvRoot, IPhotoList &iPhotoList);
 		void TravFkrPhoto( Json::Value &jvRoot, IPhoto* pIPhoto );
-
+		void TravFkrAlbumList( Json::Value& jvRoot, IAlbumList& iAlbumList );
+		void TravFkrAlbum( Json::Value& item,IAlbum* pIAlbum );
 		util::ILogger* m_pLogger;
 		std::list<string> m_listFkrPhotSizes;
 	};

@@ -11,6 +11,7 @@
 #define FLICK_PARAM_PAGE "page"
 #define FLICK_PARAM_PAGES "pages"
 #define FLICK_PARAM_USER_ID "user_id"
+#define FLICK_PARAM_NO_JSON_CALLBACK "nojsoncallback"
 
 #define FLICK_OAUTH_CALLBACK "oauth_callback"
 
@@ -25,15 +26,31 @@
 #define FLICK_AUTH_TOKEN "token"
 #define FLICK_AUTH_TOKEN_CONTENT FLICK_FIELD_CONTENT
 
+#define FLICK_PHOTOSETS		"photosets"
+#define FLICK_PHOTOSETS_PAGE FLICK_PARAM_PAGE
+#define FLICK_PHOTOSETS_PAGES FLICK_PARAM_PAGES
+#define FLICK_PHOTOSETS_PERPAGE "perpage"
+#define FLICK_PHOTOSETS_TOTAL "total"
+#define FLICK_PHOTOSET	"photoset"
+#define FLICK_PHOTOSET_ID			"id"
+#define FLICK_PHOTOSET_SERVER "server"
+#define FLICK_PHOTOSET_PRIMARY "primary"
+#define FLICK_PHOTOSET_SECRET "secret"
+#define FLICK_PHOTOSET_FARM		"farm"
+#define FLICK_PHOTOSET_PHOTOS "photos"
+#define FLICK_PHOTOSET_VIDEOS "videos"
+#define FLICK_PHOTOSET_TITLE "title"
+#define FLICK_PHOTOSET_DESCRIPTION "description"
+
 #define FLICK_PHOTOS	"photos"
 #define FLICK_PHOTOS_PAGE  FLICK_PARAM_PAGE
 #define FLICK_PHOTOS_PAGES  FLICK_PARAM_PAGES
-#define FLICK_PHOTOS_PERPAGE  "perpage"
-#define FLICK_PHOTOS_TOTAL "total"
+#define FLICK_PHOTOS_PERPAGE  FLICK_PHOTOSETS_PERPAGE
+#define FLICK_PHOTOS_TOTAL FLICK_PHOTOSETS_TOTAL
 #define FLICK_PHOTO		"photo"
-#define FLICK_PHOTO_ID				"id"
-#define FLICK_PHOTO_SERVER "server"
-#define FLICK_PHOTO_SECRET "secret"
+#define FLICK_PHOTO_ID				FLICK_PHOTOSET_ID
+#define FLICK_PHOTO_SERVER FLICK_PHOTOSET_SERVER
+#define FLICK_PHOTO_SECRET FLICK_PHOTOSET_SECRET
 #define FLICK_PHOTO_FARM "farm"
 #define FLICK_PHOTO_TITLE "title"
 #define FLICK_PHOTO_OWNER "owner"
@@ -95,3 +112,4 @@
 #define FLICK_METHOD_PHOTO_SEARCH "flickr.photos.search"
 #define FLICK_METHOD_AUTH_GETFROB "flickr.auth.getFrob"
 #define FLICK_METHOD_AUTH_GETTOKEN "flickr.auth.getToken"
+#define FLICK_METHOD_PHOTOSET_GETLIST "flickr.photosets.getList"

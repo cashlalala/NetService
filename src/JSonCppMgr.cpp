@@ -11,6 +11,9 @@
 #include "FlickrFields.h"
 #include "FkRErrorModel.h"
 #include "FkRPhotoModel.h"
+#include "FkrAlbumModel.h"
+
+#include "StringHelper.h"
 
 #include <typeinfo>
 #include <sstream>
@@ -334,6 +337,15 @@ int util::CJsonCppMgr::ParseAlbumList( IAlbumList& iAlbumList, string szInput, E
 				nResult = S_OK;
 				break;
 			}
+		case Flickr:
+			{
+				nResult = TravFkrErr(jvRoot,iError);
+				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+
+				TravFkrAlbumList(jvRoot,iAlbumList);
+				nResult = S_OK;
+				break;
+			}
 		default: 
 			nResult = NS_S_DMGR_NO_DATA_OWNER;
 			break;
@@ -511,4 +523,38 @@ void util::CJsonCppMgr::TravFkrPhoto( Json::Value &jvRoot, IPhoto* pIPhoto )
 		pFkrImg->nHeight = atoi(jvRoot[FLICK_PHOTO_HEIGHT + *it].asString().c_str());
 		pFkrPhto->listOfItem.push_back(pFkrImg);
 	}
+}
+
+void util::CJsonCppMgr::TravFkrAlbumList( Json::Value& jvRoot, IAlbumList& iAlbumList )
+{
+	model::CFkrAlbumList* pFkrAlbumLst = dynamic_cast<model::CFkrAlbumList*>(&iAlbumList);
+	pFkrAlbumLst->nPage = atoi(jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSETS_PAGE].asString().c_str());
+	pFkrAlbumLst->nPages = jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSETS_PAGES].asInt();
+	pFkrAlbumLst->nPerpage = atoi(jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSETS_PERPAGE].asString().c_str());
+	pFkrAlbumLst->nTotal = jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSETS_TOTAL].asInt();
+
+	int nAlbums = jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSET].size();
+	for (int i =0;i<nAlbums;++i)
+	{
+		Json::Value item = jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSET][i];
+		model::CFkrAlbum* cFkrAlbum = new model::CFkrAlbum();
+		TravFkrAlbum(item,cFkrAlbum);
+		iAlbumList.listOfItem.push_back(cFkrAlbum);
+	}
+}
+
+void util::CJsonCppMgr::TravFkrAlbum( Json::Value& item,IAlbum* pIAlbum )
+{
+	model::CFkrAlbum* pFkrAlbum = dynamic_cast<model::CFkrAlbum*>(pIAlbum);
+	pFkrAlbum->nCount = atoi(item[FLICK_PHOTOSET_VIDEOS].asString().c_str()) + 
+										atoi(item[FLICK_PHOTOSET_PHOTOS].asString().c_str());
+	pFkrAlbum->szCoverPhotoId = item[FLICK_PHOTOSET_PRIMARY].asString();
+	pFkrAlbum->szDescription = item[FLICK_PHOTOSET_DESCRIPTION][FLICK_FIELD_CONTENT].asString();
+	pFkrAlbum->szId = item[FLICK_PHOTOSET_ID].asString();
+	pFkrAlbum->szTitle = item[FLICK_PHOTOSET_TITLE][FLICK_FIELD_CONTENT].asString();
+	pFkrAlbum->szThumbNail = util::CStringHelper::Format("http://farm%s.staticflickr.com/%s/%s_%s_t.jpg",
+																							item[FLICK_PHOTOSET_FARM].asString().c_str(),
+																							item[FLICK_PHOTOSET_SERVER].asString().c_str(),
+																							pFkrAlbum->szCoverPhotoId.c_str(),
+																							item[FLICK_PHOTOSET_SECRET].asString().c_str());
 }

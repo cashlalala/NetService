@@ -1,6 +1,7 @@
 #include "FlickRServiceTest.h"
 #include <FkRErrorModel.h>
 #include <FkRPhotoModel.h>
+#include <FkrAlbumModel.h>
 #include <NetServiceErr.h>
 #include <WinBase.h>
 #include <WinUser.h>
@@ -33,7 +34,12 @@ void CFlickRServiceTest::setUp()
 
 void CFlickRServiceTest::tearDown()
 {
-		delete m_pFlickrService;
+	//If you call the "GetLoginURL" from dll interface, there is no need to write the following two lines.
+	//The only one thing you need to do is set the connection info which contains app id and secret to the service
+	CFlickrConnectionInfo* pIConInfo = dynamic_cast<CFlickrConnectionInfo*>(m_pFlickrService->GetConnectionInfo());
+	m_cCnctInfoVO.szFrob = pIConInfo->szFrob;
+	m_cCnctInfoVO.szAuthToken = pIConInfo->szAuthToken;
+	delete m_pFlickrService;
 }
 
 void CFlickRServiceTest::testGetPhotos()
@@ -99,13 +105,7 @@ void CFlickRServiceTest::tetGetLoginUrl()
 	model::CFkrError cFkErr;
 	int nResult = m_pFlickrService->GetLoginURL(szLoginUrl, m_cCnctInfoVO.lpcszApiKey, m_cCnctInfoVO.szAppSecret, cFkErr,"write");
 
-	//If you call the "GetLoginURL" from dll interface, there is no need to write the following two lines.
-	//The only one thing you need to do is set the connection info which contains app id and secret to the service
-	CFlickrConnectionInfo* pIConInfo = dynamic_cast<CFlickrConnectionInfo*>(m_pFlickrService->GetConnectionInfo());
-	m_cCnctInfoVO.szFrob = pIConInfo->szFrob;
-
 	ShellExecuteA(NULL, "open", (szLoginUrl + "\r\n").c_str(), NULL, NULL, SW_SHOW);
-
 	ThreadParams cThreadParams;
 	cThreadParams.enService = testutil::Fkr;
 	cThreadParams.szLoginUrl = szLoginUrl;
@@ -113,6 +113,17 @@ void CFlickRServiceTest::tetGetLoginUrl()
 	WaitForAuthorization();
 
 	CPPUNIT_ASSERT_MESSAGE(cFkErr.szMsg.c_str(),nResult==S_OK && g_bIsAuthFlowDone);
+}
+
+void CFlickRServiceTest::testGetAlbums()
+{
+	model::CFkrAlbumList cFkrAlbumList;
+	model::CFkrError cFkrErr;
+	SysMaps::Str2Str mapQryParams;
+	mapQryParams[FLICK_PARAM_PERPAGE] = "1";
+	mapQryParams[FLICK_PARAM_PAGE] = "2";
+	int nResult = m_pFlickrService->GetAlbums(cFkrAlbumList,cFkrErr,"91328748@N02",mapQryParams);
+	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK);
 }
 
 CFlickrConnectionInfo CFlickRServiceTest::m_cCnctInfoVO;
