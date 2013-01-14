@@ -161,4 +161,13 @@ void CFlickRServiceTest::testGetUsersInfo()
 	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK);
 }
 
+void CFlickRServiceTest::testGetProfile()
+{
+	model::CFkrProfile cFkrProfile;
+	model::CFkrError cFkrErr;
+	SysMaps::Str2Str mapQryParams;
+	int nResult = m_pFlickrService->GetProfile(cFkrProfile,cFkrErr,"92188701@N07",mapQryParams);
+	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK);
+}
+
 CFlickrConnectionInfo CFlickRServiceTest::m_cCnctInfoVO;

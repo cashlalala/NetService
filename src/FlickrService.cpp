@@ -244,7 +244,19 @@ int CFlickrService::GetAlbums( IAlbumList& iAlbumLst, IError& iErr, string szUid
 
 int CFlickrService::GetProfile( IProfile& iProfile, IError& iErr, string szId/*="me"*/, SysMaps::Str2Str& mapQryCriteria /*= SysMaps::Str2Str()*/ )
 {
-	return 0;
+	CFkrUser cFkrUsr;
+	int nResult = GetUserInfo(cFkrUsr,iErr,szId,mapQryCriteria);
+	CFkrProfile* pFkrProfileDest = dynamic_cast<CFkrProfile*>(&iProfile);
+	CFkrProfile* pFkrProfileSrc = dynamic_cast<CFkrProfile*>(cFkrUsr.pProfile);
+	;
+	if (cFkrUsr.pProfile)
+		pFkrProfileDest->Clone(*pFkrProfileSrc);//this function should be replace by visitor pattern
+	else
+	{
+		iErr.szMsg = "The user has no thumbnail.";
+		nResult = NS_S_SN_FLICKR_NO_THUMBNAIL;
+	}
+	return nResult;
 }
 
 int CFlickrService::GetFlickrAuthFrob( std::string& szFrob, const std::string& szAppId, const string& szAppSecret, IError& iErr )

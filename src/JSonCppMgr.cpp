@@ -619,7 +619,9 @@ void util::CJsonCppMgr::TravFkrFriend( Json::Value& item, model::IUser* pIUsr )
 			item[FLICK_CONTACT_ICON_SVR].asString().c_str(),
 			pFkrUsr->szId.c_str());
 	}
-
+	else
+		m_pLogger->Debug("This queryee [%s] don't have the thumbnail or open the access right for the querier",
+		pFkrUsr->szId.c_str());
 	
 }
 
@@ -640,7 +642,11 @@ void util::CJsonCppMgr::TravFkrUser( Json::Value& jvRoot, IUser& iUser )
 			jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ICONFARM].asString().c_str(),
 			jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ICONSVR].asString().c_str(),
 			pFkrUser->szId.c_str());
+		
 	}
+	else
+		m_pLogger->Debug("This queryee [%s] don't have the thumbnail or open the access right for the querier",
+										pFkrUser->szId.c_str());
 
 	
 }
