@@ -19,16 +19,14 @@ namespace model
 
 	inline IAlbum::~IAlbum(){};
 
-	struct IAlbumList: IModel {
+	struct IAlbumList: IPagedList<model::IAlbum*> {
 		virtual ~IAlbumList() = 0;
-		list<IAlbum*> listAlbum;
-		string szNext;
-		string szPrevious;
+		//list<IAlbum*> listAlbum;
 	};
 
 	inline IAlbumList::~IAlbumList()
 	{
-		SAFE_DELETE_LIST(list<IAlbum*>,listAlbum)
+		//SAFE_DELETE_LIST(list<IAlbum*>,listAlbum)
 	};
 
 }

@@ -111,7 +111,7 @@ int CFacebookService::GetUsersInfo( IUserList& iUserLst, IError& iErr, SysList::
 			nResult = m_pIDataMgr->ParseUser(*cFbUsr,cHttpResp.szResp,util::Facebook,iErr);
 			EXCEPTION_BREAK(nResult)
 
-			iUserLst.listUser.push_back(cFbUsr);
+			iUserLst.listOfItem.push_back(cFbUsr);
 			nResult = S_OK;
 		} while (false);
 
@@ -127,7 +127,7 @@ int CFacebookService::GetUsersInfo( IUserList& iUserLst, IError& iErr, SysList::
 			}
 
 			SAFE_DELETE_OBJECT(cFbUsr);
-			SAFE_DELETE_LIST(list<IUser*>,iUserLst.listUser);
+			SAFE_DELETE_LIST(list<IUser*>,iUserLst.listOfItem);
 
 			break;
 		}

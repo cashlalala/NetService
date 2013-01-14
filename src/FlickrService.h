@@ -50,7 +50,7 @@ private:
 
 	string ExtractJsonStrFromReply(const string& szReply);
 	string ComposeUrl( SysMaps::Str2Str& mapParams );
-	void ComposePagingUrl(IPhotoList& iPhotoLst, const SysMaps::Str2Str& mapParams );
+	void ComposePagingUrl(IPage& iPhotoLst, int nCurPage, int nTotalPage, const SysMaps::Str2Str& mapParams );
 	int CallApi(HttpRespValObj& cHttpRespVO, IError& iErr, SysMaps::Str2Str& mapParams = SysMaps::Str2Str(), EnHttpMethod enMethod = systypes::Get);
 	int PreCallApi(IError& iErr, SysMaps::Str2Str &mapParams);
 public:

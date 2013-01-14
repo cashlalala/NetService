@@ -32,16 +32,13 @@ namespace model
 		SAFE_DELETE_OBJECT(pProfile);
 	};
 
-	struct IUserList  : public IModel{
+	struct IUserList  : public IPagedList<IUser*>{
 		virtual ~IUserList() = 0;
-		list<IUser*> listUser;
-		string szNext;
-		string szPrevious;
 	};
 
 	inline IUserList::~IUserList()
 	{
-		SAFE_DELETE_LIST(list<IUser*>,listUser)
+		//SAFE_DELETE_LIST(list<IUser*>,listUser)
 	};
 
 }

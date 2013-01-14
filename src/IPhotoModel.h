@@ -20,29 +20,25 @@ namespace model
 
 	inline IImage::~IImage(){};
 
-	struct IPhoto : virtual public IImage{
+	struct IPhoto : virtual public IImage, virtual public IList<IImage*>{
 		virtual ~IPhoto() = 0;
 		string szId;
 		string szLink;
 		string szThumbNail;
-		list<IImage*> listImages;
 	};
 
 	inline IPhoto::~IPhoto()
 	{
-		SAFE_DELETE_LIST(list<IImage*>,listImages)
+		//SAFE_DELETE_LIST(list<IImage*>,listImages)
 	};
 
-	struct IPhotoList : public IModel{
+	struct IPhotoList : public IPagedList<IPhoto*>{
 		virtual ~IPhotoList() = 0;
-		list<IPhoto*> listPhoto;
-		string szNext;
-		string szPrevious;
 	};
 
 	inline IPhotoList::~IPhotoList()
 	{
-		SAFE_DELETE_LIST(list<IPhoto*>,listPhoto)
+		//SAFE_DELETE_LIST(list<IPhoto*>,listPhoto)
 	};
 
 }

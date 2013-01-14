@@ -13,6 +13,7 @@
     -->
   <appender name="appxNormalAppender" class="org.apache.log4j.FileAppender">
     <param name="file" value="appxLogFile.log" />
+    <param name="priority" value="TRACE" />
     <param name="append" value="true" />
     <layout class="org.apache.log4j.PatternLayout">
       <param name="ConversionPattern" value="%d %-5p [%t:%x] %c{2} (%F:%L) - %m%n" />

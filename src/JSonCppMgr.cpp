@@ -141,7 +141,7 @@ void util::CJsonCppMgr::TravFBPhotoList( Json::Value &jvRoot, IPhotoList &iPhoto
 		Json::Value item = jvRoot[FB_DATA][i];
 		model::CFBPhoto* cFbPhot = new model::CFBPhoto();
 		TravFBPhoto(item,cFbPhot);
-		iPhotoList.listPhoto.push_back(cFbPhot);
+		iPhotoList.listOfItem.push_back(cFbPhot);
 	}
 }
 
@@ -162,7 +162,7 @@ void util::CJsonCppMgr::TravFBPhoto( Json::Value &jvRoot, IPhoto* pIPhoto )
 		iImage->nHeight = item[FB_IMAGE_HEIGHT].asInt();
 		iImage->nWidth = item[FB_IMAGE_WIDTH].asInt();
 		iImage->szSource = item[FB_IMAGE_SOURCE].asString();
-		pFbPhto->listImages.push_back(iImage);
+		pFbPhto->listOfItem.push_back(iImage);
 	}
 }
 
@@ -245,7 +245,7 @@ void util::CJsonCppMgr::TravFBFriendList( Json::Value jvRoot, IUserList* pUserLi
 		pFbUsr->szFullName = jvRoot[FB_DATA][i][FB_USER_NAME].asString();
 		pFbUsr->pProfile  = new CFBProfile();
 		pFbUsr->pProfile->szThumNail = jvRoot[FB_DATA][i][FB_USER_PICTURE][FB_USER_PICTURE_DATA][FB_USER_PICTURE_DATA_URL].asString();
-		pFbUserList->listUser.push_back(pFbUsr);
+		pFbUserList->listOfItem.push_back(pFbUsr);
 	}
 	pFbUserList->szNext = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
 	pFbUserList->szPrevious = jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
@@ -290,7 +290,7 @@ void util::CJsonCppMgr::TravFBVideoList( Json::Value& jvRoot, IVideoList* pIVide
 		CFBVideo* pFbVideo = new CFBVideo();
 		Json::Value jvItem = jvRoot[FB_DATA][i];
 		TravFBVideo(jvItem,pFbVideo);
-		pFbVideoList->listVideo.push_back(pFbVideo);
+		pFbVideoList->listOfItem.push_back(pFbVideo);
 	}
 	pFbVideoList->szNext = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
 	pFbVideoList->szPrevious = jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
@@ -354,7 +354,7 @@ void util::CJsonCppMgr::TravFBAlbumList( Json::Value& jvRoot, IAlbumList* pIAlbu
 		CFBAlbum* pFbAlbum = new CFBAlbum();
 		Json::Value jvItem = jvRoot[FB_DATA][i];
 		TravFBAlbum(jvItem,pFbAlbum);
-		pFbAlbumList->listAlbum.push_back(pFbAlbum);
+		pFbAlbumList->listOfItem.push_back(pFbAlbum);
 	}
 	pFbAlbumList->szNext = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
 	pFbAlbumList->szPrevious = jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
@@ -480,7 +480,7 @@ void util::CJsonCppMgr::TravrFkrPhotoList( Json::Value &jvRoot, IPhotoList &iPho
 		Json::Value item = jvRoot[FLICK_PHOTOS][FLICK_PHOTO][i];
 		model::CFkrPhoto* cFkrPhoto = new model::CFkrPhoto();
 		TravFkrPhoto(item,cFkrPhoto);
-		cFkrPhotoLst->listPhoto.push_back(cFkrPhoto);
+		cFkrPhotoLst->listOfItem.push_back(cFkrPhoto);
 	}
 }
 
@@ -493,7 +493,7 @@ void util::CJsonCppMgr::TravFkrPhoto( Json::Value &jvRoot, IPhoto* pIPhoto )
 	pFkrPhto->szId = jvRoot[FLICK_PHOTO_ID].asString();
 	pFkrPhto->szTitle = jvRoot[FLICK_PHOTO_TITLE].asString();
 	pFkrPhto->szOwner = jvRoot[FLICK_PHOTO_OWNER].asString();
-	pFkrPhto->szLink = "http://www.flickr.com/photos/" + pFkrPhto->szOwner + pFkrPhto->szId;
+	pFkrPhto->szLink = "http://www.flickr.com/photos/" + pFkrPhto->szOwner + "/"+ pFkrPhto->szId;
 	pFkrPhto->szMedia = jvRoot[FLICK_PHOTO_MEDIA].asString();
 
 	//the original size if only available for pro user
@@ -509,6 +509,6 @@ void util::CJsonCppMgr::TravFkrPhoto( Json::Value &jvRoot, IPhoto* pIPhoto )
 		pFkrImg->szSource = jvRoot[FLICK_PHOTO_URL + *it].asString();
 		pFkrImg->nWidth = atoi(jvRoot[FLICK_PHOTO_WIDTH + *it].asString().c_str());
 		pFkrImg->nHeight = atoi(jvRoot[FLICK_PHOTO_HEIGHT + *it].asString().c_str());
-		pFkrPhto->listImages.push_back(pFkrImg);
+		pFkrPhto->listOfItem.push_back(pFkrImg);
 	}
 }

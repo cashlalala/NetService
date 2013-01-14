@@ -32,16 +32,13 @@ namespace model
 		SAFE_DELETE_LIST(list<IVideoFormat*>,listFormat)
 	};
 
-	struct IVideoList :  public IModel{
+	struct IVideoList :  public IPagedList<IVideo*>{
 		virtual ~IVideoList() =0;
-		list<IVideo*> listVideo;
-		string szNext;
-		string szPrevious;
 	};
 
 	inline IVideoList::~IVideoList()
 	{
-		SAFE_DELETE_LIST(list<IVideo*>,listVideo)
+		//SAFE_DELETE_LIST(list<IVideo*>,listVideo)
 	};
 
 }

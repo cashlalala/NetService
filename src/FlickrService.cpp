@@ -10,6 +10,7 @@
 #include "LoggerMgr.h"
 #include "FkRErrorModel.h"
 #include "FkRPhotoModel.h"
+#include "FkrAlbumModel.h"
 #include "StringHelper.h"
 
 #include <sstream>
@@ -74,7 +75,8 @@ int CFlickrService::GetPhotos( IPhotoList& iPhotoLst, IError& iErr, string szId 
 		nResult = m_pIDataMgr->ParsePhotoList(iPhotoLst,ExtractJsonStrFromReply(cHttpResp.szResp),util::Flickr,iErr);
 		EXCEPTION_BREAK(nResult)
 
-		ComposePagingUrl(iPhotoLst,mapQryCriteria);
+		CFkrPhotoList* pFkrPhotoLst = dynamic_cast<CFkrPhotoList*>(&iPhotoLst);
+		ComposePagingUrl(iPhotoLst, pFkrPhotoLst->nPage, pFkrPhotoLst->nPages,mapQryCriteria);
 	} while (false);
 	return nResult;
 }
@@ -141,7 +143,23 @@ int CFlickrService::GetFriends( IUserList& iUserLst, IError& iErr, string szUid/
 
 int CFlickrService::GetAlbums( IAlbumList& iAlbumLst, IError& iErr, string szUid/*="me"*/, SysMaps::Str2Str& mapQryCriteria /*= SysMaps::Str2Str()*/ )
 {
-	return 0;
+	int nResult = E_FAIL;
+	//HttpRespValObj cHttpResp;
+	//if (!szUid.empty() && mapQryCriteria[FLICK_PARAM_USER_ID].empty()) 
+	//	mapQryCriteria[FLICK_PARAM_USER_ID] = szUid;
+	//mapQryCriteria[FLICK_PARAM_METHOD] = FLICK_METHOD_PHOTOSET_GETLIST;
+	//do 
+	//{
+	//	nResult = CallApi(cHttpResp,iErr, mapQryCriteria);
+	//	EXCEPTION_BREAK(nResult)
+
+	//	nResult = m_pIDataMgr->ParseAlbumList(iAlbumLst,ExtractJsonStrFromReply(cHttpResp.szResp),util::Flickr,iErr);
+	//	EXCEPTION_BREAK(nResult)
+
+	//	CFkrAlbumList* pAlbLst = dynamic_cast<CFkrAlbumList*>(&iAlbumLst);
+	//	ComposePagingUrl(iAlbumLst,pAlbLst->nPage,pAlbLst->nPages,mapQryCriteria);
+	//} while (false);
+	return nResult;
 }
 
 int CFlickrService::GetProfile( IProfile& iProfile, IError& iErr, string szId/*="me"*/, SysMaps::Str2Str& mapQryCriteria /*= SysMaps::Str2Str()*/ )
@@ -306,26 +324,25 @@ string CFlickrService::ExtractJsonStrFromReply( const string& szReply )
 	return szReply;
 }
 
-void CFlickrService::ComposePagingUrl( IPhotoList& iPhotoLst, const SysMaps::Str2Str& mapParams )
+void CFlickrService::ComposePagingUrl( IPage& iPage, int nCurPage, int nTotalPage, const SysMaps::Str2Str& mapParams )
 {
-	model::CFkrPhotoList* cFkrPhotoLst = dynamic_cast<model::CFkrPhotoList*>( &iPhotoLst);
 	SysMaps::Str2Str mapCpy(mapParams);
 	SysMaps::Str2Str::const_iterator cit;
-	if (cFkrPhotoLst->nPage<cFkrPhotoLst->nPages/*next page*/)
+	if (nCurPage<nTotalPage/*next page*/)
 	{
-		mapCpy[FLICK_PHOTOS_PAGE] = util::CStringHelper::Format("%d",  cFkrPhotoLst->nPage+1);
+		mapCpy[FLICK_PHOTOS_PAGE] = util::CStringHelper::Format("%d", nCurPage+1);
 		cit = mapCpy.find(FLICK_PARAM_API_SIG);
 		mapCpy.erase(cit);
 		mapCpy[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapCpy,m_cConnectInfo.szAppSecret.c_str());
-		iPhotoLst.szNext = ComposeUrl(mapCpy);
+		iPage.szNext = ComposeUrl(mapCpy);
 	}
-	if (cFkrPhotoLst->nPage>1 /*prev page*/)
+	if (nCurPage>1 /*prev page*/)
 	{
-		mapCpy[FLICK_PHOTOS_PAGE] = util::CStringHelper::Format("%d",  cFkrPhotoLst->nPage-1);
+		mapCpy[FLICK_PHOTOS_PAGE] = util::CStringHelper::Format("%d",  nCurPage-1);
 		cit = mapCpy.find(FLICK_PARAM_API_SIG);
 		mapCpy.erase(cit);
 		mapCpy[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapCpy,m_cConnectInfo.szAppSecret.c_str());
-		iPhotoLst.szPrevious = ComposeUrl(mapCpy);	
+		iPage.szPrevious = ComposeUrl(mapCpy);	
 	}
 }
 
