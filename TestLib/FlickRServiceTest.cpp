@@ -148,4 +148,17 @@ void CFlickRServiceTest::testGetUserInfo()
 	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK);
 }
 
+void CFlickRServiceTest::testGetUsersInfo()
+{
+	model::CFkrUserList cFkrUsrLst;
+	model::CFkrError cFkrErr;
+	SysList::StrList listUid;
+	listUid.push_back("92188701@N07");
+	listUid.push_back("70735667@N03");
+	listUid.push_back("91786782@N02");
+	SysMaps::Str2Str mapQryParams;
+	int nResult = m_pFlickrService->GetUsersInfo(cFkrUsrLst,cFkrErr,listUid,mapQryParams);
+	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK);
+}
+
 CFlickrConnectionInfo CFlickRServiceTest::m_cCnctInfoVO;
