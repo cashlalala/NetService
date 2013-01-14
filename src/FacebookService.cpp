@@ -127,8 +127,6 @@ int CFacebookService::GetUsersInfo( IUserList& iUserLst, IError& iErr, SysList::
 			}
 
 			SAFE_DELETE_OBJECT(cFbUsr);
-			SAFE_DELETE_LIST(list<IUser*>,iUserLst.listOfItem);
-
 			break;
 		}
 	}
