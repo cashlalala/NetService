@@ -51,13 +51,15 @@ private:
 	string ExtractJsonStrFromReply(const string& szReply);
 	string ComposeUrl( SysMaps::Str2Str& mapParams );
 	void ComposePagingUrl(IPhotoList& iPhotoLst, const SysMaps::Str2Str& mapParams );
-	int CallApi(HttpRespValObj& cHttpRespVO, SysMaps::Str2Str& mapParams = SysMaps::Str2Str(), EnHttpMethod enMethod = systypes::Get);
-	int PreCallApi( SysMaps::Str2Str &mapParams );
+	int CallApi(HttpRespValObj& cHttpRespVO, IError& iErr, SysMaps::Str2Str& mapParams = SysMaps::Str2Str(), EnHttpMethod enMethod = systypes::Get);
+	int PreCallApi(IError& iErr, SysMaps::Str2Str &mapParams);
 public:
 	//For flickr authorization
 	int GetFlickrAuthFrob(std::string& szFrob, const std::string& szAppId, const string& szAppSecret, IError& iErr);
 
 	int GetFlickrAuthToken(string& szAuthTok, IError& iErr );
+
+	void ExceptionHandler( int nResult, HttpRespValObj &cHttpRespVO, IError &iErr );
 
 	//For flickr OAuth 1.0
 	int GetOAuthRqstToken(string& szOAuthRqstToken, string& szOAuthRqstTokenSecret, IError& iErr);

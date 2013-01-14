@@ -34,9 +34,9 @@ unsigned int __stdcall Monitoring(void * pParm)
 		if (nCountDown==0) return 1;
 		HWND hDeskTop = GetDesktopWindow();
 		HWND hWndChrome = FindWindowExA(hDeskTop, 0, "Chrome_WidgetWin_1", NULL);
-		//HWND hWndWeb = FindWindowExA(hDeskTop, hWndChrome, "Chrome_WidgetWin_1", NULL);
-		//HWND hWndUrl = FindWindowExA(hWndWeb, 0, "Chrome_OmniboxView",NULL);
-		HWND hWndUrl = FindWindowExA(hWndChrome, 0, "Chrome_OmniboxView",NULL);
+		HWND hWndWeb = FindWindowExA(hDeskTop, hWndChrome, "Chrome_WidgetWin_1", NULL);
+		HWND hWndUrl = FindWindowExA(hWndWeb, 0, "Chrome_OmniboxView",NULL);
+		//HWND hWndUrl = FindWindowExA(hWndChrome, 0, "Chrome_OmniboxView",NULL);
 		if (hWndUrl)
 		{
 			ThreadParams* pParams = (ThreadParams*) pParm;
