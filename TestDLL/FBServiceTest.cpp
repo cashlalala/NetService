@@ -7,6 +7,7 @@
 #include <FBErrorModel.h>
 #include <FBAlbumModel.h>
 #include <FBPhotoModel.h>
+#include <FBVideoModel.h>
 #include <FBFields.h>
 #include <SysTypes.h>
 
@@ -16,6 +17,8 @@ using namespace std;
 
 CPPUNIT_TEST_SUITE_REGISTRATION( CFBServiceTest );
 
+CFBConnectionInfo CFBServiceTest::m_cCnctInfoVO;
+
 CFBServiceTest::CFBServiceTest(void)
 {
 	pSocialService = NULL;
@@ -23,57 +26,6 @@ CFBServiceTest::CFBServiceTest(void)
 
 CFBServiceTest::~CFBServiceTest(void)
 {
-}
-
-void CFBServiceTest::testGetFriends()
-{
-	model::CFBUserList cFbUsrLst;
-	model::CFBError cFbErr;
-	SysMaps::Str2Str mapMy;
-
-	char lpszTmp[20];
-	memset(lpszTmp,0x0,20);
-	sprintf(lpszTmp,"%s,%s",FB_USER_PICTURE,FB_USER_NAME);
-
-	mapMy[FB_FIELDS]= lpszTmp;
-	int nResult = pSocialService->GetFriends(cFbUsrLst,cFbErr,"me",mapMy);
-	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
-}
-
-void CFBServiceTest::testFBGetPhotos()
-{
-	model::CFBPhotoList cFBPhotoList;
-	model::CFBError cFbErr;
-	int nResult = pSocialService->GetPhotos(cFBPhotoList,cFbErr);
-	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
-}
-
-
-void CFBServiceTest::testFBGetUser()
-{
-	model::CFBUser cFbUsr;
-	model::CFBError cFbErr;
-
-	int nResult = pSocialService->GetUserInfo(cFbUsr,cFbErr);
-	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
-}
-
-void CFBServiceTest::testFBGetProfile()
-{
-	model::CFBProfile cFbProfile;
-	model::CFBError cFbErr;
-
-	int nResult = pSocialService->GetProfile(cFbProfile,cFbErr);
-	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
-}
-
-void CFBServiceTest::testFBGetAlbumList()
-{
-	model::CFBAlbumList cFbAlbumList;
-	model::CFBError cFbErr;
-
-	int nResult = pSocialService->GetAlbums(cFbAlbumList,cFbErr);
-	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
 }
 
 void CFBServiceTest::setUp()
@@ -127,10 +79,80 @@ void CFBServiceTest::testFBGetLoginURL()
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK && !g_szToken.empty() && g_bIsAuthFlowDone);
 }
 
+void CFBServiceTest::testGetFriends()
+{
+	model::CFBUserList cFbUsrLst;
+	model::CFBError cFbErr;
+	SysMaps::Str2Str mapMy;
+
+	char lpszTmp[20];
+	memset(lpszTmp,0x0,20);
+	sprintf(lpszTmp,"%s,%s",FB_USER_PICTURE,FB_USER_NAME);
+
+	mapMy[FB_FIELDS]= lpszTmp;
+	int nResult = pSocialService->GetFriends(cFbUsrLst,cFbErr,"me",mapMy);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
+}
+
+void CFBServiceTest::testFBGetPhotos()
+{
+	model::CFBPhotoList cFBPhotoList;
+	model::CFBError cFbErr;
+	int nResult = pSocialService->GetPhotos(cFBPhotoList,cFbErr);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
+}
+
+
+void CFBServiceTest::testFBGetUser()
+{
+	model::CFBUser cFbUsr;
+	model::CFBError cFbErr;
+
+	int nResult = pSocialService->GetUserInfo(cFbUsr,cFbErr);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
+}
+
+void CFBServiceTest::testFBGetProfile()
+{
+	model::CFBProfile cFbProfile;
+	model::CFBError cFbErr;
+
+	int nResult = pSocialService->GetProfile(cFbProfile,cFbErr);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
+}
+
+void CFBServiceTest::testFBGetAlbumList()
+{
+	model::CFBAlbumList cFbAlbumList;
+	model::CFBError cFbErr;
+
+	int nResult = pSocialService->GetAlbums(cFbAlbumList,cFbErr);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
+}
+
+void CFBServiceTest::testGetVideos()
+{
+	model::CFBVideoList cFbVideoLst;
+	model::CFBError cFbErr;
+	SysMaps::Str2Str mapMy;
+	int nResult = pSocialService->GetVideos(cFbVideoLst,cFbErr);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
+}
+
+void CFBServiceTest::testGetUsersInfo()
+{
+	model::CFBUserList cFbUsrLst ;
+	model::CFBError cFbErr;
+	SysMaps::Str2Str mapMy;
+	list<string> listUsr;
+	listUsr.push_back("726727685");
+	listUsr.push_back("508872928");
+	int nResult = pSocialService->GetUsersInfo(cFbUsrLst,cFbErr,listUsr);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
+}
+
 void CFBServiceTest::terminate()
 {
 	g_bIsAuthFlowDone = false;
 	g_szToken = "";
 }
-
-CFBConnectionInfo CFBServiceTest::m_cCnctInfoVO;
