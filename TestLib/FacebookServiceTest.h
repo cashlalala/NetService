@@ -23,7 +23,14 @@ class CFacebookServiceTest : public CPPUNIT_NS::TestFixture
 	CPPUNIT_TEST( testGetVideos );
 	CPPUNIT_TEST( testGetAlbums );
 	CPPUNIT_TEST( testGetProfile );
+	/*
+	* Do not move the order these two functions, they should be 
+	* always the last two test to be run for the purpose of ui flow simulation
+	* ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ
+	*/
+	CPPUNIT_TEST( testGetLogoutUrl );
 	CPPUNIT_TEST( terminate );
+	// ¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -40,6 +47,7 @@ public:
 	void testGetVideos();
 	void testGetAlbums();
 	void testGetProfile();
+	void testGetLogoutUrl();
 
 	void terminate();
 private:

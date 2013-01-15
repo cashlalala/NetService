@@ -30,6 +30,8 @@ const string CFlickrService::S_OAUTH_RQSTTOKEN_URL = "http://www.flickr.com/serv
 
 const string CFlickrService::S_OAUTH_CALLBACK_URL = "http://www.flickr.com";
 
+const string CFlickrService::S_LOGOUT_URL = "http://www.flickr.com/logout.gne";
+
 const ServerInfo CFlickrService::S_SERVER_INFO = {"api.flickr.com","/services/rest/?","80","443"};
 
 
@@ -481,4 +483,12 @@ void CFlickrService::ExceptionHandler( int nResult, HttpRespValObj &cHttpRespVO,
 			iErr.szMsg = ss.str() ;
 		}
 	}
+}
+
+int CFlickrService::GetLogOutURL(string& szLogoutUrl , SysMaps::Str2Str& mapParams /*= SysMaps::Str2Str()*/)
+{
+	if (mapParams.find("magic_cookie")==mapParams.end())
+		return NS_E_SN_SERVICE_WRONG_RQST_PARAMS;
+	szLogoutUrl = util::CStringHelper::Format("%s?%s",S_LOGOUT_URL,util::CMapHelper::ToParamString(mapParams).c_str());
+	return S_OK;
 }

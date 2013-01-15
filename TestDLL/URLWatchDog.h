@@ -17,6 +17,7 @@ namespace testutil{
 typedef struct {
 	testutil::ServiceType enService;
 	std::string szLoginUrl;
+	std::string szBrowser;
 } ThreadParams;
 
 void BeginMonitorUrlThread(ThreadParams& params);

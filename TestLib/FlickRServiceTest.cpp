@@ -108,6 +108,7 @@ void CFlickRServiceTest::tetGetLoginUrl()
 
 	ShellExecuteA(NULL, "open", (szLoginUrl + "\r\n").c_str(), NULL, NULL, SW_SHOW);
 	ThreadParams cThreadParams;
+	cThreadParams.szBrowser = "IE";
 	cThreadParams.enService = testutil::Fkr;
 	cThreadParams.szLoginUrl = szLoginUrl;
 	BeginMonitorUrlThread(cThreadParams);
@@ -168,6 +169,16 @@ void CFlickRServiceTest::testGetProfile()
 	SysMaps::Str2Str mapQryParams;
 	int nResult = m_pFlickrService->GetProfile(cFkrProfile,cFkrErr,"92188701@N07",mapQryParams);
 	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK);
+}
+
+void CFlickRServiceTest::testGetLogoutUrl()
+{
+	string szLogoutUrl;
+	SysMaps::Str2Str mapParams;
+	mapParams["magic_cookie"] = "";
+	int nResult = m_pFlickrService->GetLogOutURL(szLogoutUrl,mapParams);
+
+	CPPUNIT_ASSERT_MESSAGE("Get Logout url fail.",nResult==S_OK);
 }
 
 CFlickrConnectionInfo CFlickRServiceTest::m_cCnctInfoVO;

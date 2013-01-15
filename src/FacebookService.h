@@ -19,6 +19,8 @@ public:
 
 	virtual int GetLoginURL(string& szLoginUrl, const string& szAppId, const string& szAppSecret, IError& iErr, string szScope = "read_stream,publish_stream,user_photos,friends_photos,user_videos,friends_videos,offline_access");
 
+	virtual int GetLogOutURL(string& szLogoutUrl ,SysMaps::Str2Str& mapParams = SysMaps::Str2Str());
+
 	virtual int GetPhotos(  IPhotoList& iPhotoLst, IError& iErr, string szId = "me", SysMaps::Str2Str& mapQryCriteria=SysMaps::Str2Str());
 
 	virtual int GetVideos(IVideoList& iVideoList, IError& iErr, string szId="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str()) ;
@@ -37,6 +39,7 @@ private:
 
 	static const SysMaps::EnCat2Str S_MAP_CATEGORY;
 	static const string S_STR_URL_PREFIX;
+	static const string S_LOGOUT_URL;
 
 	static const ServerInfo S_SERVER_INFO;
 

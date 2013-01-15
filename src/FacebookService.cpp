@@ -9,6 +9,8 @@
 #include "UrlHelper.h"
 #include "FBUserModel.h"
 
+#include <WinInet.h>
+
 #include <cassert>
 #include <sstream>
 
@@ -20,6 +22,8 @@ using namespace model;
 
 
 const string CFacebookService::S_STR_URL_PREFIX = "https://";
+
+const string CFacebookService::S_LOGOUT_URL = "https://www.facebook.com/login.php";
 
 const SysMaps::EnCat2Str 
 CFacebookService::S_MAP_CATEGORY = CMapHelper::CreateCategoryMap();
@@ -265,5 +269,26 @@ int CFacebookService::CallFQLQuery(HttpRespValObj& cHttpRespVO,  string szQry )
 IConnectionInfo* CFacebookService::GetConnectionInfo()
 {
 	return &m_cConnectInfo;
+}
+
+int CFacebookService::GetLogOutURL( string& szLogoutUrl ,SysMaps::Str2Str& mapParams /*= SysMaps::Str2Str()*/ )
+{
+	int nResult = E_FAIL;
+
+	do 
+	{
+		//destory internet session
+		nResult = InternetSetOptionA(NULL,INTERNET_OPTION_END_BROWSER_SESSION,NULL,NULL);
+		if (!SUCCEEDED(nResult)) return nResult;
+
+		//delete facebook cookie
+		nResult = DeleteUrlCache(Cookie,"facebook.com/");
+		if (!SUCCEEDED(nResult)) return nResult;
+
+		szLogoutUrl = S_LOGOUT_URL;
+		nResult= S_OK;
+	} while (false);
+	
+	return nResult;
 }
 

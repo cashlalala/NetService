@@ -3,6 +3,7 @@
 #include <string>
 
 using std::string;
+using std::wstring;
 
 namespace util
 {
@@ -10,6 +11,7 @@ namespace util
 	{
 	public:
 		static string Format(const char* lpcszFormat, ...);
+		static std::wstring S2WS(const std::string& s);
 	};
 }
 

@@ -57,21 +57,6 @@
     <ClCompile Include="SocialServiceFactory.cpp">
       <Filter>SocialNetwork</Filter>
     </ClCompile>
-    <ClCompile Include="FBAlbumModel.cpp">
-      <Filter>Model\Facebook</Filter>
-    </ClCompile>
-    <ClCompile Include="FBErrorModel.cpp">
-      <Filter>Model\Facebook</Filter>
-    </ClCompile>
-    <ClCompile Include="FBPhotoModel.cpp">
-      <Filter>Model\Facebook</Filter>
-    </ClCompile>
-    <ClCompile Include="FBUserMdoel.cpp">
-      <Filter>Model\Facebook</Filter>
-    </ClCompile>
-    <ClCompile Include="FBVideoModel.cpp">
-      <Filter>Model\Facebook</Filter>
-    </ClCompile>
     <ClCompile Include="FlickrService.cpp">
       <Filter>SocialNetwork</Filter>
     </ClCompile>

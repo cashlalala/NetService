@@ -50,6 +50,10 @@ struct ISocialNetworkService
 	//Third, the app id and secret change
 	virtual void SetConnectionInfo(IConnectionInfo& cConectInfoVO) = 0;
 
+	//For flickr, you need to memorize the magic_cookie which is in your http reply body when you successfully logged in by browsing the url you get by "GetLoginURL" and set the parameter into the mapParams.
+	//For facebook, leave it empty.
+	virtual int GetLogOutURL(string& szLogoutUrl ,SysMaps::Str2Str& mapParams = SysMaps::Str2Str()) = 0;
+
 	/*
 	* ----------------Media getter Functions----------------
 	*/

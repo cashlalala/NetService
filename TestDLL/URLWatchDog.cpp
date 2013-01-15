@@ -29,17 +29,31 @@ void BeginMonitorUrlThread(ThreadParams& params)
 */
 unsigned int __stdcall Monitoring(void * pParm)
 {
+	ThreadParams* pParams = (ThreadParams*) pParm;
+	HWND hWndUrl = NULL;
 	while(true)
 	{
 		if (nCountDown==0) return 1;
-		HWND hDeskTop = GetDesktopWindow();
-		HWND hWndChrome = FindWindowExA(hDeskTop, 0, "Chrome_WidgetWin_1", NULL);
-		HWND hWndWeb = FindWindowExA(hDeskTop, hWndChrome, "Chrome_WidgetWin_1", NULL);
-		HWND hWndUrl = FindWindowExA(hWndWeb, 0, "Chrome_OmniboxView",NULL);
-		//HWND hWndUrl = FindWindowExA(hWndChrome, 0, "Chrome_OmniboxView",NULL);
-		if (hWndUrl)
+		
+		if (pParams->szBrowser=="chrome") 
 		{
-			ThreadParams* pParams = (ThreadParams*) pParm;
+			HWND hDeskTop = GetDesktopWindow();
+			HWND hWndChrome = FindWindowExA(hDeskTop, 0, "Chrome_WidgetWin_1", NULL);
+			//HWND hWndWeb = FindWindowExA(hDeskTop, hWndChrome, "Chrome_WidgetWin_1", NULL);
+			//HWND hWndUrl = FindWindowExA(hWndWeb, 0, "Chrome_OmniboxView",NULL);
+			hWndUrl = FindWindowExA(hWndChrome, 0, "Chrome_OmniboxView",NULL);
+		}
+		else if (pParams->szBrowser=="IE")
+		{
+			HWND hDeskTop = GetDesktopWindow();
+			HWND hIE = FindWindowExA(hDeskTop, 0, "IEFrame", NULL);
+			HWND hWorker = FindWindowExA(hIE, 0, "WorkerW", NULL);
+			HWND hReBar = FindWindowExA(hWorker, 0, "ReBarWindow32", NULL);
+			HWND hAddressBand = FindWindowExA(hReBar, 0, "Address Band Root", NULL);
+			hWndUrl = FindWindowExA(hAddressBand, 0, "Edit",NULL);
+		}
+		if (hWndUrl)
+		{	
 			char lpszText[1000];
 			memset(lpszText,0x0,1000);
 			SendMessageA(hWndUrl,WM_GETTEXT,999,(long)lpszText);

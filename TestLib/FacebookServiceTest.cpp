@@ -69,6 +69,7 @@ void CFacebookServiceTest::testGetLoginUrl()
 	ShellExecuteA(NULL, "open", (szLoginUrl +"\r\n").c_str(), NULL, NULL, SW_SHOW);
 	ThreadParams cThreadParam;
 	cThreadParam.enService =  testutil::FB;
+	cThreadParam.szBrowser = "IE";
 	BeginMonitorUrlThread(cThreadParam);
 	WaitForAuthorization();
 	//This is a workaround for ut, you should figure out your way to get the access_token in url and set to connection info.
@@ -164,6 +165,13 @@ void CFacebookServiceTest::terminate()
 {
 	g_bIsAuthFlowDone = false;
 	g_szToken = "";
+}
+
+void CFacebookServiceTest::testGetLogoutUrl()
+{
+	string szLogoutUrl ;
+	int nResult = m_pFacebookService->GetLogOutURL(szLogoutUrl);
+	CPPUNIT_ASSERT_MESSAGE("Get logout url fail",nResult==S_OK);
 }
 
 CFBConnectionInfo CFacebookServiceTest::m_cCnctInfoVO;
