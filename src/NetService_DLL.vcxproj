@@ -189,11 +189,6 @@
     <ClCompile Include="BaseService.cpp" />
     <ClCompile Include="FacebookService.cpp" />
     <ClCompile Include="SocialServiceFactory.cpp" />
-    <ClCompile Include="FBAlbumModel.cpp" />
-    <ClCompile Include="FBErrorModel.cpp" />
-    <ClCompile Include="FBPhotoModel.cpp" />
-    <ClCompile Include="FBUserMdoel.cpp" />
-    <ClCompile Include="FBVideoModel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\TestData\Log4cxxConfig.xml">
