@@ -147,6 +147,12 @@
     <ClInclude Include="StringHelper.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="FkrAlbumModel.h">
+      <Filter>Model\Flickr</Filter>
+    </ClInclude>
+    <ClInclude Include="FkrUserModel.h">
+      <Filter>Model\Flickr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InternetConnectService.cpp">
