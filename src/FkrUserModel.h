@@ -11,10 +11,6 @@ namespace model
 	//only user, group, page, event, and application ID have those properties
 	struct CFkrProfile : public IProfile{
 		virtual ~CFkrProfile(){};
-		void Clone(CFkrProfile& object)
-		{
-			this->szThumNail = object.szThumNail;
-		};
 	};
 
 	struct CFkrUser : public IUser{

@@ -248,11 +248,8 @@ int CFlickrService::GetProfile( IProfile& iProfile, IError& iErr, string szId/*=
 {
 	CFkrUser cFkrUsr;
 	int nResult = GetUserInfo(cFkrUsr,iErr,szId,mapQryCriteria);
-	CFkrProfile* pFkrProfileDest = dynamic_cast<CFkrProfile*>(&iProfile);
-	CFkrProfile* pFkrProfileSrc = dynamic_cast<CFkrProfile*>(cFkrUsr.pProfile);
-	;
 	if (cFkrUsr.pProfile)
-		pFkrProfileDest->Clone(*pFkrProfileSrc);//this function should be replace by visitor pattern
+		iProfile.szThumNail = cFkrUsr.pProfile->szThumNail;
 	else
 	{
 		iErr.szMsg = "The user has no thumbnail.";
