@@ -162,7 +162,36 @@ void CFBServiceTest::testGetUserAndUsersInfoWithTumbNail()
 	listUsr.push_back("726727685");
 	listUsr.push_back("508872928");
 	int nResult = pSocialService->GetUsersInfo(cFbUsrLst,cFbErr,listUsr,mapMy);
-	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),SUCCEEDED(nResult));
+
+	bool bIsThumbNailExist = true;
+	for (list<IUser*>::iterator it = cFbUsrLst.listOfItem.begin();it!=cFbUsrLst.listOfItem.end();++it)
+	{
+		if (!(*it)->pProfile || (*it)->pProfile->szThumNail.empty())
+		{
+			bIsThumbNailExist =false;
+			break;
+		}
+	}
+
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),
+		nResult==S_OK && cFbUsrLst.listOfItem.size()==2 && bIsThumbNailExist);
+}
+
+
+
+void CFBServiceTest::testGetFriendsInfoWithThumbNailAndPaging()
+{
+	//your friends suppose to be greater than 40 
+	model::CFBUserList cFbUsrLst ;
+	model::CFBError cFbErr;
+	SysMaps::Str2Str mapMy;
+	mapMy[FB_FIELDS] = FB_USER_PICTURE;
+	mapMy[FB_LIMIT] = "10"; //10 users perpage;
+	mapMy[FB_OFFSET] = "20"; // thrid page
+	int nResult = pSocialService->GetFriends(cFbUsrLst,cFbErr,"me",mapMy);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),
+		nResult==S_OK && cFbUsrLst.listOfItem.size()== 10 && !cFbUsrLst.szNext.empty() && !cFbUsrLst.szPrevious.empty());
 }
 
 

@@ -274,10 +274,11 @@ void util::CJsonCppMgr::TravFBFriendList( Json::Value jvRoot, IUserList* pUserLi
 	for (int i = 0;i<nFriendNum;++i)
 	{
 		model::CFBUser* pFbUsr = new model::CFBUser(); 
-		pFbUsr->szId = jvRoot[FB_DATA][i][FB_ID].asString();
-		pFbUsr->szFullName = jvRoot[FB_DATA][i][FB_USER_NAME].asString();
-		pFbUsr->pProfile  = new CFBProfile();
-		pFbUsr->pProfile->szThumNail = jvRoot[FB_DATA][i][FB_USER_PICTURE][FB_USER_PICTURE_DATA][FB_USER_PICTURE_DATA_URL].asString();
+		TravFBUser(jvRoot[FB_DATA][i],pFbUsr);
+		//pFbUsr->szId = jvRoot[FB_DATA][i][FB_ID].asString();
+		//pFbUsr->szFullName = jvRoot[FB_DATA][i][FB_USER_NAME].asString();
+		//pFbUsr->pProfile  = new CFBProfile();
+		//pFbUsr->pProfile->szThumNail = jvRoot[FB_DATA][i][FB_USER_PICTURE][FB_USER_PICTURE_DATA][FB_USER_PICTURE_DATA_URL].asString();
 		pFbUserList->listOfItem.push_back(pFbUsr);
 	}
 	pFbUserList->szNext = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();

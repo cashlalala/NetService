@@ -3,6 +3,8 @@
 #define FB_ID "id"
 #define FB_DATA "data"
 #define FB_FIELDS "fields"
+#define FB_LIMIT "limit"
+#define FB_OFFSET "offset"
 
 #define FB_PAGING "paging"
 #define FB_PAGING_NEXT "next"

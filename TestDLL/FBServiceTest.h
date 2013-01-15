@@ -29,6 +29,7 @@ class CFBServiceTest: public CPPUNIT_NS::TestFixture
 
 	//°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ıIntegration and Advance testing 
 	CPPUNIT_TEST( testGetUserAndUsersInfoWithTumbNail );
+	CPPUNIT_TEST( testGetFriendsInfoWithThumbNailAndPaging );
 	// °Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°ÙIntegration and Advance testing 
 
 	CPPUNIT_TEST( terminate );
@@ -50,6 +51,7 @@ public:
 	void testGetUsersInfo();
 
 	void testGetUserAndUsersInfoWithTumbNail();
+	void testGetFriendsInfoWithThumbNailAndPaging();
 
 	void terminate();
 private:
