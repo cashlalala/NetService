@@ -31,6 +31,8 @@ void CFlickRServiceTest::setUp()
 	m_pFlickrService = new CFlickrService();
 
 	m_pFlickrService->SetConnectionInfo(m_cCnctInfoVO);
+	m_pFlickrService->SetAuthToken(m_cCnctInfoVO.szAuthToken);
+	m_pFlickrService->SetFrob(m_cCnctInfoVO.szFrob);
 }
 
 void CFlickRServiceTest::tearDown()
@@ -38,8 +40,8 @@ void CFlickRServiceTest::tearDown()
 	//If you call the "GetLoginURL" from dll interface, there is no need to write the following two lines.
 	//The only one thing you need to do is set the connection info which contains app id and secret to the service
 	CFlickrConnectionInfo* pIConInfo = dynamic_cast<CFlickrConnectionInfo*>(m_pFlickrService->GetConnectionInfo());
-	m_cCnctInfoVO.szFrob = pIConInfo->szFrob;
 	m_cCnctInfoVO.szAuthToken = pIConInfo->szAuthToken;
+	m_cCnctInfoVO.szFrob = pIConInfo->szFrob;
 	delete m_pFlickrService;
 }
 
@@ -112,6 +114,11 @@ void CFlickRServiceTest::tetGetLoginUrl()
 	cThreadParams.szLoginUrl = szLoginUrl;
 	BeginMonitorUrlThread(cThreadParams);
 	WaitForAuthorization();
+
+	//If you call the "GetLoginURL" from dll interface, there is no need to write the following two lines.
+	//The only one thing you need to do is set the connection info which contains app id and secret to the service
+	CFlickrConnectionInfo* pIConInfo = dynamic_cast<CFlickrConnectionInfo*>(m_pFlickrService->GetConnectionInfo());
+	m_cCnctInfoVO.szFrob = pIConInfo->szFrob;	
 
 	CPPUNIT_ASSERT_MESSAGE(cFkErr.szMsg.c_str(),nResult==S_OK && g_bIsAuthFlowDone);
 }

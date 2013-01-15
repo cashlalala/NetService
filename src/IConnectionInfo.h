@@ -13,13 +13,13 @@ struct CFBConnectionInfo : IConnectionInfo
 {
 	virtual ~CFBConnectionInfo() {};
 	string szAccessToken; //must
-	string szNamespace;
-	string szSanboxMode;
+	string szNamespace; //netservice internal use
+	string szSanboxMode;//netservice internal use
 };
 
 struct CFlickrConnectionInfo : IConnectionInfo
 {
 	virtual ~CFlickrConnectionInfo() {};
-	string szAuthToken; 
-	string szFrob;
+	string szAuthToken; //netservice internal use
+	string szFrob;//netservice internal use
 };

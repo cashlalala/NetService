@@ -48,7 +48,9 @@ CFlickrService::~CFlickrService(void)
 
 void CFlickrService::SetConnectionInfo( IConnectionInfo& cConectInfoVO )
 {
-	m_cConnectInfo = *(dynamic_cast<CFlickrConnectionInfo*>(&cConectInfoVO));
+	//m_cConnectInfo = *dynamic_cast<CFlickrConnectionInfo*>(&cConectInfoVO);
+	m_cConnectInfo.lpcszApiKey = cConectInfoVO.lpcszApiKey;
+	m_cConnectInfo.szAppSecret = cConectInfoVO.szAppSecret;
 }
 
 int CFlickrService::GetPhotos( IPhotoList& iPhotoLst, IError& iErr, string szId /*= "me"*/, SysMaps::Str2Str& mapQryCriteria/*=SysMaps::Str2Str()*/ )
@@ -481,4 +483,14 @@ void CFlickrService::ExceptionHandler( int nResult, HttpRespValObj &cHttpRespVO,
 			iErr.szMsg = ss.str() ;
 		}
 	}
+}
+
+void CFlickrService::SetFrob( const string& szFrob )
+{
+	m_cConnectInfo.szFrob = szFrob;
+}
+
+void CFlickrService::SetAuthToken( const string& szAuthToken )
+{
+	m_cConnectInfo.szAuthToken = szAuthToken;
 }

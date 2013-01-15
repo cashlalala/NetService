@@ -80,8 +80,6 @@ void CFBServiceTest::setUp()
 {
 	ISocialNetworkService::PFNGETINSTANCE pfn = (ISocialNetworkService::PFNGETINSTANCE) GetProcAddress(g_hNerServ,"GetInstance");
 	pSocialService = pfn(FACEBOOK);
-
-	pSocialService->SetConnectionInfo(m_cCnctInfoVO);
 }
 
 void CFBServiceTest::tearDown()
@@ -123,6 +121,8 @@ void CFBServiceTest::testFBGetLoginURL()
 	WaitForAuthorization();
 
 	m_cCnctInfoVO.szAccessToken = g_szToken;
+	//for a single instance, you just need to set connection info only once
+	pSocialService->SetConnectionInfo(m_cCnctInfoVO);
 
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK && !g_szToken.empty() && g_bIsAuthFlowDone);
 }

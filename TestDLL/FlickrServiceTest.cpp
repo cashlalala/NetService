@@ -91,7 +91,7 @@ void CFlickrServiceTest::testFkrGetLoginUrl()
 	cThreadParams.szLoginUrl = szLoginUrl;
 	BeginMonitorUrlThread(cThreadParams);
 	WaitForAuthorization();
-
+	//for a single instance, you just need to set connection info only once
 	pSocialService->SetConnectionInfo(m_cCnctInfoVO);
 
 	CPPUNIT_ASSERT_MESSAGE(cFkErr.szMsg.c_str(),nResult==S_OK && g_bIsAuthFlowDone);

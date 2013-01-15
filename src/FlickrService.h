@@ -14,8 +14,6 @@ public:
 	CFlickrService(void);
 	virtual ~CFlickrService(void);
 
-	virtual IConnectionInfo* GetConnectionInfo();
-
 	virtual void SetConnectionInfo(IConnectionInfo& cConectInfoVO);
 
 	virtual int GetLoginURL( string& szLoginUrl, const string& szAppId, const string& szAppSecret, IError& iErr, string szScope = "write" );
@@ -33,6 +31,14 @@ public:
 	virtual int GetAlbums(IAlbumList& iAlbumLst, IError& iErr, string szUid="", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str());
 
 	virtual int GetProfile(IProfile& iProfile, IError& iErr, string szId="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str());
+
+public:
+
+	virtual IConnectionInfo* GetConnectionInfo();
+
+	virtual void SetFrob(const string& szFrob);
+
+	virtual void SetAuthToken(const string& szAuthToken);
 
 private:
 	static const string S_STR_URL_PREFIX;
