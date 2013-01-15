@@ -16,6 +16,8 @@ class CFacebookServiceTest : public CPPUNIT_NS::TestFixture
 	*/
 	CPPUNIT_TEST( testGetLoginUrl );
 	// °Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù
+
+	//°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ıBasic testing 
 	CPPUNIT_TEST( testCallGraphApi );
 	CPPUNIT_TEST( testGetUserInfo );
 	CPPUNIT_TEST( testGetPhotos );
@@ -23,8 +25,19 @@ class CFacebookServiceTest : public CPPUNIT_NS::TestFixture
 	CPPUNIT_TEST( testGetVideos );
 	CPPUNIT_TEST( testGetAlbums );
 	CPPUNIT_TEST( testGetProfile );
+	// °Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°ÙBasic testing 
+
+	//°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ıIntegration and Advance testing 
+	CPPUNIT_TEST( testGetUserAndUsersInfoWithTumbNail );
+	// °Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°ÙIntegration and Advance testing 
+
 	CPPUNIT_TEST( terminate );
 	CPPUNIT_TEST_SUITE_END();
+
+private:
+	CFacebookService* m_pFacebookService;
+	static CFBConnectionInfo m_cCnctInfoVO;
+	std::wstring s2ws(const std::string& s);
 
 public:
 	CFacebookServiceTest(void);
@@ -41,9 +54,8 @@ public:
 	void testGetAlbums();
 	void testGetProfile();
 
+	void testGetUserAndUsersInfoWithTumbNail();
+
 	void terminate();
-private:
-	CFacebookService* m_pFacebookService;
-	static CFBConnectionInfo m_cCnctInfoVO;
-	std::wstring s2ws(const std::string& s);
+
 };

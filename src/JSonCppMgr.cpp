@@ -184,6 +184,11 @@ void util::CJsonCppMgr::TravFBUser( Json::Value jvRoot, IUser* pIUser )
 	model::CFBUser* pFbUser = dynamic_cast<model::CFBUser*>(pIUser);
 	pFbUser->szId = jvRoot[FB_ID].asString();
 	pFbUser->szFullName = jvRoot[FB_USER_NAME].asString();
+	if (!jvRoot[FB_USER_PICTURE].isNull())
+	{
+		pFbUser->pProfile = new CFBProfile();
+		pFbUser->pProfile->szThumNail = jvRoot[FB_USER_PICTURE][FB_USER_PICTURE_DATA][FB_USER_PICTURE_DATA_URL].asString();
+	}
 }
 
 int util::CJsonCppMgr::TravFBErr( Json::Value &jvRoot, IError& cFbErr )

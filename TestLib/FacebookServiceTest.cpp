@@ -160,6 +160,21 @@ void CFacebookServiceTest::testGetProfile()
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
 }
 
+
+void CFacebookServiceTest::testGetUserAndUsersInfoWithTumbNail()
+{
+	model::CFBUserList cFbUsrLst ;
+	model::CFBError cFbErr;
+	SysMaps::Str2Str mapMy;
+	mapMy[FB_FIELDS] = FB_USER_PICTURE;
+	list<string> listUsr;
+	listUsr.push_back("726727685");
+	listUsr.push_back("508872928");
+	int nResult = m_pFacebookService->GetUsersInfo(cFbUsrLst,cFbErr,listUsr,mapMy);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
+}
+
+
 void CFacebookServiceTest::terminate()
 {
 	g_bIsAuthFlowDone = false;
