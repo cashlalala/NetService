@@ -104,8 +104,7 @@ std::wstring CFacebookServiceTest::s2ws(const std::string& s)
 }
 
 void CFacebookServiceTest::testGetPhotos()
-{
-	
+{	
 	model::CFBPhotoList cFBPhotoList;
 	CFBError cFbErr;
 	int nResult = m_pFacebookService->GetPhotos(cFBPhotoList,cFbErr);

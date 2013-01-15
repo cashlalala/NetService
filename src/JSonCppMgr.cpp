@@ -155,6 +155,7 @@ void util::CJsonCppMgr::TravFBPhotoList( Json::Value &jvRoot, IPhotoList &iPhoto
 		TravFBPhoto(item,cFbPhot);
 		iPhotoList.listOfItem.push_back(cFbPhot);
 	}
+	TravFBPagination(iPhotoList, jvRoot);
 }
 
 void util::CJsonCppMgr::TravFBPhoto( Json::Value &jvRoot, IPhoto* pIPhoto )
@@ -655,4 +656,10 @@ void util::CJsonCppMgr::TravFkrUser( Json::Value& jvRoot, IUser& iUser )
 										pFkrUser->szId.c_str());
 
 	
+}
+
+void util::CJsonCppMgr::TravFBPagination( IPage &iPhotoList, Json::Value & jvRoot )
+{
+	iPhotoList.szNextPageUrl = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
+	iPhotoList.szPreviousPageUrl = jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
 }

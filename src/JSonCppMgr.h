@@ -39,6 +39,9 @@ namespace util
 		//To keep the physical linkage isolated, don't specify the explicit type of the interface among the parameters.
 		// Even the function name is specified with exact targets like "FB" "FLICKR";
 		void TravFBPhotoList( Json::Value &jvRoot, IPhotoList &iPhotoList);
+
+		void TravFBPagination( IPage &iPhotoList, Json::Value & jvRoot );
+
 		int TravFBErr(Json::Value &jvRoot, IError& cFbErr);
 		void TravFBPhoto( Json::Value &jvRoot, IPhoto* pIPhoto );
 		void TravFBUser( Json::Value jvRoot, IUser* iUser );

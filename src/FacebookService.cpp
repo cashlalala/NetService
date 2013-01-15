@@ -88,6 +88,9 @@ int CFacebookService::GetPhotos(  IPhotoList& iPhotoLst, IError& iErr, string sz
 		EXCEPTION_BREAK(nResult)
 
 		nResult = m_pIDataMgr->ParsePhotoList(iPhotoLst,cHttpResp.szResp,util::Facebook,iErr);
+		EXCEPTION_BREAK(nResult)
+
+		CrackParamsForPagination(iPhotoLst);
 	} while (false);
 	
 	//Error Handling
@@ -265,5 +268,11 @@ int CFacebookService::CallFQLQuery(HttpRespValObj& cHttpRespVO,  string szQry )
 IConnectionInfo* CFacebookService::GetConnectionInfo()
 {
 	return &m_cConnectInfo;
+}
+
+void CFacebookService::CrackParamsForPagination( IPage& iPhotoLst )
+{
+	iPhotoLst.mapNextPageParams = util::CUrlHelper::ToParamMap(iPhotoLst.szNextPageUrl);
+	iPhotoLst.mapPrevPageParams = util::CUrlHelper::ToParamMap(iPhotoLst.szPreviousPageUrl);
 }
 

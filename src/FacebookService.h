@@ -54,5 +54,5 @@ private:
 	int CallFQLQuery(HttpRespValObj& cHttpRespVO, string szQry);
 
 	void ExceptionHandler( int nResult, HttpRespValObj &cHttpResp, IError &iErr );
-
+	void CrackParamsForPagination( IPage& iPhotoLst );
 };
