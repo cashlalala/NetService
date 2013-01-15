@@ -11,7 +11,9 @@ bool g_bFkrAuthFlow1stStep = false;
 
 bool g_bIsAuthFlowDone = false;
 
-int nCountDown = DEFAULT_COUNT_DOWN;
+const int nDefaultCountDown = GetPrivateProfileIntA("URLWatchDog","SecondsForWaitingAuth",0,"..\\TestData\\TestConfig.ini");
+
+int nCountDown = nDefaultCountDown;
 
 unsigned int __stdcall Monitoring(void * pParm = NULL);
 
@@ -35,15 +37,21 @@ unsigned int __stdcall Monitoring(void * pParm)
 	{
 		if (nCountDown==0) return 1;
 		
-		if (pParams->szBrowser=="chrome") 
+		int nDefault = 0;
+		nDefault = GetPrivateProfileIntA("URLWatchDog","DefaultBrowser",nDefault,"..\\TestData\\TestConfig.ini");
+
+		if (nDefault == 1)//(pParams->szBrowser=="chrome") 
 		{
 			HWND hDeskTop = GetDesktopWindow();
 			HWND hWndChrome = FindWindowExA(hDeskTop, 0, "Chrome_WidgetWin_1", NULL);
-			//HWND hWndWeb = FindWindowExA(hDeskTop, hWndChrome, "Chrome_WidgetWin_1", NULL);
-			//HWND hWndUrl = FindWindowExA(hWndWeb, 0, "Chrome_OmniboxView",NULL);
 			hWndUrl = FindWindowExA(hWndChrome, 0, "Chrome_OmniboxView",NULL);
+			if (!hWndUrl) // support nested chrome ... for 2 layer...
+			{
+				HWND hWndWeb = FindWindowExA(hDeskTop, hWndChrome, "Chrome_WidgetWin_1", NULL);
+				hWndUrl = FindWindowExA(hWndWeb, 0, "Chrome_OmniboxView",NULL);
+			}
 		}
-		else if (pParams->szBrowser=="IE")
+		else if (nDefault == 2) //(pParams->szBrowser=="IE")
 		{
 			HWND hDeskTop = GetDesktopWindow();
 			HWND hIE = FindWindowExA(hDeskTop, 0, "IEFrame", NULL);
@@ -52,6 +60,11 @@ unsigned int __stdcall Monitoring(void * pParm)
 			HWND hAddressBand = FindWindowExA(hReBar, 0, "Address Band Root", NULL);
 			hWndUrl = FindWindowExA(hAddressBand, 0, "Edit",NULL);
 		}
+		else  //get from config
+		{
+			return 0;
+		}
+
 		if (hWndUrl)
 		{	
 			char lpszText[1000];
@@ -105,6 +118,6 @@ void WaitForAuthorization()
 	{
 		std::cout << "Counting Down ... " << nCountDown-- << std::endl;
 	}
-	nCountDown = DEFAULT_COUNT_DOWN;
+	nCountDown = nDefaultCountDown;
 	CloseHandle(g_hThread);
 }

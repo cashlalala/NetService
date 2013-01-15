@@ -89,7 +89,6 @@ void CFlickrServiceTest::testFkrGetLoginUrl()
 	ThreadParams cThreadParams;
 	cThreadParams.enService = testutil::Fkr;
 	cThreadParams.szLoginUrl = szLoginUrl;
-	cThreadParams.szBrowser = "chrome";
 	BeginMonitorUrlThread(cThreadParams);
 	WaitForAuthorization();
 	//for a single instance, you just need to set connection info only once
