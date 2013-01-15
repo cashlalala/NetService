@@ -400,8 +400,7 @@ void util::CJsonCppMgr::TravFBAlbumList( Json::Value& jvRoot, IAlbumList* pIAlbu
 		TravFBAlbum(jvItem,pFbAlbum);
 		pFbAlbumList->listOfItem.push_back(pFbAlbum);
 	}
-	pFbAlbumList->szNextPageUrl = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
-	pFbAlbumList->szPreviousPageUrl = jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
+	TravFBPagination(*pIAlbumList, jvRoot);
 }
 
 void util::CJsonCppMgr::TravFBAlbum( Json::Value& jvRoot, IAlbum* pIAlbum )

@@ -220,6 +220,9 @@ int CFacebookService::GetAlbums( IAlbumList& iAlbumLst, IError& iErr, string szU
 		EXCEPTION_BREAK(nResult)
 
 		nResult = m_pIDataMgr->ParseAlbumList(iAlbumLst,cHttpResp.szResp,util::Facebook,iErr);
+		EXCEPTION_BREAK(nResult)
+
+		CrackParamsForPagination(iAlbumLst);
 	} while (false);
 
 	//Error Handling

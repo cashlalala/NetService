@@ -131,22 +131,18 @@ void CFacebookServiceTest::testGetVideos()
 	model::CFBVideoList cFbVideoLst;
 	CFBError cFbErr;
 	SysMaps::Str2Str mapMy;
-
-	//char lpszTmp[20];
-	//memset(lpszTmp,0x0,20);
-	//sprintf(lpszTmp,"%s,%s",FB_USER_PICTURE,FB_USER_NAME);
-
-	//mapMy[FB_FIELDS]= lpszTmp;
-	int nResult = m_pFacebookService->GetVideos(cFbVideoLst,cFbErr);
+	mapMy[FB_LIMIT] = "1"; //10 users perpage;
+	mapMy[FB_OFFSET] = "1"; // 3~12 page
+	int nResult = m_pFacebookService->GetVideos(cFbVideoLst,cFbErr,"me",mapMy);
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
 }
 
 void CFacebookServiceTest::testGetAlbums()
 {
-	model::CFBAlbumList cFbVideoLst;
+	model::CFBAlbumList cFbAlbumLst;
 	CFBError cFbErr;
 
-	int nResult = m_pFacebookService->GetAlbums(cFbVideoLst,cFbErr);
+	int nResult = m_pFacebookService->GetAlbums(cFbAlbumLst,cFbErr);
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
 }
 
