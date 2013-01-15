@@ -189,13 +189,13 @@ void CFacebookServiceTest::testGetUserAndUsersInfoWithTumbNail()
 
 void CFacebookServiceTest::testGetFriendsInfoWithThumbNailAndPaging()
 {
-	//your friends suppose to be greater than 40 
+	//your friends suppose to be greater than 12 
 	model::CFBUserList cFbUsrLst ;
 	model::CFBError cFbErr;
 	SysMaps::Str2Str mapMy;
 	mapMy[FB_FIELDS] = FB_USER_PICTURE;
 	mapMy[FB_LIMIT] = "10"; //10 users perpage;
-	mapMy[FB_OFFSET] = "20"; // thrid page
+	mapMy[FB_OFFSET] = "2"; // 3~12 page
 	int nResult = m_pFacebookService->GetFriends(cFbUsrLst,cFbErr,"me",mapMy);
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),
 		nResult==S_OK && cFbUsrLst.listOfItem.size()== 10 && !cFbUsrLst.szNext.empty() && !cFbUsrLst.szPrevious.empty());
