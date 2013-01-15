@@ -202,6 +202,9 @@ int CFacebookService::GetVideos( IVideoList& iVideoList, IError& iErr, string sz
 		EXCEPTION_BREAK(nResult)
 
 		nResult = m_pIDataMgr->ParseVideoList(iVideoList,cHttpResp.szResp, util::Facebook, iErr);
+		EXCEPTION_BREAK(nResult)
+
+		CrackParamsForPagination(iVideoList);
 	} while (false);
 
 	//Error Handling

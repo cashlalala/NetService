@@ -131,8 +131,6 @@ void CFacebookServiceTest::testGetVideos()
 	model::CFBVideoList cFbVideoLst;
 	CFBError cFbErr;
 	SysMaps::Str2Str mapMy;
-	mapMy[FB_LIMIT] = "1"; //10 users perpage;
-	mapMy[FB_OFFSET] = "1"; // 3~12 page
 	int nResult = m_pFacebookService->GetVideos(cFbVideoLst,cFbErr,"me",mapMy);
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
 }

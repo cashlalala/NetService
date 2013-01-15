@@ -327,8 +327,7 @@ void util::CJsonCppMgr::TravFBVideoList( Json::Value& jvRoot, IVideoList* pIVide
 		TravFBVideo(jvItem,pFbVideo);
 		pFbVideoList->listOfItem.push_back(pFbVideo);
 	}
-	pFbVideoList->szNextPageUrl = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
-	pFbVideoList->szPreviousPageUrl = jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
+	TravFBPagination(*pFbVideoList,jvRoot);
 }
 
 void util::CJsonCppMgr::TravFBVideo( Json::Value& jvRoot, IVideo* pIVideo )
