@@ -69,6 +69,7 @@ void CFacebookServiceTest::testGetLoginUrl()
 	ShellExecuteA(NULL, "open", (szLoginUrl +"\r\n").c_str(), NULL, NULL, SW_SHOW);
 	ThreadParams cThreadParam;
 	cThreadParam.enService =  testutil::FB;
+	cThreadParam.szBrowser = "chrome";
 	BeginMonitorUrlThread(cThreadParam);
 	WaitForAuthorization();
 	//This is a workaround for ut, you should figure out your way to get the access_token in url and set to connection info.

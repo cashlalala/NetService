@@ -110,6 +110,7 @@ void CFlickRServiceTest::tetGetLoginUrl()
 
 	ShellExecuteA(NULL, "open", (szLoginUrl + "\r\n").c_str(), NULL, NULL, SW_SHOW);
 	ThreadParams cThreadParams;
+	cThreadParams.szBrowser = "chrome";
 	cThreadParams.enService = testutil::Fkr;
 	cThreadParams.szLoginUrl = szLoginUrl;
 	BeginMonitorUrlThread(cThreadParams);

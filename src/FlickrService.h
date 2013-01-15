@@ -45,6 +45,7 @@ private:
 	static const string S_OAUTH_RQSTTOKEN_URL;
 	static const string S_OATUH_AUTHORIZE_URL;
 	static const string S_OAUTH_CALLBACK_URL;
+	static const string S_LOGOUT_URL;
 	static const ServerInfo S_SERVER_INFO;
 
 	CFlickrConnectionInfo m_cConnectInfo;

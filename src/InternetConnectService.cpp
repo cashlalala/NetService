@@ -3,6 +3,7 @@
 #include "UrlHelper.h"
 #include "NetServiceErr.h"
 #include "LoggerMgr.h"
+#include "StringHelper.h"
 
 #include <algorithm>
 #include <ctype.h>
@@ -69,7 +70,7 @@ bool CInternetConnectService::DetectProxy(void)
 
 int CInternetConnectService::OpenUrl( HttpRespValObj& cHttpRespVO, string szUrl, string szHttpMethod /*= HTTP_METHOD_GET*/, wstring wszCookieFilePath /*= L""*/, void* pfnCallBack /*= NULL*/ )
 {
-	S_LOGGER->Debug("Input URL: [ %s ]", szUrl.c_str());
+	S_LOGGER->Trace("Input URL: [ %s ]", szUrl.c_str());
 
 	int nResult = E_FAIL;
 	INetKernel* pINetKernel = m_cNetKernelLoader.GetInstance();
@@ -111,6 +112,20 @@ int CInternetConnectService::OpenUrl( HttpRespValObj& cHttpRespVO, string szUrl,
 		S_LOGGER->Trace("Response: [ %s ]", cHttpRespVO.szResp.c_str());
 		nResult = S_OK;
 	}
+
+	return nResult;
+}
+
+int CInternetConnectService::DeleteUrlCache( int type, const string& szCookieName )
+{
+	int nResult = E_FAIL;
+	INetKernel* pINetKernel = m_cNetKernelLoader.GetInstance();
+
+	std::wstring wszCookieName = util::CStringHelper::S2WS(szCookieName);
+
+	nResult = pINetKernel->DeleteUrlCache(type,wszCookieName.c_str());
+
+	m_cNetKernelLoader.DelInstance(pINetKernel);
 
 	return nResult;
 }

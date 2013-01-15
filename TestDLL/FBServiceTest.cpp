@@ -68,6 +68,7 @@ void CFBServiceTest::testFBGetLoginURL()
 	*/
 	ThreadParams cThreadParam;
 	cThreadParam.enService =  testutil::FB;
+	cThreadParam.szBrowser = "chrome";
 	BeginMonitorUrlThread(cThreadParam);
 
 	WaitForAuthorization();

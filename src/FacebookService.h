@@ -37,6 +37,7 @@ private:
 
 	static const SysMaps::EnCat2Str S_MAP_CATEGORY;
 	static const string S_STR_URL_PREFIX;
+	static const string S_LOGOUT_URL;
 
 	static const ServerInfo S_SERVER_INFO;
 

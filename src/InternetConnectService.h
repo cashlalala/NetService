@@ -24,6 +24,7 @@ public:
 	bool DetectProxy(void);
 	int OpenUrl(HttpRespValObj& cHttpRespVO, string szUrl, string szHttpMethod = HTTP_METHOD_GET, wstring wszCookieFilePath = L"", void* pfnCallBack = NULL);
 
+	int DeleteUrlCache(int type,  const string& szCookieName);
 
 private:
 	string m_szServerAddr;

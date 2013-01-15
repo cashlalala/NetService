@@ -27,7 +27,13 @@ class CFlickRServiceTest
 	//CPPUNIT_TEST( testGetForb ); //only for development testing
 	//CPPUNIT_TEST( testGetToken ); //only for development testing
 	//CPPUNIT_TEST( testGetOAuthRqstToken ); //only for development testing
+	/*
+	* Do not move the order these two functions, they should be 
+	* always the last two test to be run for the purpose of ui flow simulation
+	* ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ¡õ
+	*/
 	CPPUNIT_TEST( terminate );
+	// ¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô
 	CPPUNIT_TEST_SUITE_END();
 
 public:
