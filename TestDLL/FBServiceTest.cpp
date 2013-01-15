@@ -191,7 +191,7 @@ void CFBServiceTest::testGetFriendsInfoWithThumbNailAndPaging()
 	mapMy[FB_OFFSET] = "2"; // 3 ~ 12 page
 	int nResult = pSocialService->GetFriends(cFbUsrLst,cFbErr,"me",mapMy);
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),
-		nResult==S_OK && cFbUsrLst.listOfItem.size()== 10 && !cFbUsrLst.szNext.empty() && !cFbUsrLst.szPrevious.empty());
+		nResult==S_OK && cFbUsrLst.listOfItem.size()== 10 && !cFbUsrLst.szNextPageUrl.empty() && !cFbUsrLst.szPreviousPageUrl.empty());
 }
 
 //void CFBServiceTest::testGetPhotosInAlbumsWithPhotosAndAlbumPaging()

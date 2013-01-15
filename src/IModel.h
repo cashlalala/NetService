@@ -2,10 +2,12 @@
 
 #include <string>
 #include <list>
+#include <map>
 #include <typeinfo>
 
 using std::string;
 using std::list;
+using std::map;
 
 #ifndef SAFE_DELETE_OBJECT
 #define SAFE_DELETE_OBJECT(x) if(x) {delete x; x = NULL;}
@@ -38,8 +40,10 @@ namespace model
 	struct IPage : virtual public IModel
 	{
 		virtual ~IPage() = 0;
-		string szNext;
-		string szPrevious;
+		string szNextPageUrl;
+		string szPreviousPageUrl;
+		map<string,string> mapNextPageParams;
+		map<string,string> mapPrevPageParams;
 	};
 
 	inline IPage::~IPage(){};

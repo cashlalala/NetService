@@ -281,8 +281,8 @@ void util::CJsonCppMgr::TravFBFriendList( Json::Value jvRoot, IUserList* pUserLi
 		//pFbUsr->pProfile->szThumNail = jvRoot[FB_DATA][i][FB_USER_PICTURE][FB_USER_PICTURE_DATA][FB_USER_PICTURE_DATA_URL].asString();
 		pFbUserList->listOfItem.push_back(pFbUsr);
 	}
-	pFbUserList->szNext = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
-	pFbUserList->szPrevious = jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
+	pFbUserList->szNextPageUrl = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
+	pFbUserList->szPreviousPageUrl = jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
 }
 
 int util::CJsonCppMgr::ParseVideoList( IVideoList&iVideoList, string szInput, EnDataOwner enDataOwner, IError& iError )
@@ -326,8 +326,8 @@ void util::CJsonCppMgr::TravFBVideoList( Json::Value& jvRoot, IVideoList* pIVide
 		TravFBVideo(jvItem,pFbVideo);
 		pFbVideoList->listOfItem.push_back(pFbVideo);
 	}
-	pFbVideoList->szNext = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
-	pFbVideoList->szPrevious = jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
+	pFbVideoList->szNextPageUrl = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
+	pFbVideoList->szPreviousPageUrl = jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
 }
 
 void util::CJsonCppMgr::TravFBVideo( Json::Value& jvRoot, IVideo* pIVideo )
@@ -399,8 +399,8 @@ void util::CJsonCppMgr::TravFBAlbumList( Json::Value& jvRoot, IAlbumList* pIAlbu
 		TravFBAlbum(jvItem,pFbAlbum);
 		pFbAlbumList->listOfItem.push_back(pFbAlbum);
 	}
-	pFbAlbumList->szNext = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
-	pFbAlbumList->szPrevious = jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
+	pFbAlbumList->szNextPageUrl = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
+	pFbAlbumList->szPreviousPageUrl = jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
 }
 
 void util::CJsonCppMgr::TravFBAlbum( Json::Value& jvRoot, IAlbum* pIAlbum )
