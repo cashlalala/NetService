@@ -416,6 +416,7 @@ void CFlickrService::ComposePagingUrl( IPage& iPage, int nCurPage, int nTotalPag
 		cit = mapCpy.find(FLICK_PARAM_API_SIG);
 		mapCpy.erase(cit);
 		mapCpy[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapCpy,m_cConnectInfo.szAppSecret.c_str());
+		iPage.mapNextPageParams = mapCpy;
 		iPage.szNextPageUrl = ComposeUrl(mapCpy);
 	}
 	if (nCurPage>1 /*prev page*/)
@@ -424,6 +425,7 @@ void CFlickrService::ComposePagingUrl( IPage& iPage, int nCurPage, int nTotalPag
 		cit = mapCpy.find(FLICK_PARAM_API_SIG);
 		mapCpy.erase(cit);
 		mapCpy[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapCpy,m_cConnectInfo.szAppSecret.c_str());
+		iPage.mapNextPageParams = mapCpy;
 		iPage.szPreviousPageUrl = ComposeUrl(mapCpy);	
 	}
 }
