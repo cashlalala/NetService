@@ -168,7 +168,9 @@ int CFacebookService::GetFriends( IUserList& iUserLst, IError& iErr, string szUi
 		EXCEPTION_BREAK(nResult);
 
 		m_pIDataMgr->ParseFriendList(iUserLst,cHttpResp.szResp,util::Facebook,iErr);
-		nResult = S_OK;
+		EXCEPTION_BREAK(nResult)
+
+		CrackParamsForPagination(iUserLst);
 	} while (false);
 
 	//Error Handling
