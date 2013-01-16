@@ -19,6 +19,10 @@ namespace model
 		string szMedia;
 	};
 
+	struct CFkrImageList : virtual public IImageList
+	{
+		virtual ~CFkrImageList(void){};
+	};
 
 	struct CFkrPhoto : public IPhoto , public CFkrImage
 	{

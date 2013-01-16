@@ -31,6 +31,10 @@ namespace util
 
 		virtual int ParseProfile(IProfile& iProfile, string szInput, EnDataOwner enDataOwner, IError& iError);
 
+		virtual int ParseImageList(IImageList& listImage, string szInput, EnDataOwner enDataOwner, IError& iError) ;
+
+		virtual int ParseFBSrouceSmall(SysList::Str2StrMapList& listMap, string szInput, IError& iError) ;
+
 		virtual int ParseFkrFrob(string& szFrob, string szInput, IError& iError) ;
 
 		virtual int ParseFkrAuthToken(string& szAuthToken, string szInput,IError& iError) ;
@@ -51,6 +55,8 @@ namespace util
 		void TravFBAlbumList(Json::Value& jvRoot, IAlbumList* pIAlbumList);
 		void TravFBAlbum(Json::Value& jvRoot, IAlbum* pIAlbum);
 		int TravFBProfile( Json::Value& jvRoot, IProfile* pIProfile, IError& iError );
+		void TravFBImgList( Json::Value & jvRoot, IImageList& listOfItem );
+		void TravFBImg( Json::Value& item ,model::IImage& iImage);
 
 		int TravFkrErr(Json::Value& jvRoot, IError& iError);
 		void TravrFkrPhotoList( Json::Value &jvRoot, IPhotoList &iPhotoList);
@@ -60,6 +66,7 @@ namespace util
 		void TravFkrFriendList( Json::Value& jvRoot, IUserList& iUserList );
 		void TravFkrFriend( Json::Value& item, IUser* pIUsr );
 		void TravFkrUser( Json::Value& jvRoot, IUser& iUser );
+
 		util::ILogger* m_pLogger;
 		std::list<string> m_listFkrPhotSizes;
 	};

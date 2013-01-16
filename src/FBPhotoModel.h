@@ -17,6 +17,10 @@ namespace model
 		virtual ~CFBImage(void){};
 	};
 
+	struct CFBImageList : virtual public IImageList
+	{
+		virtual ~CFBImageList(void){};
+	};
 
 	struct CFBPhoto : public IPhoto, public CFBImage
 	{

@@ -1,6 +1,7 @@
 #pragma once
 #include "baseservice.h"
 #include "IDataManager.h"
+#include "ILogger.h"
 
 using systypes::SysMaps;
 using systypes::EnCategory;
@@ -43,6 +44,7 @@ private:
 
 	CFBConnectionInfo m_cConnectInfo;
 	util::IDataManager* m_pIDataMgr;
+	util::ILogger* m_pILogger;
 
 private:
 	int CallGraphAPI(HttpRespValObj& cHttpRespVO,

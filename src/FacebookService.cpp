@@ -4,10 +4,14 @@
 #include "FBPhotoModel.h"
 #include "FBErrorModel.h"
 #include "FBVideoModel.h"
+#include "FBUserModel.h"
 #include "DataMgrFactory.h"
 #include "NetServiceErr.h"
 #include "UrlHelper.h"
-#include "FBUserModel.h"
+#include "FBFields.h"
+
+#include "StringHelper.h"
+#include "LoggerMgr.h"
 
 #include <cassert>
 #include <sstream>
@@ -27,9 +31,11 @@ CFacebookService::S_MAP_CATEGORY = CMapHelper::CreateCategoryMap();
 const ServerInfo CFacebookService::S_SERVER_INFO = {"graph.facebook.com","","80","443"};
 
 CFacebookService::CFacebookService(void):
-m_pIDataMgr(NULL)
+m_pIDataMgr(NULL),
+m_pILogger(NULL)
 {
 	m_pIDataMgr = util::CDataMgrFactory::GetInstance(util::JsonCpp);
+	m_pILogger = util::CLoggerMgr::GetLogger(util::Log4Cxx,"CFacebookService");
 }
 
 CFacebookService::~CFacebookService(void)
@@ -227,6 +233,31 @@ int CFacebookService::GetAlbums( IAlbumList& iAlbumLst, IError& iErr, string szU
 		nResult = m_pIDataMgr->ParseAlbumList(iAlbumLst,cHttpResp.szResp,util::Facebook,iErr);
 		EXCEPTION_BREAK(nResult)
 
+		//The following is a workaround for get thumbnails...
+		string szAlbumThumbNailQry = util::CStringHelper::Format(
+									"SELECT album_object_id , src_small_height, src_small_width, src_small from photo where object_id in (select cover_object_id from album where owner = %s )",
+									(szUid=="me")?"me()": (szUid=="")?"me()": szUid.c_str());
+		nResult = CallFQLQuery(cHttpResp,szAlbumThumbNailQry);
+		EXCEPTION_BREAK(nResult)
+	
+		SysList::Str2StrMapList listMap;
+		nResult = m_pIDataMgr->ParseFBSrouceSmall(listMap,cHttpResp.szResp,iErr);
+		EXCEPTION_BREAK(nResult)
+		
+		for(list<IAlbum*>::iterator itAlb = iAlbumLst.listOfItem.begin();itAlb!=iAlbumLst.listOfItem.end();++itAlb)
+		{
+			for (SysList::Str2StrMapList::iterator itMap = listMap.begin();itMap != listMap.end();++itMap)
+			{
+				m_pILogger->Debug("Album id: [%s] <-->[%s]",(*itAlb)->szId.c_str(),(*itMap)[FB_ALBUM_OBJECT_ID].c_str());
+				if ((*itAlb)->szId==(*itMap)[FB_ALBUM_OBJECT_ID] && !(*itAlb)->szCoverPhotoId.empty())
+				{
+					(*itAlb)->szThumbNail = (*itMap)[FB_IMAGE_SOURCE_SMALL];
+					break;
+				}
+			}
+		}
+		//finish the workaround
+
 		CrackParamsForPagination(iAlbumLst);
 	} while (false);
 
@@ -283,4 +314,3 @@ void CFacebookService::CrackParamsForPagination( IPage& iPhotoLst )
 	iPhotoLst.mapNextPageParams = util::CUrlHelper::ToParamMap(iPhotoLst.szNextPageUrl);
 	iPhotoLst.mapPrevPageParams = util::CUrlHelper::ToParamMap(iPhotoLst.szPreviousPageUrl);
 }
-

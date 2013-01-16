@@ -14,6 +14,8 @@ namespace model
 		virtual ~IAlbum() = 0;
 		string szId;
 		string szCoverPhotoId;
+		string szThumbNail;
+		string szName;
 		int nCount;
 	};
 

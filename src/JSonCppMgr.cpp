@@ -167,16 +167,7 @@ void util::CJsonCppMgr::TravFBPhoto( Json::Value &jvRoot, IPhoto* pIPhoto )
 	pFbPhto->szLink = jvRoot[FB_PHOTO_LINK].asString();
 	pFbPhto->szSource = jvRoot[FB_IMAGE_SOURCE].asString();
 	pFbPhto->szThumbNail = jvRoot[FB_PHOTO_THUBMNAIL].asString();
-	int nImageNum = jvRoot[FB_PHOTO_IMAGES].size();
-	for (int j = 0; j<nImageNum;++j)
-	{
-		Json::Value item = jvRoot[FB_PHOTO_IMAGES][j];
-		model::CFBImage* iImage = new model::CFBImage();
-		iImage->nHeight = item[FB_IMAGE_HEIGHT].asInt();
-		iImage->nWidth = item[FB_IMAGE_WIDTH].asInt();
-		iImage->szSource = item[FB_IMAGE_SOURCE].asString();
-		pFbPhto->listOfItem.push_back(iImage);
-	}
+	TravFBImgList(jvRoot[FB_PHOTO_IMAGES], *pIPhoto);
 }
 
 
@@ -401,6 +392,7 @@ void util::CJsonCppMgr::TravFBAlbum( Json::Value& jvRoot, IAlbum* pIAlbum )
 {
 	model::CFBAlbum* pFbAlbum = dynamic_cast<model::CFBAlbum*>(pIAlbum);
 	pFbAlbum->szId = jvRoot[FB_ID].asString();
+	pFbAlbum->szName = jvRoot[FB_ALBUM_NAME].asString();
 	pFbAlbum->szCoverPhotoId = jvRoot[FB_ALBUM_COVER_PHOTO].asString();
 	pFbAlbum->nCount = jvRoot[FB_ALBUM_PHOTO_COUNT].asInt();
 }
@@ -655,4 +647,82 @@ void util::CJsonCppMgr::TravFBPagination( IPage &iPhotoList, Json::Value & jvRoo
 {
 	iPhotoList.szNextPageUrl = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
 	iPhotoList.szPreviousPageUrl = jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
+}
+
+void util::CJsonCppMgr::TravFBImgList( Json::Value & jvRoot, IImageList& iImgList )
+{
+	int nImageNum = jvRoot.size();
+	for (int j = 0; j<nImageNum;++j)
+	{
+		Json::Value item = jvRoot[j];
+		model::CFBImage* pIImage = new model::CFBImage();
+		TravFBImg(item, *pIImage);
+		iImgList.listOfItem.push_back(pIImage);
+	}
+}
+
+void util::CJsonCppMgr::TravFBImg( Json::Value& item, model::IImage& iImage)
+{
+	iImage.nHeight = item[FB_IMAGE_HEIGHT].asInt();
+	iImage.nWidth = item[FB_IMAGE_WIDTH].asInt();
+	iImage.szSource = item[FB_IMAGE_SOURCE].asString();
+}
+
+int util::CJsonCppMgr::ParseImageList( IImageList& listImage, string szInput, EnDataOwner enDataOwner, IError& iError )
+{
+	int nResult = E_FAIL;
+	Json::Reader jrReader;
+	Json::Value jvRoot;
+	if (jrReader.parse(szInput.c_str(),jvRoot))
+	{
+		switch(enDataOwner)
+		{
+		case Facebook:
+			{
+				nResult = TravFBErr(jvRoot,iError);
+				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+
+				int nSize = jvRoot[FB_DATA].size();
+				for (int i =0;i<nSize;++i)
+					TravFBImgList(jvRoot[FB_DATA][i][FB_PHOTO_IMAGES], listImage);
+			}
+			break;
+		case Flickr:
+			break;
+		default:
+			nResult = NS_S_DMGR_NO_DATA_OWNER;
+			break;
+		}
+	}
+	else
+		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
+
+	return nResult;
+}
+
+int util::CJsonCppMgr::ParseFBSrouceSmall( SysList::Str2StrMapList& listMap, string szInput, IError& iError )
+{
+	int nResult = E_FAIL;
+	Json::Reader jrReader;
+	Json::Value jvRoot;
+
+	if (jrReader.parse(szInput.c_str(),jvRoot))
+	{
+		nResult = TravFBErr(jvRoot,iError);
+		ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+
+		int nSize = jvRoot[FB_DATA].size();
+		for (int i=0;i<nSize;++i)
+		{
+			SysMaps::Str2Str mapCoverPhoto;
+			mapCoverPhoto[FB_IMAGE_SOURCE_SMALL] = jvRoot[FB_DATA][i][FB_IMAGE_SOURCE_SMALL].asString();
+			mapCoverPhoto[FB_ALBUM_OBJECT_ID] = jvRoot[FB_DATA][i][FB_ALBUM_OBJECT_ID].asString();
+			listMap.push_back(mapCoverPhoto);
+		}
+		nResult = S_OK;
+	}
+	else
+		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
+
+	return nResult;
 }

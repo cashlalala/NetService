@@ -11,7 +11,6 @@ namespace model
 		virtual ~CFkrAlbum(void){};
 		string szTitle;
 		string szDescription;
-		string szThumbNail;
 	};
 
 	struct CFkrAlbumList :

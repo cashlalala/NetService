@@ -36,6 +36,7 @@ namespace systypes
 
 	struct SysList
 	{
+		typedef list<map<string,string>> Str2StrMapList;
 		typedef list<string> StrList;
 	};
 

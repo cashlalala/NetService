@@ -20,7 +20,13 @@ namespace model
 
 	inline IImage::~IImage(){};
 
-	struct IPhoto : virtual public IImage, virtual public IList<IImage*>{
+	struct IImageList : public IList<IImage*>{
+		virtual ~IImageList() = 0;
+	};
+
+	inline IImageList::~IImageList(){};
+
+	struct IPhoto : virtual public IImage, virtual public IImageList{
 		virtual ~IPhoto() = 0;
 		string szId;
 		string szLink;
