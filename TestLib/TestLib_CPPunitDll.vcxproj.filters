@@ -7,6 +7,9 @@
     <Filter Include="references">
       <UniqueIdentifier>{1ed252f5-6ada-49cb-8369-bd7f10b69c07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{6517b820-8eac-4e15-bebb-ced1b1599d15}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FacebookServiceTest.cpp">
@@ -28,6 +31,15 @@
       <Filter>Tests</Filter>
     </ClCompile>
     <ClCompile Include="SimplePlugIn.cpp" />
+    <ClCompile Include="..\TestDLL\URLWatchDog.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="CodecHelperTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="FlickRServiceTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FacebookServiceTest.h">
@@ -53,6 +65,15 @@
     </ClInclude>
     <ClInclude Include="UploadProgress.h">
       <Filter>references</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TestDLL\URLWatchDog.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="CodecHelperTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="FlickRServiceTest.h">
+      <Filter>Tests</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
