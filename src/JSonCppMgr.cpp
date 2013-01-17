@@ -475,7 +475,7 @@ int util::CJsonCppMgr::ParseFkrFrob( string& szFrob, string szInput, IError& iEr
 	return nResult;
 }
 
-int util::CJsonCppMgr::ParseFkrAuthToken( string& szAuthToken, string szInput,IError& iError )
+int util::CJsonCppMgr::ParseFkrAuthToken( SysMaps::Str2Str& mapAuth, string szInput,IError& iError )
 {
 	int nResult = E_FAIL;
 	Json::Reader jrReader;
@@ -485,7 +485,8 @@ int util::CJsonCppMgr::ParseFkrAuthToken( string& szAuthToken, string szInput,IE
 		nResult = TravFkrErr(jvRoot,iError);
 		ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 
-		szAuthToken = jvRoot[FLICK_AUTH][FLICK_AUTH_TOKEN][FLICK_AUTH_TOKEN_CONTENT].asString();
+		mapAuth[FLICK_AUTH_TOKEN] = jvRoot[FLICK_AUTH][FLICK_AUTH_TOKEN][FLICK_AUTH_TOKEN_CONTENT].asString();
+		mapAuth[FLICK_AUTH_NSID] = jvRoot[FLICK_AUTH][FLICK_AUTH_USER][FLICK_AUTH_NSID].asString();
 		nResult = S_OK;
 	}
 	else

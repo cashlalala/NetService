@@ -1,10 +1,12 @@
 #pragma once
 #include "IDataManager.h"
 #include "LoggerMgr.h"
+#include "SysTypes.h"
 #include <list>
 #include <json/json.h>
 
 using util::IDataManager;
+using systypes::SysMaps;
 
 namespace util
 {
@@ -33,11 +35,12 @@ namespace util
 
 		virtual int ParseImageList(IImageList& listImage, string szInput, EnDataOwner enDataOwner, IError& iError) ;
 
+
 		virtual int ParseFBSrouceSmall(SysList::Str2StrMapList& listMap, string szInput, IError& iError) ;
 
 		virtual int ParseFkrFrob(string& szFrob, string szInput, IError& iError) ;
 
-		virtual int ParseFkrAuthToken(string& szAuthToken, string szInput,IError& iError) ;
+		virtual int ParseFkrAuthToken(SysMaps::Str2Str& szAuthToken, string szInput,IError& iError) ;
 
 	private:
 		//To keep the physical linkage isolated, don't specify the explicit type of the interface among the parameters.

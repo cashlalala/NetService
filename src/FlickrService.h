@@ -26,19 +26,15 @@ public:
 
 	virtual int GetUserInfo(IUser& iUser, IError& iErr, string szUid="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str());
 
-	virtual int GetFriends(IUserList& iUserLst, IError& iErr, string szUid="", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str()) ;
+	virtual int GetFriends(IUserList& iUserLst, IError& iErr, string szUid="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str()) ;
 
-	virtual int GetAlbums(IAlbumList& iAlbumLst, IError& iErr, string szUid="", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str());
+	virtual int GetAlbums(IAlbumList& iAlbumLst, IError& iErr, string szUid="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str());
 
 	virtual int GetProfile(IProfile& iProfile, IError& iErr, string szId="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str());
 
 public:
 
 	virtual IConnectionInfo* GetConnectionInfo();
-
-	virtual void SetFrob(const string& szFrob);
-
-	virtual void SetAuthToken(const string& szAuthToken);
 
 private:
 	static const string S_STR_URL_PREFIX;
@@ -61,7 +57,7 @@ public:
 	//For flickr authorization
 	int GetFlickrAuthFrob(std::string& szFrob, const std::string& szAppId, const string& szAppSecret, IError& iErr);
 
-	int GetFlickrAuthToken(string& szAuthTok, IError& iErr );
+	int GetFlickrAuthToken(SysMaps::Str2Str& szAuthTok, IError& iErr );
 
 	void ExceptionHandler( int nResult, HttpRespValObj &cHttpRespVO, IError &iErr );
 

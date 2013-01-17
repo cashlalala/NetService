@@ -43,7 +43,7 @@ namespace util
 		virtual int ParseFBSrouceSmall(SysList::Str2StrMapList& listMap, string szInput, IError& iError) = 0;
 
 		virtual int ParseFkrFrob(string& szFrob, string szInput, IError& iError) = 0;
-		virtual int ParseFkrAuthToken(string& szAuthToken, string szInput,IError& iError) = 0;
+		virtual int ParseFkrAuthToken(SysMaps::Str2Str& szAuthToken, string szInput,IError& iError) = 0;
 
 		virtual int ParseError(IError& iError, string szInput, EnDataOwner enDataOwner) = 0;
 	};

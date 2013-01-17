@@ -31,8 +31,6 @@ void CFlickRServiceTest::setUp()
 	m_pFlickrService = new CFlickrService();
 
 	m_pFlickrService->SetConnectionInfo(m_cCnctInfoVO);
-	m_pFlickrService->SetAuthToken(m_cCnctInfoVO.szAuthToken);
-	m_pFlickrService->SetFrob(m_cCnctInfoVO.szFrob);
 }
 
 void CFlickRServiceTest::tearDown()
@@ -40,8 +38,7 @@ void CFlickRServiceTest::tearDown()
 	//If you call the "GetLoginURL" from dll interface, there is no need to write the following two lines.
 	//The only one thing you need to do is set the connection info which contains app id and secret to the service
 	CFlickrConnectionInfo* pIConInfo = dynamic_cast<CFlickrConnectionInfo*>(m_pFlickrService->GetConnectionInfo());
-	m_cCnctInfoVO.szAuthToken = pIConInfo->szAuthToken;
-	m_cCnctInfoVO.szFrob = pIConInfo->szFrob;
+	m_cCnctInfoVO = *pIConInfo;
 	delete m_pFlickrService;
 }
 
@@ -118,7 +115,8 @@ void CFlickRServiceTest::tetGetLoginUrl()
 	//If you call the "GetLoginURL" from dll interface, there is no need to write the following two lines.
 	//The only one thing you need to do is set the connection info which contains app id and secret to the service
 	CFlickrConnectionInfo* pIConInfo = dynamic_cast<CFlickrConnectionInfo*>(m_pFlickrService->GetConnectionInfo());
-	m_cCnctInfoVO.szFrob = pIConInfo->szFrob;	
+	m_cCnctInfoVO.szFrob = pIConInfo->szFrob;
+	m_pFlickrService->SetConnectionInfo(m_cCnctInfoVO);
 
 	CPPUNIT_ASSERT_MESSAGE(cFkErr.szMsg.c_str(),nResult==S_OK && g_bIsAuthFlowDone);
 }
@@ -130,7 +128,7 @@ void CFlickRServiceTest::testGetAlbums()
 	SysMaps::Str2Str mapQryParams;
 	mapQryParams[FLICK_PARAM_PERPAGE] = "1";
 	mapQryParams[FLICK_PARAM_PAGE] = "2";
-	int nResult = m_pFlickrService->GetAlbums(cFkrAlbumList,cFkrErr,"91328748@N02",mapQryParams);
+	int nResult = m_pFlickrService->GetAlbums(cFkrAlbumList,cFkrErr,"me",mapQryParams);
 	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK);
 }
 
@@ -151,7 +149,7 @@ void CFlickRServiceTest::testGetUserInfo()
 	model::CFkrUser cFkrUsr;
 	model::CFkrError cFkrErr;
 	SysMaps::Str2Str mapQryParams;
-	int nResult = m_pFlickrService->GetUserInfo(cFkrUsr,cFkrErr,"91786782@N02",mapQryParams);
+	int nResult = m_pFlickrService->GetUserInfo(cFkrUsr,cFkrErr,"me",mapQryParams);
 	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK);
 }
 
@@ -173,7 +171,7 @@ void CFlickRServiceTest::testGetProfile()
 	model::CFkrProfile cFkrProfile;
 	model::CFkrError cFkrErr;
 	SysMaps::Str2Str mapQryParams;
-	int nResult = m_pFlickrService->GetProfile(cFkrProfile,cFkrErr,"92188701@N07",mapQryParams);
+	int nResult = m_pFlickrService->GetProfile(cFkrProfile,cFkrErr,"me",mapQryParams);
 	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK);
 }
 

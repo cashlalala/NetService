@@ -27,6 +27,8 @@
 
 #define FLICK_AUTH "auth"
 #define FLICK_AUTH_TOKEN "token"
+#define FLICK_AUTH_NSID "nsid"
+#define FLICK_AUTH_USER "user"
 #define FLICK_AUTH_TOKEN_CONTENT FLICK_FIELD_CONTENT
 
 #define FLICK_PHOTOSETS		"photosets"

@@ -48,17 +48,17 @@ CFlickrService::~CFlickrService(void)
 
 void CFlickrService::SetConnectionInfo( IConnectionInfo& cConectInfoVO )
 {
-	//m_cConnectInfo = *dynamic_cast<CFlickrConnectionInfo*>(&cConectInfoVO);
-	m_cConnectInfo.lpcszApiKey = cConectInfoVO.lpcszApiKey;
-	m_cConnectInfo.szAppSecret = cConectInfoVO.szAppSecret;
+	m_cConnectInfo = *dynamic_cast<CFlickrConnectionInfo*>(&cConectInfoVO);
+	//m_cConnectInfo.lpcszApiKey = cConectInfoVO.lpcszApiKey;
+	//m_cConnectInfo.szAppSecret = cConectInfoVO.szAppSecret;
 }
 
 int CFlickrService::GetPhotos( IPhotoList& iPhotoLst, IError& iErr, string szId /*= "me"*/, SysMaps::Str2Str& mapQryCriteria/*=SysMaps::Str2Str()*/ )
 {
 	int nResult = E_FAIL;
 	HttpRespValObj cHttpResp;
-	if (!szId.empty() && mapQryCriteria[FLICK_PARAM_USER_ID].empty()) 
-		mapQryCriteria[FLICK_PARAM_USER_ID] = szId;
+	if (mapQryCriteria.find(FLICK_PARAM_USER_ID)==mapQryCriteria.end())//not ever exist
+		mapQryCriteria[FLICK_PARAM_USER_ID] = (szId.empty())? "me" : szId;
 	mapQryCriteria[FLICK_PARAM_MEDIA] = FLICK_VALUE_MEDIA_PHOTO;
 	mapQryCriteria[FLICK_PARAM_METHOD] = FLICK_METHOD_PHOTO_SEARCH;
 	mapQryCriteria[FLICK_FIELD_EXTRA] = util::CStringHelper::Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
@@ -174,8 +174,8 @@ int CFlickrService::GetUserInfo( IUser& iUser, IError& iErr, string szUid/*="me"
 	int nResult = E_FAIL;
 	HttpRespValObj cHttpResp;
 
-	if (!szUid.empty() && mapQryCriteria[FLICK_PARAM_USER_ID].empty()) 
-		mapQryCriteria[FLICK_PARAM_USER_ID] = szUid;
+	if (mapQryCriteria.find(FLICK_PARAM_USER_ID)==mapQryCriteria.end())//not ever exist
+		mapQryCriteria[FLICK_PARAM_USER_ID] = (szUid.empty())? "me" : szUid;
 	mapQryCriteria[FLICK_PARAM_METHOD] = FLICK_METHOD_PEOPLE_GETINFO;
 	do 
 	{
@@ -194,13 +194,13 @@ int CFlickrService::GetUserInfo( IUser& iUser, IError& iErr, string szUid/*="me"
 	return nResult;
 }
 
-int CFlickrService::GetFriends( IUserList& iUserLst, IError& iErr, string szUid/*=""*/, SysMaps::Str2Str& mapQryCriteria /*= SysMaps::Str2Str()*/ )
+int CFlickrService::GetFriends( IUserList& iUserLst, IError& iErr, string szUid/*="me"*/, SysMaps::Str2Str& mapQryCriteria /*= SysMaps::Str2Str()*/ )
 {
 	int nResult = E_FAIL;
 	HttpRespValObj cHttpResp;
 
-	if (!szUid.empty() && mapQryCriteria[FLICK_PARAM_USER_ID].empty()) 
-		mapQryCriteria[FLICK_PARAM_USER_ID] = szUid;
+	if (mapQryCriteria.find(FLICK_PARAM_USER_ID)==mapQryCriteria.end())//not ever exist
+		mapQryCriteria[FLICK_PARAM_USER_ID] = (szUid.empty())? "me" : szUid;
 	mapQryCriteria[FLICK_PARAM_METHOD] = FLICK_METHOD_CONTACTS_GETLIST;
 	do 
 	{
@@ -223,8 +223,8 @@ int CFlickrService::GetAlbums( IAlbumList& iAlbumLst, IError& iErr, string szUid
 {
 	int nResult = E_FAIL;
 	HttpRespValObj cHttpResp;
-	if (!szUid.empty() && mapQryCriteria[FLICK_PARAM_USER_ID].empty()) 
-		mapQryCriteria[FLICK_PARAM_USER_ID] = szUid;
+	if (mapQryCriteria.find(FLICK_PARAM_USER_ID)==mapQryCriteria.end())//not ever exist
+		mapQryCriteria[FLICK_PARAM_USER_ID] = (szUid.empty())? "me" : szUid;
 	mapQryCriteria[FLICK_PARAM_METHOD] = FLICK_METHOD_PHOTOSET_GETLIST;
 	do 
 	{
@@ -285,7 +285,7 @@ int CFlickrService::GetFlickrAuthFrob( std::string& szFrob, const std::string& s
 }
 
 //This api can't be tested alone
-int CFlickrService::GetFlickrAuthToken( string& szAuthTok, IError& iErr )
+int CFlickrService::GetFlickrAuthToken( SysMaps::Str2Str& mapAuth, IError& iErr )
 {
 	int nResult = E_FAIL;
 	HttpRespValObj cHttpRespVO;
@@ -304,7 +304,7 @@ int CFlickrService::GetFlickrAuthToken( string& szAuthTok, IError& iErr )
 		nResult = OpenUrl(cHttpRespVO,szComposedUrl);
 		EXCEPTION_BREAK(nResult);
 
-		nResult = m_pIDataMgr->ParseFkrAuthToken(szAuthTok,cHttpRespVO.szResp,iErr);
+		nResult = m_pIDataMgr->ParseFkrAuthToken(mapAuth,cHttpRespVO.szResp,iErr);
 	} while (false);
 
 	ExceptionHandler(nResult, cHttpRespVO, iErr);
@@ -445,14 +445,21 @@ int CFlickrService::PreCallApi( IError& iErr, SysMaps::Str2Str &mapParams )
 		{
 			if (m_cConnectInfo.szAuthToken.empty())
 			{
-				
-				nResult = GetFlickrAuthToken(m_cConnectInfo.szAuthToken,iErr);
+				SysMaps::Str2Str mapAuth;
+				nResult = GetFlickrAuthToken(mapAuth,iErr);
+				m_cConnectInfo.szNsid = mapAuth[FLICK_AUTH_NSID];
+				m_cConnectInfo.szAuthToken = mapAuth[FLICK_AUTH_TOKEN];
 				LOGGER_TRACE(m_pILogger,"Get Auth Token: [%s]",m_cConnectInfo.szAuthToken.c_str())
+				LOGGER_TRACE(m_pILogger,"Auth Token Owned by : [%s]",m_cConnectInfo.szNsid.c_str())
 				EXCEPTION_BREAK(nResult)
 			}
 			mapParams[FLICK_PARAM_AUTH_TOKEN] = m_cConnectInfo.szAuthToken;
 		}
 		MAP_STRING_WITH_CONDITION(mapParams,"",FLICK_PARAM_API_KEY,m_cConnectInfo.lpcszApiKey)
+		if (mapParams.find(FLICK_PARAM_USER_ID)!=mapParams.end() && //ever exist
+			mapParams[FLICK_PARAM_USER_ID]=="me") //and is me
+			mapParams[FLICK_PARAM_USER_ID] = m_cConnectInfo.szNsid;
+
 		if (mapParams[FLICK_PARAM_FORMAT]=="")
 		{
 			mapParams[FLICK_PARAM_FORMAT] = FLICK_FORMAT_JSON;
@@ -482,14 +489,4 @@ void CFlickrService::ExceptionHandler( int nResult, HttpRespValObj &cHttpRespVO,
 			iErr.szMsg = ss.str() ;
 		}
 	}
-}
-
-void CFlickrService::SetFrob( const string& szFrob )
-{
-	m_cConnectInfo.szFrob = szFrob;
-}
-
-void CFlickrService::SetAuthToken( const string& szAuthToken )
-{
-	m_cConnectInfo.szAuthToken = szAuthToken;
 }

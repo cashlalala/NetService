@@ -22,4 +22,5 @@ struct CFlickrConnectionInfo : IConnectionInfo
 	virtual ~CFlickrConnectionInfo() {};
 	string szAuthToken; //netservice internal use
 	string szFrob;//netservice internal use
+	string szNsid;//netservice internal use
 };
