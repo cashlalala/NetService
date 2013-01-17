@@ -627,19 +627,20 @@ void util::CJsonCppMgr::TravFkrUser( Json::Value& jvRoot, IUser& iUser )
 	pFkrUser->szFullName = jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_REAL_NAME][FLICK_FIELD_CONTENT].asString();
 	pFkrUser->szId = jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ID].asString();
 	pFkrUser->szUsrName = jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_USR_NAME][FLICK_FIELD_CONTENT].asString();
-	if (jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ICONFARM].asString()!="0" && 
-		jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ICONSVR].asString()!="0")
+	if (jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ICONFARM].asString()=="0" && 
+		jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ICONSVR].asString()=="0")
+	{
+		LOGGER_DEBUG(m_pLogger,"This queryee [%s] don't have the thumbnail or open the access right for the querier",pFkrUser->szId.c_str())
+	}
+	else
 	{
 		pFkrUser->pProfile = new CFkrProfile();
 		pFkrUser->pProfile->szThumNail = util::CStringHelper::Format("http://farm%s.staticflickr.com/%s/buddyicons/%s.jpg", 
 			jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ICONFARM].asString().c_str(),
 			jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ICONSVR].asString().c_str(),
 			pFkrUser->szId.c_str());
-		
 	}
-	else
-		LOGGER_DEBUG(m_pLogger,"This queryee [%s] don't have the thumbnail or open the access right for the querier",
-		pFkrUser->szId.c_str())
+		
 
 	
 }
