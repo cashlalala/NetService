@@ -241,7 +241,8 @@ int CFacebookService::GetAlbums( IAlbumList& iAlbumLst, IError& iErr, string szU
 		EXCEPTION_BREAK(nResult)
 	
 		SysList::Str2StrMapList listMap;
-		nResult = m_pIDataMgr->ParseFBSrouceSmall(listMap,cHttpResp.szResp,iErr);
+		util::IDataMgrFBOnly* pIFbDataMgr = dynamic_cast<util::IDataMgrFBOnly*>(m_pIDataMgr);
+		nResult = pIFbDataMgr->ParseFBSrouceSmall(listMap,cHttpResp.szResp,iErr);
 		EXCEPTION_BREAK(nResult)
 		
 		for(list<IAlbum*>::iterator itAlb = iAlbumLst.listOfItem.begin();itAlb!=iAlbumLst.listOfItem.end();++itAlb)

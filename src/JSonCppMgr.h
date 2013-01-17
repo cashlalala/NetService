@@ -11,7 +11,7 @@ using systypes::SysMaps;
 namespace util
 {
 	class CJsonCppMgr :
-		public IDataManager
+		public IDataManager, public IDataMgrFBOnly, public IDataMgrFkrOnly
 	{
 	public:
 		CJsonCppMgr(void);

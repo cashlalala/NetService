@@ -304,7 +304,8 @@ int CFlickrService::GetFlickrAuthFrob( std::string& szFrob, const std::string& s
 		nResult = OpenUrl(cHttpRespVO,szComposedUrl);
 		EXCEPTION_BREAK(nResult)
 
-		nResult = m_pIDataMgr->ParseFkrFrob(szFrob,cHttpRespVO.szResp,iErr);
+		util::IDataMgrFkrOnly* pDataMgrFkr = dynamic_cast<util::IDataMgrFkrOnly*>(m_pIDataMgr);
+		nResult = pDataMgrFkr->ParseFkrFrob(szFrob,cHttpRespVO.szResp,iErr);
 	} while (false);
 
 	ExceptionHandler(nResult, cHttpRespVO, iErr);
@@ -332,7 +333,8 @@ int CFlickrService::GetFlickrAuthToken( SysMaps::Str2Str& mapAuth, IError& iErr 
 		nResult = OpenUrl(cHttpRespVO,szComposedUrl);
 		EXCEPTION_BREAK(nResult);
 
-		nResult = m_pIDataMgr->ParseFkrAuthToken(mapAuth,cHttpRespVO.szResp,iErr);
+		util::IDataMgrFkrOnly* pDataMgrFkr = dynamic_cast<util::IDataMgrFkrOnly*>(m_pIDataMgr);
+		nResult = pDataMgrFkr->ParseFkrAuthToken(mapAuth,cHttpRespVO.szResp,iErr);
 	} while (false);
 
 	ExceptionHandler(nResult, cHttpRespVO, iErr);

@@ -29,6 +29,21 @@ namespace util
 		Flickr
 	} EnDataOwner;
 
+	struct IDataMgrFBOnly {
+		virtual ~IDataMgrFBOnly() = 0;
+		virtual int ParseFBSrouceSmall(SysList::Str2StrMapList& listMap, string szInput, IError& iError) = 0;
+	};
+
+	inline IDataMgrFBOnly::~IDataMgrFBOnly(){};
+
+	struct IDataMgrFkrOnly {
+		virtual ~IDataMgrFkrOnly() = 0;
+		virtual int ParseFkrFrob(string& szFrob, string szInput, IError& iError) = 0;
+		virtual int ParseFkrAuthToken(SysMaps::Str2Str& szAuthToken, string szInput,IError& iError) = 0;
+	};
+
+	inline IDataMgrFkrOnly::~IDataMgrFkrOnly(){};
+
 	struct IDataManager {
 		virtual ~IDataManager() = 0;
 		virtual int ParsePhotoList( IPhotoList& iPhotoList, string szInput, EnDataOwner enDataOwner, IError& iError) =0;
@@ -39,11 +54,6 @@ namespace util
 		virtual int ParseAlbumList(IAlbumList& iAlbumList, string szInput, EnDataOwner enDataOwner, IError& iError) = 0;
 		virtual int ParseProfile(IProfile& iProfile, string szInput, EnDataOwner enDataOwner, IError& iError) = 0;
 		virtual int ParseImageList(IImageList& listImage, string szInput, EnDataOwner endDataOwner, IError& iError) = 0;
-
-		virtual int ParseFBSrouceSmall(SysList::Str2StrMapList& listMap, string szInput, IError& iError) = 0;
-
-		virtual int ParseFkrFrob(string& szFrob, string szInput, IError& iError) = 0;
-		virtual int ParseFkrAuthToken(SysMaps::Str2Str& szAuthToken, string szInput,IError& iError) = 0;
 
 		virtual int ParseError(IError& iError, string szInput, EnDataOwner enDataOwner) = 0;
 	};
