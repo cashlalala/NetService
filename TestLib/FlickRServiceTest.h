@@ -18,6 +18,8 @@ class CFlickRServiceTest
 	*/
 	CPPUNIT_TEST( tetGetLoginUrl );
 	// °Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù
+
+	//°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ıBasic testing 
 	CPPUNIT_TEST( testGetPhotos );
 	CPPUNIT_TEST( testGetAlbums );
 	CPPUNIT_TEST( testGetFriends );
@@ -27,6 +29,12 @@ class CFlickRServiceTest
 	//CPPUNIT_TEST( testGetForb ); //only for development testing
 	//CPPUNIT_TEST( testGetToken ); //only for development testing
 	//CPPUNIT_TEST( testGetOAuthRqstToken ); //only for development testing
+	// °Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°ÙBasic testing 
+
+	//°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ıIntegration and Advance testing 
+	CPPUNIT_TEST( testGetPhotosInAlbumWithPhotosAndAlbumPaging );
+	// °Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°ÙIntegration and Advance testing 
+
 	/*
 	* Do not move the order these two functions, they should be 
 	* always the last two test to be run for the purpose of ui flow simulation
@@ -55,6 +63,8 @@ public:
 	void testGetForb();
 	void testGetOAuthRqstToken();
 	void testGetToken();
+
+	void testGetPhotosInAlbumWithPhotosAndAlbumPaging();
 
 	void terminate();
 

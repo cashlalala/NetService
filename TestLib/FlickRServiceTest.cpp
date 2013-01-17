@@ -177,4 +177,13 @@ void CFlickRServiceTest::testGetProfile()
 	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK);
 }
 
+void CFlickRServiceTest::testGetPhotosInAlbumWithPhotosAndAlbumPaging()
+{
+	//model::CFkrUser cFkrUsr;
+	//model::CFkrError cFkrErr;
+	//SysMaps::Str2Str mapQryParams;
+	//int nResult = m_pFlickrService->GetUserInfo(cFkrUsr,cFkrErr,"91786782@N02",mapQryParams);
+	//CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK);
+}
+
 CFlickrConnectionInfo CFlickRServiceTest::m_cCnctInfoVO;
