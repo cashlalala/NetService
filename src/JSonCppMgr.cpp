@@ -603,8 +603,12 @@ void util::CJsonCppMgr::TravFkrFriend( Json::Value& item, model::IUser* pIUsr )
 	pFkrUsr->szUsrName = item[FLICK_CONTACT_USR_NAME].asString();
 	pFkrUsr->bIsFriend = item[FLICK_CONTACT_FRIEND].asBool();
 	pFkrUsr->bIsFamily = item[FLICK_CONTACT_FAMILY].asBool();	
-	if (item[FLICK_CONTACT_ICON_FARM].asString()!="0" && 
-		item[FLICK_CONTACT_ICON_SVR].asString()!="0")
+	if (item[FLICK_CONTACT_ICON_FARM].asString()=="0" && 
+		item[FLICK_CONTACT_ICON_SVR].asString()=="0")
+	{
+		LOGGER_DEBUG(m_pLogger,"This queryee [%s] don't have the thumbnail or open the access right for the querier",pFkrUsr->szId.c_str())
+	}
+	else
 	{
 		pFkrUsr->pProfile = new CFkrProfile();
 		pFkrUsr->pProfile->szThumNail = util::CStringHelper::Format("http://farm%s.staticflickr.com/%s/buddyicons/%s.jpg", 
@@ -612,10 +616,6 @@ void util::CJsonCppMgr::TravFkrFriend( Json::Value& item, model::IUser* pIUsr )
 			item[FLICK_CONTACT_ICON_SVR].asString().c_str(),
 			pFkrUsr->szId.c_str());
 	}
-	else
-		LOGGER_DEBUG(m_pLogger,"This queryee [%s] don't have the thumbnail or open the access right for the querier",
-		pFkrUsr->szId.c_str())
-	
 }
 
 void util::CJsonCppMgr::TravFkrUser( Json::Value& jvRoot, IUser& iUser )
