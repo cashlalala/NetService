@@ -146,4 +146,5 @@
 #define FLICK_METHOD_AUTH_GETTOKEN "flickr.auth.getToken"
 #define FLICK_METHOD_PHOTOSET_GETLIST "flickr.photosets.getList"
 #define FLICK_METHOD_CONTACTS_GETLIST "flickr.contacts.getList"
+#define FLICK_METHOD_CONTACTS_GETPUBLICLIST "flickr.contacts.getPublicList"
 #define FLICK_METHOD_PEOPLE_GETINFO "flickr.people.getInfo"

@@ -201,7 +201,11 @@ int CFlickrService::GetFriends( IUserList& iUserLst, IError& iErr, string szUid/
 
 	if (mapQryCriteria.find(FLICK_PARAM_USER_ID)==mapQryCriteria.end())//not ever exist
 		mapQryCriteria[FLICK_PARAM_USER_ID] = (szUid.empty())? "me" : szUid;
-	mapQryCriteria[FLICK_PARAM_METHOD] = FLICK_METHOD_CONTACTS_GETLIST;
+	if (mapQryCriteria[FLICK_PARAM_USER_ID]=="me" || mapQryCriteria[FLICK_PARAM_USER_ID]==m_cConnectInfo.szNsid)
+		mapQryCriteria[FLICK_PARAM_METHOD] = FLICK_METHOD_CONTACTS_GETLIST;
+	else
+		mapQryCriteria[FLICK_PARAM_METHOD] = FLICK_METHOD_CONTACTS_GETPUBLICLIST;
+
 	do 
 	{
 		nResult = CallApi(cHttpResp, iErr, mapQryCriteria);
