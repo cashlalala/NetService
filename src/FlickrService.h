@@ -43,6 +43,7 @@ private:
 	static const string S_OAUTH_CALLBACK_URL;
 	static const string S_LOGOUT_URL;
 	static const ServerInfo S_SERVER_INFO;
+	static string S_FROB_BUF;
 
 	CFlickrConnectionInfo m_cConnectInfo;
 	

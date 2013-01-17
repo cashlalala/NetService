@@ -32,6 +32,8 @@ const string CFlickrService::S_OAUTH_CALLBACK_URL = "http://www.flickr.com";
 
 const ServerInfo CFlickrService::S_SERVER_INFO = {"api.flickr.com","/services/rest/?","80","443"};
 
+string CFlickrService::S_FROB_BUF;
+
 
 CFlickrService::CFlickrService(void)
 {
@@ -49,8 +51,7 @@ CFlickrService::~CFlickrService(void)
 void CFlickrService::SetConnectionInfo( IConnectionInfo& cConectInfoVO )
 {
 	m_cConnectInfo = *dynamic_cast<CFlickrConnectionInfo*>(&cConectInfoVO);
-	//m_cConnectInfo.lpcszApiKey = cConectInfoVO.lpcszApiKey;
-	//m_cConnectInfo.szAppSecret = cConectInfoVO.szAppSecret;
+	m_cConnectInfo.szFrob = S_FROB_BUF;
 }
 
 int CFlickrService::GetPhotos( IPhotoList& iPhotoLst, IError& iErr, string szId /*= "me"*/, SysMaps::Str2Str& mapQryCriteria/*=SysMaps::Str2Str()*/ )
@@ -128,14 +129,14 @@ int CFlickrService::GetLoginURL(string& szLoginUrl, const string& szAppId, const
 	{
 		//Normally, there are only two scenarios when you need to get url. First, you don't have the auth token; Second, you need refresh the token
 		m_cConnectInfo.szAuthToken = "";
-		m_cConnectInfo.szFrob = "";
-		nResult = GetFlickrAuthFrob(m_cConnectInfo.szFrob, szAppId, szAppSecret, cFkrErr);
+		S_FROB_BUF = "";
+		nResult = GetFlickrAuthFrob(S_FROB_BUF, szAppId, szAppSecret, cFkrErr);
 		EXCEPTION_BREAK(nResult);
 
 		SysMaps::Str2Str mapParams;
 		mapParams[FLICK_PARAM_API_KEY] = szAppId;
 		mapParams[FLICK_PARAM_PERMISSION] = szScope;
-		mapParams[FLICK_PARAM_FROB] = m_cConnectInfo.szFrob;
+		mapParams[FLICK_PARAM_FROB] = S_FROB_BUF;
 		mapParams[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapParams,szAppSecret.c_str());
 
 		szLoginUrl = "http://www.flickr.com/services/auth/?"  + util::CMapHelper::ToParamString(mapParams);
