@@ -17,11 +17,19 @@ class CFlickrServiceTest: public CPPUNIT_NS::TestFixture
 	*/
 	CPPUNIT_TEST( testFkrGetLoginUrl );
 	// °Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù
-	/*CPPUNIT_TEST( testFkrGetProfile );
+
+	//°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ıBasic testing 
+	CPPUNIT_TEST( testFkrGetProfile );
 	CPPUNIT_TEST( testFkrGetAlbumList );
-	CPPUNIT_TEST( testFkrGetUser );*/
+	CPPUNIT_TEST( testFkrGetUser );
 	CPPUNIT_TEST( testFkrGetPhotos );
-	//CPPUNIT_TEST( testGetFriends );
+	CPPUNIT_TEST( testGetFriends );
+	// °Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°ÙBasic testing 
+
+	//°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ıIntegration and Advance testing 
+	CPPUNIT_TEST( testGetFriendsPhotosInAlbumWithPhotosAndAlbumPaging );
+	// °Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°ÙIntegration and Advance testing 
+
 	CPPUNIT_TEST( terminate );
 	CPPUNIT_TEST_SUITE_END();
 public:
@@ -36,6 +44,8 @@ public:
 	void testFkrGetUser();
 	void testFkrGetPhotos();
 	void testGetFriends();
+
+	void testGetFriendsPhotosInAlbumWithPhotosAndAlbumPaging();
 
 	void terminate();
 private:

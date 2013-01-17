@@ -139,7 +139,6 @@ void CFlickRServiceTest::testGetFriends()
 	SysMaps::Str2Str mapQryParams;
 	mapQryParams[FLICK_PARAM_PERPAGE] = "1";
 	mapQryParams[FLICK_PARAM_PAGE] = "2";
-	//always the friends of yourself
 	int nResult = m_pFlickrService->GetFriends(cFkrUsrList,cFkrErr,"70735667@N03",mapQryParams);
 	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK);
 }
