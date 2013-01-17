@@ -101,9 +101,14 @@ void CFlickRServiceTest::tetGetLoginUrl()
 	m_cCnctInfoVO.szAppSecret = string(lpszTmp);
 	cout << "Get secret : " << m_cCnctInfoVO.szAppSecret << endl;
 
+	memset(lpszTmp,0x0,1025);
+	GetPrivateProfileStringA("FlickRService","scope",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
+	string szScope = string(lpszTmp);
+	cout << "Get scope : " << szScope << endl;
+
 	string szLoginUrl ;
 	model::CFkrError cFkErr;
-	int nResult = m_pFlickrService->GetLoginURL(szLoginUrl, m_cCnctInfoVO.lpcszApiKey, m_cCnctInfoVO.szAppSecret, cFkErr,"write");
+	int nResult = m_pFlickrService->GetLoginURL(szLoginUrl, m_cCnctInfoVO.lpcszApiKey, m_cCnctInfoVO.szAppSecret, cFkErr,szScope);
 
 	ShellExecuteA(NULL, "open", (szLoginUrl + "\r\n").c_str(), NULL, NULL, SW_SHOW);
 	ThreadParams cThreadParams;

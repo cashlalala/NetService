@@ -57,9 +57,13 @@ void CFBServiceTest::testFBGetLoginURL()
 	GetPrivateProfileStringA("FBService","app_secret",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
 	m_cCnctInfoVO.szAppSecret = string(lpszTmp);
 
+	memset(lpszTmp,0x0,1025);
+	GetPrivateProfileStringA("FBService","scope",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
+	string szScope = string(lpszTmp);
+
 	string szLoginUrl ;
 	model::CFBError cFbErr;
-	int nResult = pSocialService->GetLoginURL(szLoginUrl, m_cCnctInfoVO.lpcszApiKey, m_cCnctInfoVO.szAppSecret, cFbErr,"user_photos");
+	int nResult = pSocialService->GetLoginURL(szLoginUrl, m_cCnctInfoVO.lpcszApiKey, m_cCnctInfoVO.szAppSecret, cFbErr,szScope);
 	ShellExecuteA(NULL, "open", (szLoginUrl + "\r\n").c_str(), NULL, NULL, SW_SHOW);
 
 	/*
@@ -271,3 +275,4 @@ void CFBServiceTest::testGetFriendsPhotosInHisAlbum()
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK); 
 
 }
+
