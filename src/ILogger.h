@@ -4,10 +4,10 @@
 
 using std::string;
 
-#define LOGGER_SETLOCATIONINFO(pLogger,file,func,line) \
+#define LOGGER_SETLOCATIONINFO(pLogger,file,func,line) {\
 	pLogger->lpcszFileName=file;\
 	pLogger->lpcszFuncName=func;\
-	pLogger->nLineNum=line;
+	pLogger->nLineNum=line;}
 
 #if defined(_MSC_VER) && _MSC_VER >= 1300
 #define __LOGGERFUNC__	 __FUNCSIG__
@@ -24,25 +24,25 @@ using std::string;
 #define END_LOG(pLogger) \
 	LOGGER_SETLOCATIONINFO(pLogger,"","",0)
 
-#define LOGGER_ERROR(pLogger, ...) \
+#define LOGGER_ERROR(pLogger, ...) {\
 	BEGIN_LOG(pLogger)\
 	pLogger->Error(__VA_ARGS__);\
-	END_LOG(pLogger)
+	END_LOG(pLogger)}
 
-#define LOGGER_INFO(pLogger, ...) \
+#define LOGGER_INFO(pLogger, ...) {\
 	BEGIN_LOG(pLogger)\
 	pLogger->Info(__VA_ARGS__);\
-	END_LOG(pLogger)
+	END_LOG(pLogger)}
 
-#define LOGGER_DEBUG(pLogger, ...) \
+#define LOGGER_DEBUG(pLogger, ...) {\
 	BEGIN_LOG(pLogger)\
 	pLogger->Debug(__VA_ARGS__);\
-	END_LOG(pLogger)
+	END_LOG(pLogger)}
 
-#define LOGGER_TRACE(pLogger, ...) \
+#define LOGGER_TRACE(pLogger, ...) {\
 	BEGIN_LOG(pLogger)\
 	pLogger->Trace(__VA_ARGS__);\
-	END_LOG(pLogger)
+	END_LOG(pLogger)}
 
 
 namespace util
