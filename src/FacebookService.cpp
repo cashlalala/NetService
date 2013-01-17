@@ -173,7 +173,7 @@ int CFacebookService::GetFriends( IUserList& iUserLst, IError& iErr, string szUi
 		nResult = CallGraphAPI(cHttpResp,szUid, Friend, mapQryCriteria,Get);
 		EXCEPTION_BREAK(nResult);
 
-		m_pIDataMgr->ParseFriendList(iUserLst,cHttpResp.szResp,util::Facebook,iErr);
+		nResult = m_pIDataMgr->ParseFriendList(iUserLst,cHttpResp.szResp,util::Facebook,iErr);
 		EXCEPTION_BREAK(nResult)
 
 		CrackParamsForPagination(iUserLst);
