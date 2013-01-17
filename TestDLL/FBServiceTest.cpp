@@ -242,3 +242,32 @@ void CFBServiceTest::terminate()
 	g_bIsAuthFlowDone = false;
 	g_szToken = "";
 }
+
+void CFBServiceTest::testGetFriendsPhotosInHisAlbum()
+{
+	model::CFBUserList cFbUsrLst ;
+	model::CFBError cFbErr;
+	SysMaps::Str2Str mapMy;
+	mapMy[FB_FIELDS] = FB_USER_PICTURE;
+	mapMy[FB_LIMIT] = "1"; //1 users perpage;
+	mapMy[FB_OFFSET] = "2"; // 3rd user
+	int nResult = pSocialService->GetFriends(cFbUsrLst,cFbErr,"me",mapMy);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),
+		nResult==S_OK && cFbUsrLst.listOfItem.size()== 1 && !cFbUsrLst.szNextPageUrl.empty() );
+	mapMy.clear();
+
+	model::CFBAlbumList cFbAlbumList;
+	string szFriendId = cFbUsrLst.listOfItem.front()->szId;
+	mapMy[FB_LIMIT] = "1"; //1 album perpage
+	mapMy[FB_OFFSET] = "1"; // 2nd album
+	nResult = pSocialService->GetAlbums(cFbAlbumList,cFbErr,szFriendId,mapMy);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK && cFbAlbumList.listOfItem.size()==1
+		&& !cFbAlbumList.szNextPageUrl.empty());
+
+	model::IAlbum* pIAlbum  = cFbAlbumList.listOfItem.front();	
+	model::CFBPhotoList cFbPhotoLst;
+
+	nResult = pSocialService->GetPhotos(cFbPhotoLst,cFbErr,pIAlbum->szId);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK); 
+
+}

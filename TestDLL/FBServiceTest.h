@@ -31,6 +31,7 @@ class CFBServiceTest: public CPPUNIT_NS::TestFixture
 	CPPUNIT_TEST( testGetUserAndUsersInfoWithTumbNail );
 	CPPUNIT_TEST( testGetFriendsInfoWithThumbNailAndPaging );
 	CPPUNIT_TEST( testGetPhotosInAlbumWithPhotosAndAlbumPaging );
+	CPPUNIT_TEST( testGetFriendsPhotosInHisAlbum );
 	// ＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃Integration and Advance testing 
 
 	CPPUNIT_TEST( terminate );
@@ -54,6 +55,7 @@ public:
 	void testGetUserAndUsersInfoWithTumbNail();
 	void testGetFriendsInfoWithThumbNailAndPaging();
 	void testGetPhotosInAlbumWithPhotosAndAlbumPaging();
+	void testGetFriendsPhotosInHisAlbum();
 
 	void terminate();
 private:
