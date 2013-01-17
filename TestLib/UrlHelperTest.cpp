@@ -32,3 +32,10 @@ void CUrlHelperTest::testEncodeUrl()
 	CPPUNIT_ASSERT(szResult == "foo%5E%20bar");
 
 }
+
+void CUrlHelperTest::testToParamMap()
+{
+	string szUrl = "https://graph.facebook.com/724760664/albums?fields=id,name,count&offset=3&limit=4&before=MTAxNTAyOTAwMjUxMjU2NjU=";
+	map<string,string> mapString = CUrlHelper::ToParamMap(szUrl);
+	CPPUNIT_ASSERT(true);
+}

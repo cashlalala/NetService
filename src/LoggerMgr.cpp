@@ -15,7 +15,7 @@ void util::CLoggerMgr::Config( EnLogger enLogger)
 		switch (enLogger)
 		{
 		case Log4Cxx:
-			DOMConfigurator::configure("Log4cxxConfig.xml");
+			DOMConfigurator::configure("..\\TestData\\Log4cxxConfig.xml");
 			break;
 		default:
 			break;

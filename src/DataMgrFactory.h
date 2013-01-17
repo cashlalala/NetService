@@ -11,10 +11,10 @@ namespace util
 	{
 	public:
 		static IDataManager* GetInstance(EnDataMgr enParser = BoostJson);
-		static int DeleteInstance(IDataManager* pIDataMgr); 
+		//static int DeleteInstance(IDataManager* pIDataMgr); 
 
 	private:
-		static map<EnDataMgr, IDataManager*> S_MAP_DATAMGR;
+		//static map<EnDataMgr, IDataManager*> S_MAP_DATAMGR;
 	};
 }
 

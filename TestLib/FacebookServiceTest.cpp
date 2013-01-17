@@ -1,4 +1,6 @@
 #include "FacebookServiceTest.h"
+#include "..\TestDLL\URLWatchDog.h"
+#include <Shellapi.h>
 #include <UrlHelper.h>
 #include <NetServiceErr.h>
 #include <iostream>
@@ -32,21 +34,7 @@ void CFacebookServiceTest::setUp()
 {
 	m_pFacebookService = new CFacebookService();
 
-	CFBConnectionInfo cCnctInfoVO;
-	char* lpszTmp = new char[1025];
-	memset(lpszTmp,0x0,1025);
-	GetPrivateProfileStringA("FBService","access_token",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
-	cCnctInfoVO.szAccessToken = string(lpszTmp);
-	cout << cCnctInfoVO.szAccessToken  << endl;
-
-	memset(lpszTmp,0x0,1025);
-	GetPrivateProfileStringA("FBService","uid",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
-	cCnctInfoVO.szUid = string(lpszTmp);
-	cout << cCnctInfoVO.szUid  << endl;
-
-	delete[] lpszTmp;
-
-	m_pFacebookService->SetConnectionInfo(cCnctInfoVO);
+	m_pFacebookService->SetConnectionInfo(m_cCnctInfoVO);
 }
 
 void CFacebookServiceTest::tearDown()
@@ -63,12 +51,31 @@ void CFacebookServiceTest::testCallGraphApi()
 
 void CFacebookServiceTest::testGetLoginUrl()
 {
-	string szLoginUrl = m_pFacebookService->GetLoginURL("215921841875602","read_stream ");
-	string szExpectLoginUrl = "https://www.facebook.com/dialog/oauth?client_id=215921841875602&redirect_uri=http://www.facebook.com/connect/login_success.html&response_type=token&display=popup&scope=read_stream%20";
-	string szRes = util::CUrlHelper::EncodeUrl(szExpectLoginUrl);
-	cout << endl << szLoginUrl << endl;
-	cout << endl << szRes << endl;
-	CPPUNIT_ASSERT(szExpectLoginUrl==szRes);
+
+	char lpszTmp[1025];
+
+	memset(lpszTmp,0x0,1025);
+	GetPrivateProfileStringA("FBService","api_key",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
+	m_cCnctInfoVO.lpcszApiKey = string(lpszTmp);
+
+	memset(lpszTmp,0x0,1025);
+	GetPrivateProfileStringA("FBService","app_secret",NULL,lpszTmp,1024,"..\\TestData\\TestConfig.ini");
+	m_cCnctInfoVO.szAppSecret = string(lpszTmp);
+
+	string szLoginUrl ;
+	CFBError cFkErr;
+	int nResult = m_pFacebookService->GetLoginURL(szLoginUrl, m_cCnctInfoVO.lpcszApiKey, m_cCnctInfoVO.szAppSecret, cFkErr,"user_photos,user_videos,friends_videos,friends_photos,friends_about_me");
+	
+	ShellExecuteA(NULL, "open", (szLoginUrl +"\r\n").c_str(), NULL, NULL, SW_SHOW);
+	ThreadParams cThreadParam;
+	cThreadParam.enService =  testutil::FB;
+	BeginMonitorUrlThread(cThreadParam);
+	WaitForAuthorization();
+	//This is a workaround for ut, you should figure out your way to get the access_token in url and set to connection info.
+	//In the future, this will be done by netservice.
+	m_cCnctInfoVO.szAccessToken = g_szToken;
+
+	CPPUNIT_ASSERT(nResult==S_OK && !g_szToken.empty() && g_bIsAuthFlowDone);
 }
 
 void CFacebookServiceTest::testGetUserInfo()
@@ -97,8 +104,7 @@ std::wstring CFacebookServiceTest::s2ws(const std::string& s)
 }
 
 void CFacebookServiceTest::testGetPhotos()
-{
-	
+{	
 	model::CFBPhotoList cFBPhotoList;
 	CFBError cFbErr;
 	int nResult = m_pFacebookService->GetPhotos(cFBPhotoList,cFbErr);
@@ -125,22 +131,16 @@ void CFacebookServiceTest::testGetVideos()
 	model::CFBVideoList cFbVideoLst;
 	CFBError cFbErr;
 	SysMaps::Str2Str mapMy;
-
-	//char lpszTmp[20];
-	//memset(lpszTmp,0x0,20);
-	//sprintf(lpszTmp,"%s,%s",FB_USER_PICTURE,FB_USER_NAME);
-
-	//mapMy[FB_FIELDS]= lpszTmp;
-	int nResult = m_pFacebookService->GetVideos(cFbVideoLst,cFbErr);
+	int nResult = m_pFacebookService->GetVideos(cFbVideoLst,cFbErr,"me",mapMy);
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
 }
 
 void CFacebookServiceTest::testGetAlbums()
 {
-	model::CFBAlbumList cFbVideoLst;
+	model::CFBAlbumList cFbAlbumLst;
 	CFBError cFbErr;
 
-	int nResult = m_pFacebookService->GetAlbums(cFbVideoLst,cFbErr);
+	int nResult = m_pFacebookService->GetAlbums(cFbAlbumLst,cFbErr);
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
 }
 
@@ -152,4 +152,95 @@ void CFacebookServiceTest::testGetProfile()
 	int nResult = m_pFacebookService->GetProfile(cFbVideoLst,cFbErr);
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
 }
+
+
+void CFacebookServiceTest::testGetUserAndUsersInfoWithTumbNail()
+{
+	model::CFBUserList cFbUsrLst ;
+	model::CFBError cFbErr;
+	SysMaps::Str2Str mapMy;
+	mapMy[FB_FIELDS] = FB_USER_PICTURE;
+	list<string> listUsr;
+	listUsr.push_back("726727685");
+	listUsr.push_back("508872928");
+	int nResult = m_pFacebookService->GetUsersInfo(cFbUsrLst,cFbErr,listUsr,mapMy);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),SUCCEEDED(nResult));
+
+	bool bIsThumbNailExist = true;
+	for (list<IUser*>::iterator it = cFbUsrLst.listOfItem.begin();it!=cFbUsrLst.listOfItem.end();++it)
+	{
+		if (!(*it)->pProfile || (*it)->pProfile->szThumNail.empty())
+		{
+			bIsThumbNailExist =false;
+			break;
+		}
+	}
+
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),
+		nResult==S_OK && cFbUsrLst.listOfItem.size()==2 && bIsThumbNailExist);
+}
+
+void CFacebookServiceTest::testGetFriendsInfoWithThumbNailAndPaging()
+{
+	//your friends suppose to be greater than 12
+	model::CFBUserList cFbUsrLst ;
+	model::CFBError cFbErr;
+	SysMaps::Str2Str mapMy;
+	mapMy[FB_FIELDS] = FB_USER_PICTURE;
+	mapMy[FB_LIMIT] = "10"; //10 users perpage;
+	mapMy[FB_OFFSET] = "2"; // 3rd user
+	int nResult = m_pFacebookService->GetFriends(cFbUsrLst,cFbErr,"me",mapMy);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),
+		nResult==S_OK && cFbUsrLst.listOfItem.size()== 10 && !cFbUsrLst.szNextPageUrl.empty() && !cFbUsrLst.szPreviousPageUrl.empty());
+}
+
+void CFacebookServiceTest::testGetPhotosInAlbumWithPhotosAndAlbumPaging()
+{
+	model::CFBAlbumList cFbAlbumList;
+	model::CFBError cFbErr;
+	SysMaps::Str2Str mapMy;
+	mapMy[FB_LIMIT] = "1"; //1 albums perpage;
+	mapMy[FB_OFFSET] = "5"; //6th album;
+	int nResult = m_pFacebookService->GetAlbums(cFbAlbumList,cFbErr,"me",mapMy);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK && cFbAlbumList.listOfItem.size()==1 && !cFbAlbumList.szNextPageUrl.empty() );
+	//!cFbAlbumList.szPrevious.empty() is removed because of Cursor-based Pagination. 
+	//The first time you queried the pagination the before & after index won't be generated by server
+
+	model::IAlbum* pIAlbum  = cFbAlbumList.listOfItem.front();	
+	model::CFBPhotoList cFbPhotoLst;
+	mapMy.clear();
+	mapMy[FB_LIMIT] = "3"; //3 photos perpage;
+	mapMy[FB_OFFSET] = "2"; //start from 3rd phots;
+
+	int nPerpage = atoi(mapMy[FB_LIMIT].c_str());
+	int nOffset = atoi(mapMy[FB_OFFSET].c_str());
+
+	nResult = m_pFacebookService->GetPhotos(cFbPhotoLst,cFbErr,pIAlbum->szId,mapMy);
+	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK && cFbPhotoLst.listOfItem.size()==nPerpage && !cFbPhotoLst.szNextPageUrl.empty()); 
+	//For this assertion, your photos in this album must be at least 5.
+	//!cFbPhotoLst.szPrevious.empty() is removed because of Cursor-based Pagination. 
+	//The first time you queried the pagination the "before" index won't be generated by server
+
+	int nPrevSize = cFbPhotoLst.listOfItem.size();
+	mapMy = cFbPhotoLst.mapNextPageParams;
+	mapMy.erase(mapMy.find(FB_OFFSET));
+	while(!cFbPhotoLst.szNextPageUrl.empty()) //pumping pages to your container
+	{
+		nResult = m_pFacebookService->GetPhotos(cFbPhotoLst,cFbErr,pIAlbum->szId,mapMy);	
+		CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK && cFbPhotoLst.listOfItem.size()>=nPrevSize && !cFbPhotoLst.szPreviousPageUrl.empty());
+		mapMy = cFbPhotoLst.mapNextPageParams;
+		nPrevSize  = cFbPhotoLst.listOfItem.size();
+	}
+
+	CPPUNIT_ASSERT_MESSAGE("The count of left photos is wrong.",nResult==S_OK && cFbPhotoLst.listOfItem.size()==(pIAlbum->nCount-nOffset));
+
+}
+
+void CFacebookServiceTest::terminate()
+{
+	g_bIsAuthFlowDone = false;
+	g_szToken = "";
+}
+
+CFBConnectionInfo CFacebookServiceTest::m_cCnctInfoVO;
 

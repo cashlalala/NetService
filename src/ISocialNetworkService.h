@@ -30,9 +30,6 @@ struct ISocialNetworkService
 {	
 	virtual ~ISocialNetworkService() = 0;
 
-
-	virtual void SetConnectionInfo(IConnectionInfo& cConectInfoVO) = 0;
-
 	/*
 	* ----------------Mighty Functions----------------
 	*/
@@ -41,11 +38,22 @@ struct ISocialNetworkService
 	/*
 	* ----------------Logging Functions----------------
 	*/
-	virtual string GetLoginURL(string szAppId, string szScope = "read_stream,publish_stream,user_photos,friends_photos,user_videos,friends_videos,offline_access") = 0;
+	//Normally, there are usually two scenarios that you need to get login url. 
+	//First, you don't have the auth token; 
+	//Second, you need to refresh the token
+	//Both of these may set your original auth token to empty
+	virtual int GetLoginURL(string& szLoginUrl, const string& szAppId, const string& szAppSecret, IError& iErr, string szScope = "") = 0;
+	
+	//Normally, there are usually three scenarios that you may need to set connection info
+	//First, you initialize the service;
+	//Second, you need to refresh the token; 
+	//Third, the app id and secret change
+	virtual void SetConnectionInfo(IConnectionInfo& cConectInfoVO) = 0;
 
 	/*
 	* ----------------Media getter Functions----------------
 	*/
+	//for facebook, flickr : the id can be user id, album id, group id,... etc., and other ids who have photos
 	virtual int GetPhotos( IPhotoList& iPhotoLst, IError& iErr, string szId = "me", SysMaps::Str2Str& mapQryCriteria=SysMaps::Str2Str()) = 0;
 
 	virtual int GetVideos(IVideoList& iVideoList, IError& iErr, string szId="me", SysMaps::Str2Str& mapQryCriteria = SysMaps::Str2Str()) = 0;
@@ -72,7 +80,7 @@ struct ISocialNetworkService
 	* ----------------Exported types----------------
 	*/
 	typedef ISocialNetworkService* (__cdecl *PFNGETINSTANCE)(EnServiceType);
-	typedef void (__cdecl *PFNDELINSTANCE)(ISocialNetworkService*);
+	//typedef void (__cdecl *PFNDELINSTANCE)(ISocialNetworkService*);
 
 };
 

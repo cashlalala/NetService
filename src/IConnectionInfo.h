@@ -3,9 +3,8 @@
 struct IConnectionInfo
 {
 	virtual ~IConnectionInfo() =0 ;
-	string szApiKey;//must
-	string szAccessToken; //must
-	string szUid; //option
+	string lpcszApiKey;//must
+	string szAppSecret; //must
 };
 
 inline IConnectionInfo::~IConnectionInfo(){};
@@ -13,11 +12,15 @@ inline IConnectionInfo::~IConnectionInfo(){};
 struct CFBConnectionInfo : IConnectionInfo
 {
 	virtual ~CFBConnectionInfo() {};
-	string szClientAppId;
+	string szAccessToken; //must
+	string szNamespace; //netservice internal use
+	string szSanboxMode;//netservice internal use
 };
 
 struct CFlickrConnectionInfo : IConnectionInfo
 {
 	virtual ~CFlickrConnectionInfo() {};
-	string szSharedSecret;
+	string szAuthToken; //netservice internal use
+	string szFrob;//netservice internal use
+	string szNsid;//netservice internal use
 };

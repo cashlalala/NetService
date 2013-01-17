@@ -17,10 +17,7 @@ namespace model
 	inline IProfile::~IProfile(){};
 
 	struct IUser : public IModel{
-		IUser()
-		{
-			pProfile = 0;
-		};
+		IUser() : pProfile(NULL){};
 		virtual ~IUser() = 0;
 		string szId;
 		string szFullName;
@@ -32,16 +29,13 @@ namespace model
 		SAFE_DELETE_OBJECT(pProfile);
 	};
 
-	struct IUserList  : public IModel{
+	struct IUserList  : public IPagedList<IUser*>{
 		virtual ~IUserList() = 0;
-		list<IUser*> listUser;
-		string szNext;
-		string szPrevious;
 	};
 
 	inline IUserList::~IUserList()
 	{
-		SAFE_DELETE_LIST(list<IUser*>,listUser)
+		//SAFE_DELETE_LIST(list<IUser*>,listUser)
 	};
 
 }

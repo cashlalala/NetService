@@ -8,19 +8,39 @@
 #include "FBVideoModel.h"
 #include "FBAlbumModel.h"
 
+#include "FlickrFields.h"
+#include "FkRErrorModel.h"
+#include "FkRPhotoModel.h"
+#include "FkrAlbumModel.h"
+#include "FkrUserModel.h"
+
+#include "StringHelper.h"
+
 #include <typeinfo>
 #include <sstream>
 #include <assert.h>
 
 #include <json/json.h>
 
-#define FB_ERROR_RETURN(retVal,retCondition) if (retVal == retCondition) return retVal;
+#define ERROR_RETURN(retVal,retCondition) if (retVal == retCondition) return retVal;
 
 using std::stringstream;
 using util::CJsonCppMgr;
 
 CJsonCppMgr::CJsonCppMgr(void)
 {
+	m_listFkrPhotSizes.push_back(FLICK_PHOTO_SQ);
+	m_listFkrPhotSizes.push_back(FLICK_PHOTO_T);
+	m_listFkrPhotSizes.push_back(FLICK_PHOTO_S);
+	m_listFkrPhotSizes.push_back(FLICK_PHOTO_Q);
+	m_listFkrPhotSizes.push_back(FLICK_PHOTO_M);
+	m_listFkrPhotSizes.push_back(FLICK_PHOTO_N);
+	m_listFkrPhotSizes.push_back(FLICK_PHOTO_Z);
+	m_listFkrPhotSizes.push_back(FLICK_PHOTO_C);
+	m_listFkrPhotSizes.push_back(FLICK_PHOTO_L);
+	m_listFkrPhotSizes.push_back(FLICK_PHOTO_O);
+
+	m_pLogger = util::CLoggerMgr::GetLogger(Log4Cxx,"CJsonCppMgr");
 }
 
 CJsonCppMgr::~CJsonCppMgr(void)
@@ -38,10 +58,13 @@ int util::CJsonCppMgr::ParsePhotoList( IPhotoList& iPhotoList, string szInput, E
 		{
 		case Facebook:
 			nResult = TravFBErr(jvRoot,iError);
-			FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+			ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 			TravFBPhotoList(jvRoot, iPhotoList);
 			break;
 		case Flickr:
+			nResult = TravFkrErr(jvRoot,iError);
+			ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+			TravrFkrPhotoList(jvRoot, iPhotoList);
 			break;
 		default:
 			nResult = NS_S_DMGR_NO_DATA_OWNER;
@@ -68,7 +91,7 @@ int util::CJsonCppMgr::ParsePhoto( IPhoto& iPhoto, string szInput, EnDataOwner e
 		case Facebook:
 			{
 				nResult = TravFBErr(jvRoot,iError);
-				FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 				TravFBPhoto(jvRoot,&iPhoto);
 				nResult = S_OK;
 				break;
@@ -97,8 +120,16 @@ int util::CJsonCppMgr::ParseUser( IUser& iUser, string szInput, EnDataOwner enDa
 		case Facebook:
 			{
 				nResult = TravFBErr(jvRoot,iError);
-				FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 				TravFBUser(jvRoot,&iUser);
+				nResult = S_OK;
+				break;
+			}
+		case Flickr:
+			{
+				nResult = TravFkrErr(jvRoot,iError);
+				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+				TravFkrUser(jvRoot,iUser);
 				nResult = S_OK;
 				break;
 			}
@@ -122,8 +153,9 @@ void util::CJsonCppMgr::TravFBPhotoList( Json::Value &jvRoot, IPhotoList &iPhoto
 		Json::Value item = jvRoot[FB_DATA][i];
 		model::CFBPhoto* cFbPhot = new model::CFBPhoto();
 		TravFBPhoto(item,cFbPhot);
-		iPhotoList.listPhoto.push_back(cFbPhot);
+		iPhotoList.listOfItem.push_back(cFbPhot);
 	}
+	TravFBPagination(iPhotoList, jvRoot);
 }
 
 void util::CJsonCppMgr::TravFBPhoto( Json::Value &jvRoot, IPhoto* pIPhoto )
@@ -135,16 +167,7 @@ void util::CJsonCppMgr::TravFBPhoto( Json::Value &jvRoot, IPhoto* pIPhoto )
 	pFbPhto->szLink = jvRoot[FB_PHOTO_LINK].asString();
 	pFbPhto->szSource = jvRoot[FB_IMAGE_SOURCE].asString();
 	pFbPhto->szThumbNail = jvRoot[FB_PHOTO_THUBMNAIL].asString();
-	int nImageNum = jvRoot[FB_PHOTO_IMAGES].size();
-	for (int j = 0; j<nImageNum;++j)
-	{
-		Json::Value item = jvRoot[FB_PHOTO_IMAGES][j];
-		model::CFBImage* iImage = new model::CFBImage();
-		iImage->nHeight = item[FB_IMAGE_HEIGHT].asInt();
-		iImage->nWidth = item[FB_IMAGE_WIDTH].asInt();
-		iImage->szSource = item[FB_IMAGE_SOURCE].asString();
-		pFbPhto->listImages.push_back(iImage);
-	}
+	TravFBImgList(jvRoot[FB_PHOTO_IMAGES], *pIPhoto);
 }
 
 
@@ -153,6 +176,11 @@ void util::CJsonCppMgr::TravFBUser( Json::Value jvRoot, IUser* pIUser )
 	model::CFBUser* pFbUser = dynamic_cast<model::CFBUser*>(pIUser);
 	pFbUser->szId = jvRoot[FB_ID].asString();
 	pFbUser->szFullName = jvRoot[FB_USER_NAME].asString();
+	if (!jvRoot[FB_USER_PICTURE].isNull())
+	{
+		pFbUser->pProfile = new CFBProfile();
+		pFbUser->pProfile->szThumNail = jvRoot[FB_USER_PICTURE][FB_USER_PICTURE_DATA][FB_USER_PICTURE_DATA_URL].asString();
+	}
 }
 
 int util::CJsonCppMgr::TravFBErr( Json::Value &jvRoot, IError& cFbErr )
@@ -177,7 +205,7 @@ int util::CJsonCppMgr::ParseError( IError& iError, string szInput, EnDataOwner e
 		case Facebook:
 			{
 				nResult = TravFBErr(jvRoot,iError);
-				FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 				nResult = S_OK;
 				break;
 			}
@@ -200,13 +228,29 @@ int util::CJsonCppMgr::ParseFriendList( IUserList& iUserList, string szInput, En
 
 	if (jrReader.parse(szInput.c_str(),jvRoot))
 	{
-		if (typeid(iUserList)==typeid(CFBUserList))
+		switch(enDataOwner)
 		{
-			nResult = TravFBErr(jvRoot,iError);
-			FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+		case Facebook:
+			{
+				nResult = TravFBErr(jvRoot,iError);
+				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 
-			TravFBFriendList(jvRoot,&iUserList);
-			nResult = S_OK;
+				TravFBFriendList(jvRoot,&iUserList);
+				nResult = S_OK;
+			}
+			break;
+		case Flickr:
+			{
+				nResult = TravFkrErr(jvRoot,iError);
+				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+
+				TravFkrFriendList(jvRoot,iUserList);
+				nResult = S_OK;
+			}
+			break;
+		default: 
+			nResult = NS_S_DMGR_NO_DATA_OWNER;
+			break;
 		}
 	}
 	else
@@ -222,14 +266,10 @@ void util::CJsonCppMgr::TravFBFriendList( Json::Value jvRoot, IUserList* pUserLi
 	for (int i = 0;i<nFriendNum;++i)
 	{
 		model::CFBUser* pFbUsr = new model::CFBUser(); 
-		pFbUsr->szId = jvRoot[FB_DATA][i][FB_ID].asString();
-		pFbUsr->szFullName = jvRoot[FB_DATA][i][FB_USER_NAME].asString();
-		pFbUsr->pProfile  = new CFBProfile();
-		pFbUsr->pProfile->szThumNail = jvRoot[FB_DATA][i][FB_USER_PICTURE][FB_USER_PICTURE_DATA][FB_USER_PICTURE_DATA_URL].asString();
-		pFbUserList->listUser.push_back(pFbUsr);
+		TravFBUser(jvRoot[FB_DATA][i],pFbUsr);
+		pFbUserList->listOfItem.push_back(pFbUsr);
 	}
-	pFbUserList->szNext = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
-	pFbUserList->szPrevious = jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
+	TravFBPagination(*pFbUserList,jvRoot);
 }
 
 int util::CJsonCppMgr::ParseVideoList( IVideoList&iVideoList, string szInput, EnDataOwner enDataOwner, IError& iError )
@@ -245,7 +285,7 @@ int util::CJsonCppMgr::ParseVideoList( IVideoList&iVideoList, string szInput, En
 		case Facebook:
 			{
 				nResult = TravFBErr(jvRoot,iError);
-				FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 
 				TravFBVideoList(jvRoot,&iVideoList);
 				nResult = S_OK;
@@ -271,10 +311,9 @@ void util::CJsonCppMgr::TravFBVideoList( Json::Value& jvRoot, IVideoList* pIVide
 		CFBVideo* pFbVideo = new CFBVideo();
 		Json::Value jvItem = jvRoot[FB_DATA][i];
 		TravFBVideo(jvItem,pFbVideo);
-		pFbVideoList->listVideo.push_back(pFbVideo);
+		pFbVideoList->listOfItem.push_back(pFbVideo);
 	}
-	pFbVideoList->szNext = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
-	pFbVideoList->szPrevious = jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
+	TravFBPagination(*pFbVideoList,jvRoot);
 }
 
 void util::CJsonCppMgr::TravFBVideo( Json::Value& jvRoot, IVideo* pIVideo )
@@ -309,9 +348,18 @@ int util::CJsonCppMgr::ParseAlbumList( IAlbumList& iAlbumList, string szInput, E
 		case Facebook:
 			{
 				nResult = TravFBErr(jvRoot,iError);
-				FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 
 				TravFBAlbumList(jvRoot,&iAlbumList);
+				nResult = S_OK;
+				break;
+			}
+		case Flickr:
+			{
+				nResult = TravFkrErr(jvRoot,iError);
+				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+
+				TravFkrAlbumList(jvRoot,iAlbumList);
 				nResult = S_OK;
 				break;
 			}
@@ -335,16 +383,16 @@ void util::CJsonCppMgr::TravFBAlbumList( Json::Value& jvRoot, IAlbumList* pIAlbu
 		CFBAlbum* pFbAlbum = new CFBAlbum();
 		Json::Value jvItem = jvRoot[FB_DATA][i];
 		TravFBAlbum(jvItem,pFbAlbum);
-		pFbAlbumList->listAlbum.push_back(pFbAlbum);
+		pFbAlbumList->listOfItem.push_back(pFbAlbum);
 	}
-	pFbAlbumList->szNext = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
-	pFbAlbumList->szPrevious = jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
+	TravFBPagination(*pFbAlbumList, jvRoot);
 }
 
 void util::CJsonCppMgr::TravFBAlbum( Json::Value& jvRoot, IAlbum* pIAlbum )
 {
 	model::CFBAlbum* pFbAlbum = dynamic_cast<model::CFBAlbum*>(pIAlbum);
 	pFbAlbum->szId = jvRoot[FB_ID].asString();
+	pFbAlbum->szName = jvRoot[FB_ALBUM_NAME].asString();
 	pFbAlbum->szCoverPhotoId = jvRoot[FB_ALBUM_COVER_PHOTO].asString();
 	pFbAlbum->nCount = jvRoot[FB_ALBUM_PHOTO_COUNT].asInt();
 }
@@ -362,10 +410,10 @@ int util::CJsonCppMgr::ParseProfile( IProfile& iProfile, string szInput, EnDataO
 		case Facebook:
 			{
 				nResult = TravFBErr(jvRoot,iError);
-				FB_ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 
 				nResult = TravFBProfile(jvRoot,&iProfile,iError);
-				FB_ERROR_RETURN(nResult,NS_E_DMGR_WRONG_DATA_SIZE)
+				ERROR_RETURN(nResult,NS_E_DMGR_WRONG_DATA_SIZE)
 
 				nResult = S_OK;
 				break;
@@ -395,4 +443,291 @@ int util::CJsonCppMgr::TravFBProfile( Json::Value& jvRoot, IProfile* pIProfile, 
 	}
 	else
 		return NS_E_DMGR_WRONG_DATA_SIZE;
+}
+
+int util::CJsonCppMgr::TravFkrErr(Json::Value& jvRoot, IError& iError)
+{
+	model::CFkrError* pFkrErr = dynamic_cast<model::CFkrError*>(&iError);
+	pFkrErr->szStat = jvRoot[FLICK_ERROR_STAT].asString();
+	if (pFkrErr->szStat == "ok") return S_OK;
+	pFkrErr->szCode = jvRoot[FLICK_ERROR_CODE].asString();
+	pFkrErr->szMsg = jvRoot[FLICK_ERROR_MSG].asString();
+	return NS_E_DMGR_BAD_REQUEST_PARAMS;
+}
+
+int util::CJsonCppMgr::ParseFkrFrob( string& szFrob, string szInput, IError& iError )
+{
+	int nResult = E_FAIL;
+	Json::Reader jrReader;
+	Json::Value jvRoot;
+
+	if (jrReader.parse(szInput.c_str(),jvRoot))
+	{
+		nResult = TravFkrErr(jvRoot,iError);
+		ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+
+		szFrob = jvRoot[FLICK_FIELD_FROB][FLICK_FIELD_CONTENT].asString();
+		nResult = S_OK;
+	}
+	else
+		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
+
+	return nResult;
+}
+
+int util::CJsonCppMgr::ParseFkrAuthToken( SysMaps::Str2Str& mapAuth, string szInput,IError& iError )
+{
+	int nResult = E_FAIL;
+	Json::Reader jrReader;
+	Json::Value jvRoot;
+	if (jrReader.parse(szInput.c_str(),jvRoot))
+	{
+		nResult = TravFkrErr(jvRoot,iError);
+		ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+
+		mapAuth[FLICK_AUTH_TOKEN] = jvRoot[FLICK_AUTH][FLICK_AUTH_TOKEN][FLICK_AUTH_TOKEN_CONTENT].asString();
+		mapAuth[FLICK_AUTH_NSID] = jvRoot[FLICK_AUTH][FLICK_AUTH_USER][FLICK_AUTH_NSID].asString();
+		nResult = S_OK;
+	}
+	else
+		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
+
+	return nResult;
+}
+
+void util::CJsonCppMgr::TravrFkrPhotoList( Json::Value &jvRoot, IPhotoList &iPhotoList )
+{
+	model::CFkrPhotoList* cFkrPhotoLst  = dynamic_cast<model::CFkrPhotoList*>( &iPhotoList);
+	
+	string szSets = FLICK_PHOTOS;
+	if (jvRoot[szSets].isNull()) szSets = FLICK_PHOTOSET;
+	//for composing the next & prev page url
+	cFkrPhotoLst->nPage = atoi(jvRoot[szSets][FLICK_PHOTOS_PAGE].asString().c_str());
+	cFkrPhotoLst->nPages = atoi(jvRoot[szSets][FLICK_PHOTOS_PAGES].asString().c_str());
+	cFkrPhotoLst->nPerpage = atoi(jvRoot[szSets][FLICK_PHOTOS_PERPAGE].asString().c_str());
+	cFkrPhotoLst->nTotal = atoi(jvRoot[szSets][FLICK_PHOTOS_TOTAL].asString().c_str());
+
+	int nPhotoNum = jvRoot[szSets][FLICK_PHOTO].size();
+	for (int i=0;i<nPhotoNum;++i)
+	{
+		Json::Value item = jvRoot[szSets][FLICK_PHOTO][i];
+		model::CFkrPhoto* cFkrPhoto = new model::CFkrPhoto();
+		TravFkrPhoto(item,cFkrPhoto);
+		cFkrPhotoLst->listOfItem.push_back(cFkrPhoto);
+	}
+}
+
+void util::CJsonCppMgr::TravFkrPhoto( Json::Value &jvRoot, IPhoto* pIPhoto )
+{
+	model::CFkrPhoto* pFkrPhto = dynamic_cast<model::CFkrPhoto*>(pIPhoto);
+	pFkrPhto->bIsFamily = jvRoot[FLICK_PHOTO_ISFAMILY].asBool();
+	pFkrPhto->bIsFriend = jvRoot[FLICK_PHOTO_ISFRIEND].asBool();
+	pFkrPhto->bIsPublic = jvRoot[FLICK_PHOTO_ISPUBLIC].asBool();
+	pFkrPhto->szId = jvRoot[FLICK_PHOTO_ID].asString();
+	pFkrPhto->szTitle = jvRoot[FLICK_PHOTO_TITLE].asString();
+	pFkrPhto->szOwner = jvRoot[FLICK_PHOTO_OWNER].asString();
+	pFkrPhto->szLink = "http://www.flickr.com/photos/" + pFkrPhto->szOwner + "/"+ pFkrPhto->szId;
+	pFkrPhto->szMedia = jvRoot[FLICK_PHOTO_MEDIA].asString();
+
+	//the original size if only available for pro user
+	pFkrPhto->szSource = jvRoot[FLICK_PHOTO_URL_O].asString();
+	pFkrPhto->nHeight = atoi(jvRoot[FLICK_PHOTO_HEIGHT_O].asString().c_str());
+	pFkrPhto->nWidth = atoi(jvRoot[FLICK_PHOTO_WIDTH_O].asString().c_str());
+	pFkrPhto->szThumbNail = jvRoot[FLICK_PHOTO_URL_T].asString();	
+
+	std::list<string>::iterator it = m_listFkrPhotSizes.begin();
+	for (;it!=m_listFkrPhotSizes.end();++it)
+	{
+		model::CFkrImage* pFkrImg = new model::CFkrImage();
+		pFkrImg->szSource = jvRoot[FLICK_PHOTO_URL + *it].asString();
+		pFkrImg->nWidth = atoi(jvRoot[FLICK_PHOTO_WIDTH + *it].asString().c_str());
+		pFkrImg->nHeight = atoi(jvRoot[FLICK_PHOTO_HEIGHT + *it].asString().c_str());
+		pFkrPhto->listOfItem.push_back(pFkrImg);
+	}
+}
+
+void util::CJsonCppMgr::TravFkrAlbumList( Json::Value& jvRoot, IAlbumList& iAlbumList )
+{
+	model::CFkrAlbumList* pFkrAlbumLst = dynamic_cast<model::CFkrAlbumList*>(&iAlbumList);
+	pFkrAlbumLst->nPage = atoi(jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSETS_PAGE].asString().c_str());
+	pFkrAlbumLst->nPages = atoi(jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSETS_PAGES].asString().c_str());
+	pFkrAlbumLst->nPerpage = atoi(jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSETS_PERPAGE].asString().c_str());
+	pFkrAlbumLst->nTotal = atoi(jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSETS_TOTAL].asString().c_str());
+
+	int nAlbums = jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSET].size();
+	for (int i =0;i<nAlbums;++i)
+	{
+		Json::Value item = jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSET][i];
+		model::CFkrAlbum* cFkrAlbum = new model::CFkrAlbum();
+		TravFkrAlbum(item,cFkrAlbum);
+		iAlbumList.listOfItem.push_back(cFkrAlbum);
+	}
+}
+
+void util::CJsonCppMgr::TravFkrAlbum( Json::Value& item,IAlbum* pIAlbum )
+{
+	model::CFkrAlbum* pFkrAlbum = dynamic_cast<model::CFkrAlbum*>(pIAlbum);
+	pFkrAlbum->nCount = atoi(item[FLICK_PHOTOSET_VIDEOS].asString().c_str()) + 
+										atoi(item[FLICK_PHOTOSET_PHOTOS].asString().c_str());
+	pFkrAlbum->szCoverPhotoId = item[FLICK_PHOTOSET_PRIMARY].asString();
+	pFkrAlbum->szDescription = item[FLICK_PHOTOSET_DESCRIPTION][FLICK_FIELD_CONTENT].asString();
+	pFkrAlbum->szId = item[FLICK_PHOTOSET_ID].asString();
+	pFkrAlbum->szTitle = item[FLICK_PHOTOSET_TITLE][FLICK_FIELD_CONTENT].asString();
+	pFkrAlbum->szThumbNail = util::CStringHelper::Format("http://farm%s.staticflickr.com/%s/%s_%s_t.jpg",
+																							item[FLICK_PHOTOSET_FARM].asString().c_str(),
+																							item[FLICK_PHOTOSET_SERVER].asString().c_str(),
+																							pFkrAlbum->szCoverPhotoId.c_str(),
+																							item[FLICK_PHOTOSET_SECRET].asString().c_str());
+}
+
+void util::CJsonCppMgr::TravFkrFriendList( Json::Value& jvRoot, IUserList& iUserList )
+{
+	model::CFkrUserList* pFrkUsrLst = dynamic_cast<model::CFkrUserList*>(&iUserList);
+	pFrkUsrLst->nPage = atoi(jvRoot[FLICK_CONTACTS][FLICK_CONTACTS_PAGE].asString().c_str());
+	pFrkUsrLst->nPages = atoi(jvRoot[FLICK_CONTACTS][FLICK_CONTACTS_PAGES].asString().c_str());
+	pFrkUsrLst->nPerpage = atoi(jvRoot[FLICK_CONTACTS][FLICK_CONTACTS_PERPAGE].asString().c_str());
+	pFrkUsrLst->nTotal = atoi(jvRoot[FLICK_CONTACTS][FLICK_CONTACTS_TOTAL].asString().c_str());
+
+	int nFriends = jvRoot[FLICK_CONTACTS][FLICK_CONTACTS_CONTACT].size();
+	for (int i =0;i<nFriends;++i)
+	{
+		Json::Value item = jvRoot[FLICK_CONTACTS][FLICK_CONTACTS_CONTACT][i];
+		model::CFkrUser* cFkrUsr = new model::CFkrUser();
+		TravFkrFriend(item,cFkrUsr);
+		iUserList.listOfItem.push_back(cFkrUsr);
+	}
+}
+
+void util::CJsonCppMgr::TravFkrFriend( Json::Value& item, model::IUser* pIUsr )
+{
+	model::CFkrUser* pFkrUsr = dynamic_cast<model::CFkrUser*>(pIUsr);
+	pFkrUsr->szId = item[FLICK_CONTACT_NSID].asString();
+	pFkrUsr->szFullName = item[FLICK_CONTACT_REAL_NAME].asString();
+	pFkrUsr->szUsrName = item[FLICK_CONTACT_USR_NAME].asString();
+	pFkrUsr->bIsFriend = item[FLICK_CONTACT_FRIEND].asBool();
+	pFkrUsr->bIsFamily = item[FLICK_CONTACT_FAMILY].asBool();	
+	if (item[FLICK_CONTACT_ICON_FARM].asString()=="0" && 
+		item[FLICK_CONTACT_ICON_SVR].asString()=="0")
+	{
+		LOGGER_DEBUG(m_pLogger,"This queryee [%s] don't have the thumbnail or open the access right for the querier",pFkrUsr->szId.c_str())
+	}
+	else
+	{
+		pFkrUsr->pProfile = new CFkrProfile();
+		pFkrUsr->pProfile->szThumNail = util::CStringHelper::Format("http://farm%s.staticflickr.com/%s/buddyicons/%s.jpg", 
+			item[FLICK_CONTACT_ICON_FARM].asString().c_str(),
+			item[FLICK_CONTACT_ICON_SVR].asString().c_str(),
+			pFkrUsr->szId.c_str());
+	}
+}
+
+void util::CJsonCppMgr::TravFkrUser( Json::Value& jvRoot, IUser& iUser )
+{
+	model::CFkrUser* pFkrUser = dynamic_cast<model::CFkrUser*>(&iUser);
+	pFkrUser->bIsFamily = atoi(jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ISFAMILY].asString().c_str()) != 0;
+	pFkrUser->bIsFriend = atoi(jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ISFRIEND].asString().c_str()) != 0;
+	pFkrUser->bIsProUsr = atoi(jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ISPRO].asString().c_str()) != 0;
+	pFkrUser->szFullName = jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_REAL_NAME][FLICK_FIELD_CONTENT].asString();
+	pFkrUser->szId = jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ID].asString();
+	pFkrUser->szUsrName = jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_USR_NAME][FLICK_FIELD_CONTENT].asString();
+	if (jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ICONFARM].asString()=="0" && 
+		jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ICONSVR].asString()=="0")
+	{
+		LOGGER_DEBUG(m_pLogger,"This queryee [%s] don't have the thumbnail or open the access right for the querier",pFkrUser->szId.c_str())
+	}
+	else
+	{
+		pFkrUser->pProfile = new CFkrProfile();
+		pFkrUser->pProfile->szThumNail = util::CStringHelper::Format("http://farm%s.staticflickr.com/%s/buddyicons/%s.jpg", 
+			jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ICONFARM].asString().c_str(),
+			jvRoot[FLICK_PEOPLE_PERSON][FLICK_PEOPLE_PERSON_ICONSVR].asString().c_str(),
+			pFkrUser->szId.c_str());
+	}
+		
+
+	
+}
+
+void util::CJsonCppMgr::TravFBPagination( IPage &iPhotoList, Json::Value & jvRoot )
+{
+	iPhotoList.szNextPageUrl = jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
+	iPhotoList.szPreviousPageUrl = jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
+}
+
+void util::CJsonCppMgr::TravFBImgList( Json::Value & jvRoot, IImageList& iImgList )
+{
+	int nImageNum = jvRoot.size();
+	for (int j = 0; j<nImageNum;++j)
+	{
+		Json::Value item = jvRoot[j];
+		model::CFBImage* pIImage = new model::CFBImage();
+		TravFBImg(item, *pIImage);
+		iImgList.listOfItem.push_back(pIImage);
+	}
+}
+
+void util::CJsonCppMgr::TravFBImg( Json::Value& item, model::IImage& iImage)
+{
+	iImage.nHeight = item[FB_IMAGE_HEIGHT].asInt();
+	iImage.nWidth = item[FB_IMAGE_WIDTH].asInt();
+	iImage.szSource = item[FB_IMAGE_SOURCE].asString();
+}
+
+int util::CJsonCppMgr::ParseImageList( IImageList& listImage, string szInput, EnDataOwner enDataOwner, IError& iError )
+{
+	int nResult = E_FAIL;
+	Json::Reader jrReader;
+	Json::Value jvRoot;
+	if (jrReader.parse(szInput.c_str(),jvRoot))
+	{
+		switch(enDataOwner)
+		{
+		case Facebook:
+			{
+				nResult = TravFBErr(jvRoot,iError);
+				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+
+				int nSize = jvRoot[FB_DATA].size();
+				for (int i =0;i<nSize;++i)
+					TravFBImgList(jvRoot[FB_DATA][i][FB_PHOTO_IMAGES], listImage);
+			}
+			break;
+		case Flickr:
+			break;
+		default:
+			nResult = NS_S_DMGR_NO_DATA_OWNER;
+			break;
+		}
+	}
+	else
+		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
+
+	return nResult;
+}
+
+int util::CJsonCppMgr::ParseFBSrouceSmall( SysList::Str2StrMapList& listMap, string szInput, IError& iError )
+{
+	int nResult = E_FAIL;
+	Json::Reader jrReader;
+	Json::Value jvRoot;
+
+	if (jrReader.parse(szInput.c_str(),jvRoot))
+	{
+		nResult = TravFBErr(jvRoot,iError);
+		ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+
+		int nSize = jvRoot[FB_DATA].size();
+		for (int i=0;i<nSize;++i)
+		{
+			SysMaps::Str2Str mapCoverPhoto;
+			mapCoverPhoto[FB_IMAGE_SOURCE_SMALL] = jvRoot[FB_DATA][i][FB_IMAGE_SOURCE_SMALL].asString();
+			mapCoverPhoto[FB_ALBUM_OBJECT_ID] = jvRoot[FB_DATA][i][FB_ALBUM_OBJECT_ID].asString();
+			listMap.push_back(mapCoverPhoto);
+		}
+		nResult = S_OK;
+	}
+	else
+		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
+
+	return nResult;
 }

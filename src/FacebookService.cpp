@@ -4,10 +4,14 @@
 #include "FBPhotoModel.h"
 #include "FBErrorModel.h"
 #include "FBVideoModel.h"
+#include "FBUserModel.h"
 #include "DataMgrFactory.h"
 #include "NetServiceErr.h"
 #include "UrlHelper.h"
-#include "FBUserModel.h"
+#include "FBFields.h"
+
+#include "StringHelper.h"
+#include "LoggerMgr.h"
 
 #include <cassert>
 #include <sstream>
@@ -21,22 +25,23 @@ using namespace model;
 
 const string CFacebookService::S_STR_URL_PREFIX = "https://";
 
-const SysMaps::EnSvrInfo2Str
-CFacebookService::S_MAP_SERVER_INFO = CMapHelper::CreateServerInfoMap();
-
-
 const SysMaps::EnCat2Str 
 CFacebookService::S_MAP_CATEGORY = CMapHelper::CreateCategoryMap();
 
+const ServerInfo CFacebookService::S_SERVER_INFO = {"graph.facebook.com","","80","443"};
+
 CFacebookService::CFacebookService(void):
-m_pIDataMgr(NULL)
+m_pIDataMgr(NULL),
+m_pILogger(NULL)
 {
 	m_pIDataMgr = util::CDataMgrFactory::GetInstance(util::JsonCpp);
+	m_pILogger = util::CLoggerMgr::GetLogger(util::Log4Cxx,"CFacebookService");
 }
 
 CFacebookService::~CFacebookService(void)
 {
-	util::CDataMgrFactory::DeleteInstance(m_pIDataMgr);
+	//util::CDataMgrFactory::DeleteInstance(m_pIDataMgr);
+	delete m_pIDataMgr;
 }
 
 void CFacebookService::SetConnectionInfo( IConnectionInfo& cConectInfoVO )
@@ -53,9 +58,9 @@ int CFacebookService::CallGraphAPI(HttpRespValObj& cHttpRespVO, string szId /*= 
 	//https://  graph.facebook.com   /  724760664  /  photos  ?  fields=id,name
 	string szComposedUrl = 
 		CFacebookService::S_STR_URL_PREFIX 
-		+	CMapHelper::GetValue(S_MAP_SERVER_INFO,systypes::ServerName)
+		+	S_SERVER_INFO.szServerName
 		+ "/"
-		+ ((szId=="")? (m_cConnectInfo.szUid=="")? "me": m_cConnectInfo.szUid : szId)
+		+ ((szId=="")? "me": szId)
 		+ "/"
 		+ CMapHelper::GetValue(S_MAP_CATEGORY,enCatogory)
 		+ (mapParams.empty()? "" :"?"+ CMapHelper::ToParamString(mapParams));
@@ -66,14 +71,16 @@ int CFacebookService::CallGraphAPI(HttpRespValObj& cHttpRespVO, string szId /*= 
 
 }
 
-string CFacebookService::GetLoginURL( string szAppId, string szScope /*= "read_stream,publish_stream,user_photos,friends_photos,user_videos,friends_videos,offline_access"*/ )
+int CFacebookService::GetLoginURL( string& szLoginUrl, const string& szAppId, const string& szAppSecret, IError& iErr, string szScope /*= "read_stream,publish_stream,user_photos,friends_photos,user_videos,friends_videos,offline_access"*/ )
 {
 	string szUrl = "https://www.facebook.com/dialog/oauth?";
 	szUrl	 += "&client_id=" + szAppId;
 	szUrl += "&redirect_uri=http://www.facebook.com/connect/login_success.html" ;
 	szUrl += "&display=popup";
 	szUrl += "&scope=" + szScope;
-	return util::CUrlHelper::EncodeUrl(szUrl);
+	szUrl += "&response_type=token";
+	szLoginUrl = util::CUrlHelper::EncodeUrl(szUrl);
+	return S_OK;
 }
 
 int CFacebookService::GetPhotos(  IPhotoList& iPhotoLst, IError& iErr, string szId, SysMaps::Str2Str& mapQryCriteria)
@@ -81,13 +88,15 @@ int CFacebookService::GetPhotos(  IPhotoList& iPhotoLst, IError& iErr, string sz
 	int nResult = E_FAIL;
 	model::CFBPhotoList listPhoto;
 	HttpRespValObj cHttpResp;
-	CFBError* cFBErr = dynamic_cast<CFBError*>(&iErr);
 	do 
 	{
 		nResult = CallGraphAPI(cHttpResp, szId, Photo,mapQryCriteria);
-		EXCEPTION_HANDLING(nResult)
+		EXCEPTION_BREAK(nResult)
 
-		nResult = m_pIDataMgr->ParsePhotoList(iPhotoLst,cHttpResp.szResp,util::Facebook,*cFBErr);
+		nResult = m_pIDataMgr->ParsePhotoList(iPhotoLst,cHttpResp.szResp,util::Facebook,iErr);
+		EXCEPTION_BREAK(nResult)
+
+		CrackParamsForPagination(iPhotoLst);
 	} while (false);
 	
 	//Error Handling
@@ -106,12 +115,12 @@ int CFacebookService::GetUsersInfo( IUserList& iUserLst, IError& iErr, SysList::
 		do 
 		{	
 			nResult = this->CallGraphAPI(cHttpResp,*it,None,mapQryCriteria);
-			EXCEPTION_HANDLING(nResult)
+			EXCEPTION_BREAK(nResult)
 
 			nResult = m_pIDataMgr->ParseUser(*cFbUsr,cHttpResp.szResp,util::Facebook,iErr);
-			EXCEPTION_HANDLING(nResult)
+			EXCEPTION_BREAK(nResult)
 
-			iUserLst.listUser.push_back(cFbUsr);
+			iUserLst.listOfItem.push_back(cFbUsr);
 			nResult = S_OK;
 		} while (false);
 
@@ -127,8 +136,6 @@ int CFacebookService::GetUsersInfo( IUserList& iUserLst, IError& iErr, SysList::
 			}
 
 			SAFE_DELETE_OBJECT(cFbUsr);
-			SAFE_DELETE_LIST(list<IUser*>,iUserLst.listUser);
-
 			break;
 		}
 	}
@@ -142,10 +149,10 @@ int CFacebookService::GetUserInfo( IUser& iUser, IError& iErr, string szUid/*="m
 	do 
 	{	
 		nResult = this->CallGraphAPI(cHttpResp,szUid,None,mapQryCriteria);
-		EXCEPTION_HANDLING(nResult)
+		EXCEPTION_BREAK(nResult)
 
 		nResult = m_pIDataMgr->ParseUser( iUser,cHttpResp.szResp,util::Facebook,iErr);
-		EXCEPTION_HANDLING(nResult)
+		EXCEPTION_BREAK(nResult)
 
 		nResult = S_OK;
 	} while (false);
@@ -164,10 +171,12 @@ int CFacebookService::GetFriends( IUserList& iUserLst, IError& iErr, string szUi
 	do 
 	{
 		nResult = CallGraphAPI(cHttpResp,szUid, Friend, mapQryCriteria,Get);
-		EXCEPTION_HANDLING(nResult);
+		EXCEPTION_BREAK(nResult);
 
 		m_pIDataMgr->ParseFriendList(iUserLst,cHttpResp.szResp,util::Facebook,iErr);
-		nResult = S_OK;
+		EXCEPTION_BREAK(nResult)
+
+		CrackParamsForPagination(iUserLst);
 	} while (false);
 
 	//Error Handling
@@ -198,9 +207,12 @@ int CFacebookService::GetVideos( IVideoList& iVideoList, IError& iErr, string sz
 	do 
 	{
 		nResult = CallGraphAPI(cHttpResp, szId, Video,mapQryCriteria);
-		EXCEPTION_HANDLING(nResult)
+		EXCEPTION_BREAK(nResult)
 
 		nResult = m_pIDataMgr->ParseVideoList(iVideoList,cHttpResp.szResp, util::Facebook, iErr);
+		EXCEPTION_BREAK(nResult)
+
+		CrackParamsForPagination(iVideoList);
 	} while (false);
 
 	//Error Handling
@@ -216,9 +228,38 @@ int CFacebookService::GetAlbums( IAlbumList& iAlbumLst, IError& iErr, string szU
 	do 
 	{
 		nResult = CallGraphAPI(cHttpResp, szUid, Album,mapQryCriteria);
-		EXCEPTION_HANDLING(nResult)
+		EXCEPTION_BREAK(nResult)
 
 		nResult = m_pIDataMgr->ParseAlbumList(iAlbumLst,cHttpResp.szResp,util::Facebook,iErr);
+		EXCEPTION_BREAK(nResult)
+
+		//The following is a workaround for get thumbnails...
+		string szAlbumThumbNailQry = util::CStringHelper::Format(
+									"SELECT album_object_id , src_small_height, src_small_width, src_small from photo where object_id in (select cover_object_id from album where owner = %s )",
+									(szUid=="me")?"me()": (szUid=="")?"me()": szUid.c_str());
+		nResult = CallFQLQuery(cHttpResp,szAlbumThumbNailQry);
+		EXCEPTION_BREAK(nResult)
+	
+		SysList::Str2StrMapList listMap;
+		nResult = m_pIDataMgr->ParseFBSrouceSmall(listMap,cHttpResp.szResp,iErr);
+		EXCEPTION_BREAK(nResult)
+		
+		for(list<IAlbum*>::iterator itAlb = iAlbumLst.listOfItem.begin();itAlb!=iAlbumLst.listOfItem.end();++itAlb)
+		{
+			for (SysList::Str2StrMapList::iterator itMap = listMap.begin();itMap != listMap.end();++itMap)
+			{
+				LOGGER_TRACE(m_pILogger,"Album id: [%s] <-->[%s]",(*itAlb)->szId.c_str(),(*itMap)
+					[FB_ALBUM_OBJECT_ID].c_str())
+				if ((*itAlb)->szId==(*itMap)[FB_ALBUM_OBJECT_ID] && !(*itAlb)->szCoverPhotoId.empty())
+				{
+					(*itAlb)->szThumbNail = (*itMap)[FB_IMAGE_SOURCE_SMALL];
+					break;
+				}
+			}
+		}
+		//finish the workaround
+
+		CrackParamsForPagination(iAlbumLst);
 	} while (false);
 
 	//Error Handling
@@ -240,7 +281,7 @@ int CFacebookService::GetProfile( IProfile& iProfile, IError& iErr, string szId/
 			);
 
 		nResult = CallFQLQuery(cHttpResp, lpszFql);
-		EXCEPTION_HANDLING(nResult)
+		EXCEPTION_BREAK(nResult)
 
 		nResult = m_pIDataMgr->ParseProfile(iProfile,cHttpResp.szResp, util::Facebook,iErr);
 	} while (false);
@@ -256,10 +297,21 @@ int CFacebookService::CallFQLQuery(HttpRespValObj& cHttpRespVO,  string szQry )
 	//https://  graph.facebook.com   /  fql ? q = xxxx & access_token=xxx
 	string szComposedUrl = 
 		CFacebookService::S_STR_URL_PREFIX 
-		+	CMapHelper::GetValue(S_MAP_SERVER_INFO,systypes::ServerName)
+		+	S_SERVER_INFO.szServerName
 		+ "/fql?q=" + szQry
 		+ "&access_token=" + m_cConnectInfo.szAccessToken;
 
 	int nResult = OpenUrl(cHttpRespVO, szComposedUrl);
 	return nResult;
+}
+
+IConnectionInfo* CFacebookService::GetConnectionInfo()
+{
+	return &m_cConnectInfo;
+}
+
+void CFacebookService::CrackParamsForPagination( IPage& iPhotoLst )
+{
+	iPhotoLst.mapNextPageParams = util::CUrlHelper::ToParamMap(iPhotoLst.szNextPageUrl);
+	iPhotoLst.mapPrevPageParams = util::CUrlHelper::ToParamMap(iPhotoLst.szPreviousPageUrl);
 }

@@ -32,13 +32,13 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 
 NETSERVCIE_EXTERNC NETSERVICE_API ISocialNetworkService* __cdecl GetInstance(EnServiceType enServTyp)
 {
-	return CSocialServiceFactory::GetInstance(enServTyp);
+	return CSocialServiceFactory::GetSingletonInstance(enServTyp);
 }
 
-NETSERVCIE_EXTERNC NETSERVICE_API void __cdecl DelInstance(ISocialNetworkService* pISns)
-{
-	CSocialServiceFactory::DeleteInstance(pISns);
-}
+//NETSERVCIE_EXTERNC NETSERVICE_API void __cdecl DelInstance(ISocialNetworkService* pISns)
+//{
+//	CSocialServiceFactory::DeleteInstance(pISns);
+//}
 
 
 #ifdef _MANAGED

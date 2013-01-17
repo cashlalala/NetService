@@ -15,14 +15,14 @@ void CSocialFacotryTest::tearDown()
 void CSocialFacotryTest::testGetServiceFacebook()
 {
 	ISocialNetworkService* pInst = NULL;
-	pInst = CSocialServiceFactory::GetInstance(FACEBOOK);
+	pInst = CSocialServiceFactory::GetSingletonInstance(FACEBOOK);
 	CPPUNIT_ASSERT(pInst!=NULL);
 }
 
 void CSocialFacotryTest::testCloseServices()
 {
 	ISocialNetworkService* pInst = NULL;
-	pInst = CSocialServiceFactory::GetInstance(FACEBOOK);
+	pInst = CSocialServiceFactory::GetSingletonInstance(FACEBOOK);
 	if (!pInst)
 	{
 		CPPUNIT_FAIL("Create Instance Fail!!");

@@ -10,6 +10,9 @@
     <Filter Include="TestData">
       <UniqueIdentifier>{9bfddbd9-6b48-413f-9b90-d73e627120c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{4e99741a-424d-4934-b237-359c9a30d55c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FacebookServiceTest.cpp">
@@ -31,6 +34,15 @@
       <Filter>Tests</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="FlickRServiceTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="CodecHelperTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TestDLL\URLWatchDog.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FacebookServiceTest.h">
@@ -57,6 +69,15 @@
     <ClInclude Include="UploadProgress.h">
       <Filter>references</Filter>
     </ClInclude>
+    <ClInclude Include="FlickRServiceTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="CodecHelperTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TestDLL\URLWatchDog.h">
+      <Filter>Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Makefile.am" />
@@ -71,6 +92,6 @@
     <CustomBuild Include="..\TestData\TestConfig.ini">
       <Filter>TestData</Filter>
     </CustomBuild>
-    <CustomBuild Include="Log4cxxConfig.xml" />
+    <CustomBuild Include="..\TestData\Log4cxxConfig.xml" />
   </ItemGroup>
 </Project>

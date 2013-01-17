@@ -1,6 +1,7 @@
 #pragma once
 #include "baseservice.h"
 #include "IDataManager.h"
+#include "ILogger.h"
 
 using systypes::SysMaps;
 using systypes::EnCategory;
@@ -13,9 +14,11 @@ public:
 	CFacebookService(void);
 	virtual ~CFacebookService(void);
 
+	virtual IConnectionInfo* GetConnectionInfo();
+
 	virtual void SetConnectionInfo(IConnectionInfo& cConectInfoVO);
 
-	virtual string GetLoginURL( string szAppId, string szScope = "read_stream,publish_stream,user_photos,friends_photos,user_videos,friends_videos,offline_access" );
+	virtual int GetLoginURL(string& szLoginUrl, const string& szAppId, const string& szAppSecret, IError& iErr, string szScope = "read_stream,publish_stream,user_photos,friends_photos,user_videos,friends_videos,offline_access");
 
 	virtual int GetPhotos(  IPhotoList& iPhotoLst, IError& iErr, string szId = "me", SysMaps::Str2Str& mapQryCriteria=SysMaps::Str2Str());
 
@@ -34,11 +37,14 @@ public:
 private:
 
 	static const SysMaps::EnCat2Str S_MAP_CATEGORY;
-	static const SysMaps::EnSvrInfo2Str S_MAP_SERVER_INFO;
 	static const string S_STR_URL_PREFIX;
+	static const string S_LOGOUT_URL;
+
+	static const ServerInfo S_SERVER_INFO;
 
 	CFBConnectionInfo m_cConnectInfo;
 	util::IDataManager* m_pIDataMgr;
+	util::ILogger* m_pILogger;
 
 private:
 	int CallGraphAPI(HttpRespValObj& cHttpRespVO,
@@ -51,5 +57,5 @@ private:
 	int CallFQLQuery(HttpRespValObj& cHttpRespVO, string szQry);
 
 	void ExceptionHandler( int nResult, HttpRespValObj &cHttpResp, IError &iErr );
-
+	void CrackParamsForPagination( IPage& iPhotoLst );
 };

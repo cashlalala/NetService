@@ -79,11 +79,13 @@ void JSonCppMgrTest::setUp()
 
 void JSonCppMgrTest::tearDown()
 {
-	int nResult = util::CDataMgrFactory::DeleteInstance(m_pJSonCppMgr);
-	char szResult[100];
-	memset(szResult,0x0,100);
-	sprintf(szResult,"Delete Instance Fail: %d", nResult);
-	CPPUNIT_ASSERT_MESSAGE(szResult , nResult ==0);
+	//int nResult = util::CDataMgrFactory::DeleteInstance(m_pJSonCppMgr);
+	delete m_pJSonCppMgr;
+	//m_pJSonCppMgr = NULL;
+	//char szResult[100];
+	//memset(szResult,0x0,100);
+	//sprintf(szResult,"Delete Instance Fail: %d", nResult);
+	//CPPUNIT_ASSERT_MESSAGE(szResult , nResult ==0);
 }
 
 void JSonCppMgrTest::TestParsePhotoList()

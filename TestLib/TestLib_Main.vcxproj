@@ -204,7 +204,10 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\TestDLL\URLWatchDog.cpp" />
+    <ClCompile Include="CodecHelperTest.cpp" />
     <ClCompile Include="FacebookServiceTest.cpp" />
+    <ClCompile Include="FlickRServiceTest.cpp" />
     <ClCompile Include="InternetConnectTest.cpp" />
     <ClCompile Include="JSonCppMgrTest.cpp" />
     <ClCompile Include="OnlinemgrTest.cpp" />
@@ -220,7 +223,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\TestDLL\URLWatchDog.h" />
+    <ClInclude Include="CodecHelperTest.h" />
     <ClInclude Include="FacebookServiceTest.h" />
+    <ClInclude Include="FlickRServiceTest.h" />
     <ClInclude Include="InternetConnectTest.h" />
     <ClInclude Include="JSonCppMgrTest.h" />
     <ClInclude Include="OnlinemgrTest.h" />
@@ -266,13 +272,13 @@
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">copy %(FullPath) $(OutDir)TestData\%(Filename)%(Extension)</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Filename)%(Extension)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="Log4cxxConfig.xml">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">copy %(FullPath) $(OutDir)%(Filename)%(Extension)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">copy %(FullPath) $(OutDir)%(Filename)%(Extension)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Filename)%(Extension)</Outputs>
+    <CustomBuild Include="..\TestData\Log4cxxConfig.xml">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">copy %(FullPath) $(OutDir)%(Filename)%(Extension)</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">copy %(FullPath) $(OutDir)%(Filename)%(Extension)</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Filename)%(Extension)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">copy %(FullPath) $(OutDir)%(Filename)%(Extension)</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">copy %(FullPath) $(OutDir)%(Filename)%(Extension)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Filename)%(Extension)</Outputs>
     </CustomBuild>
     <None Include="Makefile.am" />
   </ItemGroup>

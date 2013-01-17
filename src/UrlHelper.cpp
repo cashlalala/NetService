@@ -50,3 +50,27 @@ string util::CUrlHelper::EncodeUrl( const string& szUrl )
 	delete[] lpszUrl;
 	return szRetUrl;
 }
+
+map<string,string> util::CUrlHelper::ToParamMap( const string& szUrl )
+{
+	char lpszParam[INTERNET_MAX_PATH_LENGTH+1];
+	memset(lpszParam,0x0,sizeof(lpszParam));
+
+	URL_COMPONENTSA urlComponents = {0};
+	urlComponents.dwStructSize = sizeof(URL_COMPONENTSA);
+	urlComponents.dwExtraInfoLength = INTERNET_MAX_PATH_LENGTH;
+	urlComponents.lpszExtraInfo = lpszParam;
+	BOOL bResult = InternetCrackUrlA(szUrl.c_str(), szUrl.size(), ICU_ESCAPE, &urlComponents);
+
+	map<string,string> mapResult;
+	char* pNextTok = NULL;
+	char* pChar = strtok_s(lpszParam,"?&#", &pNextTok);
+	while (pChar) 
+	{
+		string szToken(pChar);
+		size_t nPos = szToken.find("=");
+		mapResult[szToken.substr(0,nPos)] = szToken.substr(nPos+1);
+		pChar = strtok_s(NULL,"?&#", &pNextTok);
+	}	
+	return mapResult;
+}

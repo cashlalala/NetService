@@ -7,22 +7,37 @@
     <Filter Include="Tests">
       <UniqueIdentifier>{7d261ec2-4875-4396-a7fd-1b9ab2db5e58}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{2ae058df-6b50-46db-a6e6-d4e49174604b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SocialServiceTest.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="TestDLL_Main.cpp" />
+    <ClCompile Include="FBServiceTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="FlickrServiceTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="URLWatchDog.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SocialServiceTest.h">
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="FBServiceTest.h">
       <Filter>Tests</Filter>
     </ClInclude>
-    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="FlickrServiceTest.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="URLWatchDog.h">
+      <Filter>Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\TestData\10photos.txt">
@@ -34,6 +49,6 @@
     <CustomBuild Include="..\TestData\TestConfig.ini">
       <Filter>TestData</Filter>
     </CustomBuild>
-    <CustomBuild Include="Log4cxxConfig.xml" />
+    <CustomBuild Include="..\TestData\Log4cxxConfig.xml" />
   </ItemGroup>
 </Project>

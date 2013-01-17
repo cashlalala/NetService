@@ -60,11 +60,34 @@
 
 #define ITF_SOCIALNETWORKSERVICE        0x01       // ISOCIALNETWORKSERVICE
 #define ITF_DATAMANAGER           0x02       // IDATAMANAGER
-#define ITF_INTERNETCONNECTSERVICE 0x03 //CInternetConnectService
+#define ITF_INTERNETCONNECTSERVICE 0x03 //CINTERNETCONNECTSERVICE
+#define ITF_FACEBOOKSERVICE        0x04       // FACEBOOKSERVICE
+#define ITF_FLICKRSERVICE        0x05       // FLICKRSERVICE
 
 ///////////////////////////////////////////////////////////////////////////////
 //
 // ISOCIALNETWORKSERVICE
+//
+///////////////////////////////////////////////////////////////////////////////
+#define NS_E_SN_SERVICE_NOT_ON_THE_SPEC				MAKE_NETSERVICE_ERROR(ITF_SOCIALNETWORKSERVICE,0x001)
+
+#define NS_E_SN_SERVICE_WRONG_RQST_PARAMS		MAKE_NETSERVICE_ERROR(ITF_SOCIALNETWORKSERVICE,0x002)
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// FLICKRSERVICE
+//
+///////////////////////////////////////////////////////////////////////////////
+
+#define  NS_E_SN_FLICKR_NO_METHOD					MAKE_NETSERVICE_ERROR(ITF_FLICKRSERVICE,0x001)
+
+#define  NS_E_SN_FLICKR_GETPHOT_ALBUM_ID_DISMATCH					MAKE_NETSERVICE_ERROR(ITF_FLICKRSERVICE,0x002)
+
+#define  NS_S_SN_FLICKR_NO_THUMBNAIL				MAKE_NETSERVICE_INFO(ITF_FLICKRSERVICE,0x999)
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// FACEBOOKSERVICE
 //
 ///////////////////////////////////////////////////////////////////////////////
 
