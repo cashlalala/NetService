@@ -43,23 +43,23 @@ void CCodecHelperTest::tearDown()
 void CCodecHelperTest::testEncodeBase64()
 {
 	string szEnB64 =m_pCodecHelper->ToBase64(m_szTestString);
-	m_pLogger->Debug("[%s] -> [%s]",m_szTestString.c_str(),szEnB64.c_str());
+	LOGGER_DEBUG(m_pLogger,"[%s] -> [%s]",m_szTestString.c_str(),szEnB64.c_str())
 	CPPUNIT_ASSERT_MESSAGE("Encode Fail",szEnB64==m_szTargetString);
 }
 
 void CCodecHelperTest::testDecodeBase64()
 {
 	string szDecB64 =m_pCodecHelper->FromBase64(m_szTargetString);
-	m_pLogger->Debug("[%s] -> [%s]",m_szTargetString.c_str(),szDecB64.c_str());
+	LOGGER_DEBUG(m_pLogger,"[%s] -> [%s]",m_szTargetString.c_str(),szDecB64.c_str())
 	CPPUNIT_ASSERT_MESSAGE("Decode Fail",szDecB64==m_szTestString);
 }
 
 void CCodecHelperTest::testCodecBase64()
 {
-	m_pLogger->Debug("Input String: [%s]",m_szConfigTestString.c_str());
+	LOGGER_DEBUG(m_pLogger,"Input String: [%s]",m_szConfigTestString.c_str())
 	string szEnB64 =m_pCodecHelper->ToBase64(m_szConfigTestString);
 	string szDecB64 =m_pCodecHelper->FromBase64(szEnB64);
-	m_pLogger->Debug("Output String: [%s]",szDecB64.c_str());
+	LOGGER_DEBUG(m_pLogger,"Output String: [%s]",szDecB64.c_str())
 	CPPUNIT_ASSERT_MESSAGE("Codec Fail",szDecB64==m_szConfigTestString);
 }
 

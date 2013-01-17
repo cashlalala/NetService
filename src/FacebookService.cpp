@@ -248,7 +248,8 @@ int CFacebookService::GetAlbums( IAlbumList& iAlbumLst, IError& iErr, string szU
 		{
 			for (SysList::Str2StrMapList::iterator itMap = listMap.begin();itMap != listMap.end();++itMap)
 			{
-				m_pILogger->Trace("Album id: [%s] <-->[%s]",(*itAlb)->szId.c_str(),(*itMap)[FB_ALBUM_OBJECT_ID].c_str());
+				LOGGER_TRACE(m_pILogger,"Album id: [%s] <-->[%s]",(*itAlb)->szId.c_str(),(*itMap)
+					[FB_ALBUM_OBJECT_ID].c_str())
 				if ((*itAlb)->szId==(*itMap)[FB_ALBUM_OBJECT_ID] && !(*itAlb)->szCoverPhotoId.empty())
 				{
 					(*itAlb)->szThumbNail = (*itMap)[FB_IMAGE_SOURCE_SMALL];

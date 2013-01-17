@@ -33,6 +33,6 @@ private:
 	string m_szProxyDetectUrl;
 	list<INetKernel*> m_listINetKernel;
 	NetKernelLoader m_cNetKernelLoader;
-	util::ILogger* S_LOGGER;
+	util::ILogger* m_pILogger;
 
 };

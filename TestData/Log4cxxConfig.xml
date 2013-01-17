@@ -17,12 +17,12 @@
     <param name="threshold" value="trace" />
     <param name="append" value="false" />
     <layout class="org.apache.log4j.PatternLayout">
-      <param name="ConversionPattern" value="%d %-5p [%t:%x] %c{2} (%F:%L) - %m%n" />
+      <param name="ConversionPattern" value="%d %-5p [%t] %C{2} %M- %m%n (%F:%L)" />
     </layout>
   </appender>
 
   <root>
-    <!--<priority value="debug" />-->
+    <priority value="trace" />
     <appender-ref ref="appxNormalAppender"/>
     <appender-ref ref="appxConsoleAppender"/>
   </root>

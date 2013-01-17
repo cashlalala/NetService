@@ -612,8 +612,8 @@ void util::CJsonCppMgr::TravFkrFriend( Json::Value& item, model::IUser* pIUsr )
 			pFkrUsr->szId.c_str());
 	}
 	else
-		m_pLogger->Debug("This queryee [%s] don't have the thumbnail or open the access right for the querier",
-		pFkrUsr->szId.c_str());
+		LOGGER_DEBUG(m_pLogger,"This queryee [%s] don't have the thumbnail or open the access right for the querier",
+		pFkrUsr->szId.c_str())
 	
 }
 
@@ -637,8 +637,8 @@ void util::CJsonCppMgr::TravFkrUser( Json::Value& jvRoot, IUser& iUser )
 		
 	}
 	else
-		m_pLogger->Debug("This queryee [%s] don't have the thumbnail or open the access right for the querier",
-										pFkrUser->szId.c_str());
+		LOGGER_DEBUG(m_pLogger,"This queryee [%s] don't have the thumbnail or open the access right for the querier",
+		pFkrUser->szId.c_str())
 
 	
 }

@@ -18,7 +18,7 @@ m_cNetKernelLoader()
 	m_szServerAddr = "";
 	m_szApName = "";
 	m_szProxyDetectUrl = "";
-	S_LOGGER = util::CLoggerMgr::GetLogger(util::Log4Cxx,"CInternetConnectService");
+	m_pILogger = util::CLoggerMgr::GetLogger(util::Log4Cxx,"CInternetConnectService");
 }
 
 CInternetConnectService::~CInternetConnectService(void)
@@ -70,7 +70,7 @@ bool CInternetConnectService::DetectProxy(void)
 
 int CInternetConnectService::OpenUrl( HttpRespValObj& cHttpRespVO, string szUrl, string szHttpMethod /*= HTTP_METHOD_GET*/, wstring wszCookieFilePath /*= L""*/, void* pfnCallBack /*= NULL*/ )
 {
-	S_LOGGER->Trace("Input URL: [ %s ]", szUrl.c_str());
+	LOGGER_TRACE(m_pILogger,"Input URL: [ %s ]", szUrl.c_str())
 
 	int nResult = E_FAIL;
 	INetKernel* pINetKernel = m_cNetKernelLoader.GetInstance();
@@ -88,7 +88,7 @@ int CInternetConnectService::OpenUrl( HttpRespValObj& cHttpRespVO, string szUrl,
 
 	//HttpResponseValueObject cHttpRespVO;
 	string szEncodedUrl = util::CUrlHelper::EncodeUrl(szUrl);
-	S_LOGGER->Debug("Encoded URL: [ %s ]", szEncodedUrl.c_str());
+	LOGGER_DEBUG(m_pILogger,"Encoded URL: [ %s ]", szEncodedUrl.c_str());
 	pINetKernel->OpenUrl(cHttpRespVO,szEncodedUrl.c_str(),szHttpMethod.c_str(), 
 										NULL,NULL,wszCookieFilePath.c_str());
 
@@ -101,7 +101,7 @@ int CInternetConnectService::OpenUrl( HttpRespValObj& cHttpRespVO, string szUrl,
 	if (cHttpRespVO.dwError!=0)
 	{
 		nResult = NS_E_INET_CONNECT_FAIL_API_RETURN_ERROR;
-		S_LOGGER->Error("Error Code[%d] : NS_E_INET_CONNECT_FAIL_API_RETURN_ERROR",nResult);
+		LOGGER_ERROR(m_pILogger,"Error Code[%d] : NS_E_INET_CONNECT_FAIL_API_RETURN_ERROR",nResult)
 	}
 	//else if (cHttpRespVO.dwStatusCode!=200)
 	//{
@@ -109,7 +109,7 @@ int CInternetConnectService::OpenUrl( HttpRespValObj& cHttpRespVO, string szUrl,
 	//}
 	else
 	{
-		S_LOGGER->Trace("Response: [ %s ]", cHttpRespVO.szResp.c_str());
+		LOGGER_TRACE(m_pILogger,"Response: [ %s ]", cHttpRespVO.szResp.c_str())
 		nResult = S_OK;
 	}
 

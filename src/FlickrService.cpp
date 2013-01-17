@@ -116,7 +116,7 @@ int CFlickrService::GetLoginURL(string& szLoginUrl, const string& szAppId, const
 		mapParams[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapParams,szAppSecret.c_str());
 
 		szLoginUrl = "http://www.flickr.com/services/auth/?"  + util::CMapHelper::ToParamString(mapParams);
-		m_pILogger->Debug("Get Login Url :[%s]",szLoginUrl.c_str());
+		LOGGER_DEBUG(m_pILogger,"Get Login Url :[%s]",szLoginUrl.c_str());
 	} while (false);
 
 	return nResult;
@@ -447,7 +447,7 @@ int CFlickrService::PreCallApi( IError& iErr, SysMaps::Str2Str &mapParams )
 			{
 				
 				nResult = GetFlickrAuthToken(m_cConnectInfo.szAuthToken,iErr);
-				m_pILogger->Trace("Get Auth Token: [%s]",m_cConnectInfo.szAuthToken.c_str());
+				LOGGER_TRACE(m_pILogger,"Get Auth Token: [%s]",m_cConnectInfo.szAuthToken.c_str())
 				EXCEPTION_BREAK(nResult)
 			}
 			mapParams[FLICK_PARAM_AUTH_TOKEN] = m_cConnectInfo.szAuthToken;
