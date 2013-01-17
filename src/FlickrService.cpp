@@ -57,19 +57,42 @@ int CFlickrService::GetPhotos( IPhotoList& iPhotoLst, IError& iErr, string szId 
 {
 	int nResult = E_FAIL;
 	HttpRespValObj cHttpResp;
-	if (mapQryCriteria.find(FLICK_PARAM_USER_ID)==mapQryCriteria.end())//not ever exist
-		mapQryCriteria[FLICK_PARAM_USER_ID] = (szId.empty())? "me" : szId;
-	mapQryCriteria[FLICK_PARAM_MEDIA] = FLICK_VALUE_MEDIA_PHOTO;
-	mapQryCriteria[FLICK_PARAM_METHOD] = FLICK_METHOD_PHOTO_SEARCH;
-	mapQryCriteria[FLICK_FIELD_EXTRA] = util::CStringHelper::Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
-																			FLICK_PHOTO_URL_C,FLICK_PHOTO_URL_O,
-																			FLICK_PHOTO_URL_T,FLICK_PHOTO_URL_L,
-																			FLICK_PHOTO_URL_M,FLICK_PHOTO_URL_Q,
-																			FLICK_PHOTO_URL_S,FLICK_PHOTO_URL_SQ,
-																			FLICK_PHOTO_URL_N,FLICK_PHOTO_ORIGINAL_FORMAT,
-																			FLICK_PHOTO_MEDIA);
 	do 
 	{
+		if ( szId.find("@")==string::npos && szId!="me")//album id
+		{
+			mapQryCriteria[FLICK_PARAM_METHOD] = FLICK_METHOD_PHOTOSET_GETPHOTOS;
+			SysMaps::Str2Str::iterator it = mapQryCriteria.find(FLICK_PARAM_PHOTOSET_ID);
+			if (it!=mapQryCriteria.end() && it->second!=szId)
+			{	
+				nResult = NS_E_SN_FLICKR_GETPHOT_ALBUM_ID_DISMATCH;
+				EXCEPTION_BREAK(nResult)
+			}
+			else
+				mapQryCriteria[FLICK_PARAM_PHOTOSET_ID] = szId;
+
+			mapQryCriteria[FLICK_FIELD_EXTRA] = util::CStringHelper::Format("%s,%s,%s,%s,%s,%s,%s",
+				FLICK_PHOTO_URL_O,FLICK_PHOTO_URL_T,
+				FLICK_PHOTO_URL_M,FLICK_PHOTO_URL_SQ,
+				FLICK_PHOTO_URL_S,FLICK_PHOTO_ORIGINAL_FORMAT,
+				FLICK_PHOTO_MEDIA);
+		}
+		else //user or group id
+		{
+			if (mapQryCriteria.find(FLICK_PARAM_USER_ID)==mapQryCriteria.end())//not ever exist
+				mapQryCriteria[FLICK_PARAM_USER_ID] = (szId.empty())? "me" : szId;
+			mapQryCriteria[FLICK_PARAM_METHOD] = FLICK_METHOD_PHOTO_SEARCH;
+			mapQryCriteria[FLICK_FIELD_EXTRA] = util::CStringHelper::Format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
+				FLICK_PHOTO_URL_C,FLICK_PHOTO_URL_O,
+				FLICK_PHOTO_URL_T,FLICK_PHOTO_URL_L,
+				FLICK_PHOTO_URL_M,FLICK_PHOTO_URL_Q,
+				FLICK_PHOTO_URL_S,FLICK_PHOTO_URL_SQ,
+				FLICK_PHOTO_URL_N,FLICK_PHOTO_ORIGINAL_FORMAT,
+				FLICK_PHOTO_MEDIA);
+		}
+
+		mapQryCriteria[FLICK_PARAM_MEDIA] = FLICK_VALUE_MEDIA_PHOTO;
+
 		nResult = CallApi(cHttpResp,iErr, mapQryCriteria);
 		EXCEPTION_BREAK(nResult)
 

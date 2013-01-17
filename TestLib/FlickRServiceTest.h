@@ -32,7 +32,7 @@ class CFlickRServiceTest
 	// °Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°ÙBasic testing 
 
 	//°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ı°ıIntegration and Advance testing 
-	CPPUNIT_TEST( testGetPhotosInAlbumWithPhotosAndAlbumPaging );
+	CPPUNIT_TEST( testGetFriendsPhotosInAlbumWithPhotosAndAlbumPaging );
 	// °Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°Ù°ÙIntegration and Advance testing 
 
 	/*
@@ -64,7 +64,7 @@ public:
 	void testGetOAuthRqstToken();
 	void testGetToken();
 
-	void testGetPhotosInAlbumWithPhotosAndAlbumPaging();
+	void testGetFriendsPhotosInAlbumWithPhotosAndAlbumPaging();
 
 	void terminate();
 

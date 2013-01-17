@@ -175,13 +175,43 @@ void CFlickRServiceTest::testGetProfile()
 	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK);
 }
 
-void CFlickRServiceTest::testGetPhotosInAlbumWithPhotosAndAlbumPaging()
+void CFlickRServiceTest::testGetFriendsPhotosInAlbumWithPhotosAndAlbumPaging()
 {
-	//model::CFkrUser cFkrUsr;
-	//model::CFkrError cFkrErr;
-	//SysMaps::Str2Str mapQryParams;
-	//int nResult = m_pFlickrService->GetUserInfo(cFkrUsr,cFkrErr,"91786782@N02",mapQryParams);
-	//CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK);
+	string szCertainFriend ="70735667@N03";
+
+	model::CFkrUserList cFkrUsrList;
+	model::CFkrError cFkrErr;
+	SysMaps::Str2Str mapQryParams;	
+	int nResult = m_pFlickrService->GetFriends(cFkrUsrList,cFkrErr);
+	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK);
+
+	string szTargetFriendId;
+	for (list<IUser*>::iterator it = cFkrUsrList.listOfItem.begin();it != cFkrUsrList.listOfItem.end(); ++it)
+	{
+		cout << (*it)->szId << endl;
+		if ((*it)->szId == szCertainFriend)
+		{
+			szTargetFriendId = (*it)->szId;
+			cout << "Gotten!! Break!" << endl;
+			break;
+		}
+	}
+
+	model::CFkrAlbumList cFkrAlbumList;
+	mapQryParams[FLICK_PARAM_PERPAGE] = "1";
+	mapQryParams[FLICK_PARAM_PAGE] = "2";
+	nResult = m_pFlickrService->GetAlbums(cFkrAlbumList,cFkrErr,szTargetFriendId,mapQryParams);
+	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK && cFkrAlbumList.listOfItem.size()==1);
+	mapQryParams.clear();
+
+	model::CFkrPhotoList cFBPhotoList;
+	mapQryParams[FLICK_PARAM_PERPAGE] = "5";
+	mapQryParams[FLICK_PARAM_PAGE] = "2";
+	string szTargetAlbumId = cFkrAlbumList.listOfItem.front()->szId;
+	nResult = m_pFlickrService->GetPhotos(cFBPhotoList,cFkrErr,szTargetAlbumId,mapQryParams);
+	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK && cFBPhotoList.listOfItem.size()==5 
+		&& !cFBPhotoList.szNextPageUrl.empty() && !cFBPhotoList.szPreviousPageUrl.empty());
+	
 }
 
 CFlickrConnectionInfo CFlickRServiceTest::m_cCnctInfoVO;

@@ -498,16 +498,19 @@ int util::CJsonCppMgr::ParseFkrAuthToken( SysMaps::Str2Str& mapAuth, string szIn
 void util::CJsonCppMgr::TravrFkrPhotoList( Json::Value &jvRoot, IPhotoList &iPhotoList )
 {
 	model::CFkrPhotoList* cFkrPhotoLst  = dynamic_cast<model::CFkrPhotoList*>( &iPhotoList);
+	
+	string szSets = FLICK_PHOTOS;
+	if (jvRoot[szSets].isNull()) szSets = FLICK_PHOTOSET;
 	//for composing the next & prev page url
-	cFkrPhotoLst->nPage = jvRoot[FLICK_PHOTOS][FLICK_PHOTOS_PAGE].asInt();
-	cFkrPhotoLst->nPages = jvRoot[FLICK_PHOTOS][FLICK_PHOTOS_PAGES].asInt();
-	cFkrPhotoLst->nPerpage = jvRoot[FLICK_PHOTOS][FLICK_PHOTOS_PERPAGE].asInt();
-	cFkrPhotoLst->nTotal = atoi(jvRoot[FLICK_PHOTOS][FLICK_PHOTOS_TOTAL].asString().c_str());
+	cFkrPhotoLst->nPage = atoi(jvRoot[szSets][FLICK_PHOTOS_PAGE].asString().c_str());
+	cFkrPhotoLst->nPages = atoi(jvRoot[szSets][FLICK_PHOTOS_PAGES].asString().c_str());
+	cFkrPhotoLst->nPerpage = atoi(jvRoot[szSets][FLICK_PHOTOS_PERPAGE].asString().c_str());
+	cFkrPhotoLst->nTotal = atoi(jvRoot[szSets][FLICK_PHOTOS_TOTAL].asString().c_str());
 
-	int nPhotoNum = jvRoot[FLICK_PHOTOS][FLICK_PHOTO].size();
+	int nPhotoNum = jvRoot[szSets][FLICK_PHOTO].size();
 	for (int i=0;i<nPhotoNum;++i)
 	{
-		Json::Value item = jvRoot[FLICK_PHOTOS][FLICK_PHOTO][i];
+		Json::Value item = jvRoot[szSets][FLICK_PHOTO][i];
 		model::CFkrPhoto* cFkrPhoto = new model::CFkrPhoto();
 		TravFkrPhoto(item,cFkrPhoto);
 		cFkrPhotoLst->listOfItem.push_back(cFkrPhoto);
@@ -528,8 +531,8 @@ void util::CJsonCppMgr::TravFkrPhoto( Json::Value &jvRoot, IPhoto* pIPhoto )
 
 	//the original size if only available for pro user
 	pFkrPhto->szSource = jvRoot[FLICK_PHOTO_URL_O].asString();
-	pFkrPhto->nHeight = jvRoot[FLICK_PHOTO_HEIGHT_O].asInt();
-	pFkrPhto->nWidth = jvRoot[FLICK_PHOTO_WIDTH_O].asInt();
+	pFkrPhto->nHeight = atoi(jvRoot[FLICK_PHOTO_HEIGHT_O].asString().c_str());
+	pFkrPhto->nWidth = atoi(jvRoot[FLICK_PHOTO_WIDTH_O].asString().c_str());
 	pFkrPhto->szThumbNail = jvRoot[FLICK_PHOTO_URL_T].asString();	
 
 	std::list<string>::iterator it = m_listFkrPhotSizes.begin();
@@ -547,9 +550,9 @@ void util::CJsonCppMgr::TravFkrAlbumList( Json::Value& jvRoot, IAlbumList& iAlbu
 {
 	model::CFkrAlbumList* pFkrAlbumLst = dynamic_cast<model::CFkrAlbumList*>(&iAlbumList);
 	pFkrAlbumLst->nPage = atoi(jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSETS_PAGE].asString().c_str());
-	pFkrAlbumLst->nPages = jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSETS_PAGES].asInt();
+	pFkrAlbumLst->nPages = atoi(jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSETS_PAGES].asString().c_str());
 	pFkrAlbumLst->nPerpage = atoi(jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSETS_PERPAGE].asString().c_str());
-	pFkrAlbumLst->nTotal = jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSETS_TOTAL].asInt();
+	pFkrAlbumLst->nTotal = atoi(jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSETS_TOTAL].asString().c_str());
 
 	int nAlbums = jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSET].size();
 	for (int i =0;i<nAlbums;++i)

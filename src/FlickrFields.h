@@ -13,6 +13,7 @@
 #define FLICK_PARAM_USER_ID "user_id"
 #define FLICK_PARAM_NO_JSON_CALLBACK "nojsoncallback"
 #define FLICK_PARAM_MEDIA "media"
+#define FLICK_PARAM_PHOTOSET_ID "photoset_id"
 
 #define FLICK_OAUTH_CALLBACK "oauth_callback"
 
@@ -145,6 +146,7 @@
 #define FLICK_METHOD_AUTH_GETFROB "flickr.auth.getFrob"
 #define FLICK_METHOD_AUTH_GETTOKEN "flickr.auth.getToken"
 #define FLICK_METHOD_PHOTOSET_GETLIST "flickr.photosets.getList"
+#define FLICK_METHOD_PHOTOSET_GETPHOTOS "flickr.photosets.getPhotos"
 #define FLICK_METHOD_CONTACTS_GETLIST "flickr.contacts.getList"
 #define FLICK_METHOD_CONTACTS_GETPUBLICLIST "flickr.contacts.getPublicList"
 #define FLICK_METHOD_PEOPLE_GETINFO "flickr.people.getInfo"
