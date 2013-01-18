@@ -284,7 +284,7 @@ int CFacebookService::GetProfile( IProfile& iProfile, IError& iErr, string szId/
 		nResult = CallFQLQuery(cHttpResp, lpszFql);
 		EXCEPTION_BREAK(nResult)
 
-		nResult = m_pIDataMgr->ParseProfile(iProfile,cHttpResp.szResp, util::Facebook,iErr);
+		nResult = m_pIDataMgr->ParseProfile(iProfile,cHttpResp.szResp, iErr);
 	} while (false);
 
 	//Error Handling

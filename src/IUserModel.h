@@ -10,9 +10,12 @@ using namespace util;
 
 namespace model
 {
-	struct IProfile  : public IModel{
+	struct IProfile  : 
+		public IModel, public IProfileParsable
+	{
 		virtual ~IProfile() = 0;
 		string szThumNail;
+		int AcceptProfileParser(IProfileParseRuler& cProfileParser) {return 0;};
 	};
 
 	inline IProfile::~IProfile(){};

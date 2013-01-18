@@ -18,6 +18,7 @@
 #include "PhotoParseRuler.h"
 #include "UserParseRuler.h"
 #include "AlbumParseRuler.h"
+#include "ProfileParseRuler.h"
 
 #include "StringHelper.h"
 
@@ -321,7 +322,7 @@ void util::CJsonCppMgr::TravFBAlbum( Json::Value& jvRoot, IAlbum* pIAlbum )
 	pFbAlbum->nCount = jvRoot[FB_ALBUM_PHOTO_COUNT].asInt();
 }
 
-int util::CJsonCppMgr::ParseProfile( IProfile& iProfile, string szInput, EnDataOwner enDataOwner, IError& iError )
+int util::CJsonCppMgr::ParseProfile( IProfile& iProfile, string szInput, IError& iError )
 {
 	int nResult = E_FAIL;
 	Json::Reader jrReader;
@@ -329,23 +330,12 @@ int util::CJsonCppMgr::ParseProfile( IProfile& iProfile, string szInput, EnDataO
 
 	if (jrReader.parse(szInput.c_str(),jvRoot))
 	{
-		switch(enDataOwner)
-		{
-		case Facebook:
-			{
-				nResult = TravFBErr(jvRoot,iError);
-				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+		CErrorParseRuler cErrRuler((void*)&jvRoot);
+		nResult = iError.AcceptErrorParser(cErrRuler);
+		ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 
-				nResult = TravFBProfile(jvRoot,&iProfile,iError);
-				ERROR_RETURN(nResult,NS_E_DMGR_WRONG_DATA_SIZE)
-
-				nResult = S_OK;
-				break;
-			}
-		default: 
-			nResult = NS_S_DMGR_NO_DATA_OWNER;
-			break;
-		}
+		CProfileParseRuler cProfileRuler((void*)&jvRoot);
+		iProfile.AcceptProfileParser(cProfileRuler);
 	}
 	else
 		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;

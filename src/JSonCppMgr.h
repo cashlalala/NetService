@@ -31,7 +31,7 @@ namespace util
 
 		virtual int ParseAlbumList(IAlbumList& iAlbumList, string szInput, IError& iError) ;
 
-		virtual int ParseProfile(IProfile& iProfile, string szInput, EnDataOwner enDataOwner, IError& iError);
+		virtual int ParseProfile(IProfile& iProfile, string szInput, IError& iError);
 
 		virtual int ParseImageList(IImageList& listImage, string szInput, EnDataOwner enDataOwner, IError& iError) ;
 

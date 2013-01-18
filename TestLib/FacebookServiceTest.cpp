@@ -153,7 +153,7 @@ void CFacebookServiceTest::testGetProfile()
 	model::CFBProfile cFbVideoLst;
 	CFBError cFbErr;
 
-	int nResult = m_pFacebookService->GetProfile(cFbVideoLst,cFbErr);
+	int nResult = m_pFacebookService->GetProfile(cFbVideoLst,cFbErr,"512648279");
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==S_OK);
 }
 

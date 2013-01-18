@@ -102,6 +102,9 @@
     <ClCompile Include="AlbumParseRuler.cpp">
       <Filter>Util\DataMgr\ParseRule</Filter>
     </ClCompile>
+    <ClCompile Include="ProfileParseRuler.cpp">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\NetKernel\Src\INetKernel.h">
@@ -246,6 +249,9 @@
       <Filter>Util\DataMgr\ParseRule</Filter>
     </ClInclude>
     <ClInclude Include="AlbumParseRuler.h">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClInclude>
+    <ClInclude Include="ProfileParseRuler.h">
       <Filter>Util\DataMgr\ParseRule</Filter>
     </ClInclude>
   </ItemGroup>

@@ -10,11 +10,11 @@ namespace model
 
 	//only user, group, page, event, and application ID have those properties
 	struct CFBProfile : public IProfile{
-	public:
 		virtual ~CFBProfile(){};
 		string szBig;
 		string szSmall;
 		string szSquare;
+		int AcceptProfileParser(IProfileParseRuler& cProfileParser) { return cProfileParser.Traverse(*this);}
 	};
 
 	struct CFBUser : public IUser{

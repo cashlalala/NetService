@@ -10,6 +10,7 @@ namespace model
 
 	struct CFkrProfile : public IProfile{
 		virtual ~CFkrProfile(){};
+		int AcceptProfileParser(IProfileParseRuler& cProfileParser) {return cProfileParser.Traverse(*this);}
 	};
 
 	struct CFkrUser : public IUser{

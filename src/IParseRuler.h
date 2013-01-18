@@ -3,6 +3,7 @@
 namespace model
 {
 	struct CFBProfile;
+	struct CFkrProfile;
 
 	struct CFBError;
 	struct CFkrError;
@@ -153,6 +154,15 @@ namespace util
 
 	struct IVideoListParsable {
 		virtual void AcceptVideoListParser(IVideoListParseRuler& cVideoListParser) = 0;
+	};
+
+	struct IProfileParseRuler : public IExecutor {
+		virtual int Traverse(CFBProfile& cFBProfile) = 0;
+		virtual int Traverse(CFkrProfile& cFkrProfile) = 0;
+	};
+
+	struct IProfileParsable {
+		virtual int AcceptProfileParser(IProfileParseRuler& cProfileParser) = 0;
 	};
 }
 
