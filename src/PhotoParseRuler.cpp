@@ -17,7 +17,7 @@ void util::CPhotoListParseRuler::Traverse( CFBPhotoList& cFBPhotoList )
 	for (int i=0;i<nPhotoNum;++i)
 	{
 		Json::Value item = m_jvRoot[FB_DATA][i];
-		cPhotoRuler.SetExecutor(item);
+		cPhotoRuler.SetExecutor((void*)&item);
 		CFBPhoto* pFbPhot = new CFBPhoto();
 		pFbPhot->AcceptPhotoParser(cPhotoRuler);
 		cFBPhotoList.listOfItem.push_back(pFbPhot);
@@ -40,16 +40,16 @@ void util::CPhotoListParseRuler::Traverse( CFkrPhotoList& cFkrPhotoList )
 	for (int i=0;i<nPhotoNum;++i)
 	{
 		Json::Value item = m_jvRoot[szSets][FLICK_PHOTO][i];
-		cPhotoRuler.SetExecutor(item);
+		cPhotoRuler.SetExecutor((void*)&item);
 		model::CFkrPhoto* cFkrPhoto = new model::CFkrPhoto();
 		cFkrPhoto->AcceptPhotoParser(cPhotoRuler);
 		cFkrPhotoList.listOfItem.push_back(cFkrPhoto);
 	}
 }
 
-util::CPhotoListParseRuler::CPhotoListParseRuler( Json::Value& jvRoot )
+util::CPhotoListParseRuler::CPhotoListParseRuler( void* pExecutor )
 {
-	this->SetExecutor(jvRoot);
+	this->SetExecutor(pExecutor);
 }
 
 util::CPhotoListParseRuler::CPhotoListParseRuler()
@@ -57,9 +57,9 @@ util::CPhotoListParseRuler::CPhotoListParseRuler()
 
 }
 
-void util::CPhotoListParseRuler::SetExecutor( Json::Value& jvRoot )
+void util::CPhotoListParseRuler::SetExecutor( void* pExecutor )
 {
-	m_jvRoot = jvRoot;
+	m_jvRoot = * ((Json::Value*) pExecutor);
 }
 
 void util::CPhotoParseRuler::Traverse( CFBPhoto& cFBPhoto )
@@ -70,7 +70,7 @@ void util::CPhotoParseRuler::Traverse( CFBPhoto& cFBPhoto )
 	cFBPhoto.szLink = m_jvRoot[FB_PHOTO_LINK].asString();
 	cFBPhoto.szSource = m_jvRoot[FB_IMAGE_SOURCE].asString();
 	cFBPhoto.szThumbNail = m_jvRoot[FB_PHOTO_THUBMNAIL].asString();
-	CImageListParseRuler cImgLstRuler(m_jvRoot[FB_PHOTO_IMAGES]);
+	CImageListParseRuler cImgLstRuler((void*)&m_jvRoot[FB_PHOTO_IMAGES]);
 	cFBPhoto.AcceptImageListParser(cImgLstRuler);
 }
 
@@ -102,9 +102,9 @@ void util::CPhotoParseRuler::Traverse( CFkrPhoto& cFkrPhoto )
 	}
 }
 
-util::CPhotoParseRuler::CPhotoParseRuler( Json::Value& jvRoot )
+util::CPhotoParseRuler::CPhotoParseRuler( void* pExecutor )
 {
-	this->SetExecutor(jvRoot);
+	this->SetExecutor(pExecutor);
 }
 
 util::CPhotoParseRuler::CPhotoParseRuler()
@@ -112,9 +112,9 @@ util::CPhotoParseRuler::CPhotoParseRuler()
 
 }
 
-void util::CPhotoParseRuler::SetExecutor( Json::Value& jvRoot )
+void util::CPhotoParseRuler::SetExecutor( void* pExecutor )
 {
-	m_jvRoot = jvRoot;
+	m_jvRoot = * ((Json::Value*) pExecutor);
 }
 
 const list<string> util::CPhotoParseRuler::S_LIST_FKRPHOTOSIZES = util::CListHelper::CreateFkrImgFormatList();

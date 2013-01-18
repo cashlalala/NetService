@@ -57,11 +57,11 @@ int util::CJsonCppMgr::ParsePhotoList( IPhotoList& iPhotoList, string szInput, E
 	Json::Value jvRoot;
 	if (jrReader.parse(szInput.c_str(),jvRoot))
 	{
-		CErrorParseRuler cErrRuler(jvRoot);
+		CErrorParseRuler cErrRuler((void*)&jvRoot);
 		nResult = iError.AcceptErrorParser(cErrRuler);
 		ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 
-		CPhotoListParseRuler cPhotoLstRuler(jvRoot);
+		CPhotoListParseRuler cPhotoLstRuler((void*)&jvRoot);
 		iPhotoList.AcceptPhotoListParser(cPhotoLstRuler);
 
 		//switch(enDataOwner)

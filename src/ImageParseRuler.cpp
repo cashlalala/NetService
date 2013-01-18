@@ -10,9 +10,9 @@ util::CImageListParseRuler::CImageListParseRuler()
 
 }
 
-util::CImageListParseRuler::CImageListParseRuler( Json::Value& jvRoot )
+util::CImageListParseRuler::CImageListParseRuler( void* pExecutor )
 {
-	this->SetExecutor(jvRoot);
+	this->SetExecutor(pExecutor);
 }
 
 void util::CImageListParseRuler::Traverse( CFBImageList& cFBImageList )
@@ -22,7 +22,7 @@ void util::CImageListParseRuler::Traverse( CFBImageList& cFBImageList )
 	for (int j = 0; j<nImageNum;++j)
 	{
 		Json::Value item = m_jvRoot[j];
-		cImgRuler.SetExecutor(item);
+		cImgRuler.SetExecutor((void*)&item);
 		model::CFBImage* pIImage = new model::CFBImage();
 		pIImage->AcceptImageParser(cImgRuler);
 		cFBImageList.listOfItem.push_back(pIImage);
@@ -34,9 +34,9 @@ void util::CImageListParseRuler::Traverse( CFkrImageList& cFkrImageList )
 
 }
 
-void util::CImageListParseRuler::SetExecutor( Json::Value& jvRoot )
+void util::CImageListParseRuler::SetExecutor( void* pExecutor )
 {
-	m_jvRoot = jvRoot;
+	m_jvRoot = * ((Json::Value*) pExecutor);
 }
 
 util::CImageParseRuler::CImageParseRuler()
@@ -44,9 +44,9 @@ util::CImageParseRuler::CImageParseRuler()
 
 }
 
-util::CImageParseRuler::CImageParseRuler( Json::Value& jvRoot )
+util::CImageParseRuler::CImageParseRuler( void* pExecutor )
 {
-	this->SetExecutor(jvRoot);
+	this->SetExecutor(pExecutor);
 }
 
 void util::CImageParseRuler::Traverse( CFBImage& cFBImage )
@@ -61,7 +61,7 @@ void util::CImageParseRuler::Traverse( CFkrImage& cFkrImage )
 
 }
 
-void util::CImageParseRuler::SetExecutor( Json::Value& jvRoot )
+void util::CImageParseRuler::SetExecutor( void* pExecutor )
 {
-	m_jvRoot = jvRoot;
+	m_jvRoot = * ((Json::Value*) pExecutor);
 }

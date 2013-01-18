@@ -15,13 +15,13 @@ namespace util
 	public:
 		CPhotoListParseRuler();
 
-		CPhotoListParseRuler(Json::Value& jvRoot);
+		CPhotoListParseRuler(void* pExecutor);
 
 		virtual void Traverse( CFBPhotoList& cFBPhotoList ) ;
 
 		virtual void Traverse( CFkrPhotoList& cFkrPhotoList ) ;
 
-		virtual void SetExecutor(Json::Value& jvRoot) ;
+		virtual void SetExecutor(void* pExecutor) ;
 	private:
 		Json::Value m_jvRoot;
 	};
@@ -31,13 +31,13 @@ namespace util
 	public:
 		CPhotoParseRuler();
 
-		CPhotoParseRuler(Json::Value& jvRoot);
+		CPhotoParseRuler(void* pExecutor);
 
 		virtual void Traverse( CFBPhoto& cFBPhoto ) ;
 
 		virtual void Traverse( CFkrPhoto& cFkrPhoto ) ;
 
-		virtual void SetExecutor(Json::Value& jvRoot) ;
+		virtual void SetExecutor(void* pExecutor) ;
 	private:
 		Json::Value m_jvRoot;
 		static const list<string> S_LIST_FKRPHOTOSIZES;

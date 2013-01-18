@@ -1,7 +1,5 @@
 #pragma once
 
-#include <json/json.h>
-
 namespace model
 {
 	struct CFBError;
@@ -39,7 +37,7 @@ namespace util
 {
 	//for future decoupling of executor
 	struct IExecutor {
-		virtual void SetExecutor(Json::Value& jvRoot) = 0;
+		virtual void SetExecutor(void* pExecutor) = 0;
 	};
 
 	//error rulers

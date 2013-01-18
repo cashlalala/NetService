@@ -10,13 +10,13 @@ namespace util
 	public:
 		CImageListParseRuler();
 
-		CImageListParseRuler(Json::Value& jvRoot);
+		CImageListParseRuler(void* pExecutor);
 
 		virtual void Traverse( CFBImageList& cFBImageList ) ;
 
 		virtual void Traverse( CFkrImageList& cFkrImageList ) ;
 
-		virtual void SetExecutor(Json::Value& jvRoot);
+		virtual void SetExecutor(void* pExecutor) ;
 	private:
 		Json::Value m_jvRoot;
 	};
@@ -26,13 +26,13 @@ namespace util
 	public:
 		CImageParseRuler();
 
-		CImageParseRuler(Json::Value& jvRoot);
+		CImageParseRuler(void* pExecutor);
 
 		virtual void Traverse( CFBImage& cFBImage ) ;
 
 		virtual void Traverse( CFkrImage& cFkrImage ) ;
 
-		virtual void SetExecutor(Json::Value& jvRoot);
+		virtual void SetExecutor(void* pExecutor) ;
 	private:
 		Json::Value m_jvRoot;
 	};

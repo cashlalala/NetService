@@ -7,13 +7,13 @@ namespace util
 	class CErrorParseRuler : public IErrorParseRuler 
 	{
 	public:
-		CErrorParseRuler(Json::Value& jvRoot);
+		CErrorParseRuler(void* pExecutor);
 
 		virtual int Traverse( CFBError& cFkrErr ) ;
 
 		virtual int Traverse( CFkrError& cFBErr ) ;
 
-		virtual void SetExecutor(Json::Value& jvRoot);
+		virtual void SetExecutor(void* pExecutor);
 	private:
 		Json::Value m_jvRoot;
 	};

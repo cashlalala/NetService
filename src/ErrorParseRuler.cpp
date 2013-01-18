@@ -23,13 +23,13 @@ int util::CErrorParseRuler::Traverse( CFBError& cFBErr )
 	return NS_E_DMGR_BAD_REQUEST_PARAMS;
 }
 
-util::CErrorParseRuler::CErrorParseRuler( Json::Value& jvRoot )
+util::CErrorParseRuler::CErrorParseRuler( void* pExecutor )
 {
-	m_jvRoot = jvRoot;
+	this->SetExecutor(pExecutor);
 }
 
-void util::CErrorParseRuler::SetExecutor( Json::Value& jvRoot )
+void util::CErrorParseRuler::SetExecutor( void* pExecutor )
 {
-	m_jvRoot = jvRoot;
+	m_jvRoot = *((Json::Value*) pExecutor);
 }
 
