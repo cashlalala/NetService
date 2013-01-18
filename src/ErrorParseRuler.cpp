@@ -28,3 +28,8 @@ util::CErrorParseRuler::CErrorParseRuler( Json::Value& jvRoot )
 	m_jvRoot = jvRoot;
 }
 
+void util::CErrorParseRuler::SetExecutor( Json::Value& jvRoot )
+{
+	m_jvRoot = jvRoot;
+}
+

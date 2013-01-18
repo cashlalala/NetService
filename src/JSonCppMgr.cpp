@@ -15,6 +15,7 @@
 #include "FkrUserModel.h"
 
 #include "ErrorParseRuler.h"
+#include "PhotoParseRuler.h"
 
 #include "StringHelper.h"
 
@@ -60,18 +61,21 @@ int util::CJsonCppMgr::ParsePhotoList( IPhotoList& iPhotoList, string szInput, E
 		nResult = iError.AcceptErrorParser(cErrRuler);
 		ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 
-		switch(enDataOwner)
-		{
-		case Facebook:
-			TravFBPhotoList(jvRoot, iPhotoList);
-			break;
-		case Flickr:
-			TravrFkrPhotoList(jvRoot, iPhotoList);
-			break;
-		default:
-			nResult = NS_S_DMGR_NO_DATA_OWNER;
-			break;
-		}
+		CPhotoListParseRuler cPhotoLstRuler(jvRoot);
+		iPhotoList.AcceptPhotoListParser(cPhotoLstRuler);
+
+		//switch(enDataOwner)
+		//{
+		//case Facebook:
+		//	TravFBPhotoList(jvRoot, iPhotoList);
+		//	break;
+		//case Flickr:
+		//	TravrFkrPhotoList(jvRoot, iPhotoList);
+		//	break;
+		//default:
+		//	nResult = NS_S_DMGR_NO_DATA_OWNER;
+		//	break;
+		//}
 		
 	}
 	else

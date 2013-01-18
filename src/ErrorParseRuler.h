@@ -12,6 +12,8 @@ namespace util
 		virtual int Traverse( CFBError& cFkrErr ) ;
 
 		virtual int Traverse( CFkrError& cFBErr ) ;
+
+		virtual void SetExecutor(Json::Value& jvRoot);
 	private:
 		Json::Value m_jvRoot;
 	};

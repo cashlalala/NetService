@@ -1,5 +1,7 @@
 #pragma once
 
+#include <json/json.h>
+
 namespace model
 {
 	struct CFBError;
@@ -35,8 +37,13 @@ using namespace model;
 
 namespace util
 {
+	//for future decoupling of executor
+	struct IExecutor {
+		virtual void SetExecutor(Json::Value& jvRoot) = 0;
+	};
+
 	//error rulers
-	struct IErrorParseRuler {
+	struct IErrorParseRuler : public IExecutor {
 		virtual int Traverse(CFBError& pFBErr) = 0;
 		virtual int Traverse(CFkrError& pFkrErr) = 0;
 	};
@@ -46,106 +53,106 @@ namespace util
 	};
 
 	//photo rulers
-	struct IPhotoParseRuler {
+	struct IPhotoParseRuler : public IExecutor {
 		virtual void Traverse(CFBPhoto& cFBPhoto) = 0;
 		virtual void Traverse(CFkrPhoto& cFkrPhoto) = 0;
 	};
 
-	struct PhotoParsable {
-		virtual void AcceptErrorParser(IPhotoParseRuler& cPhotoParser) = 0;
+	struct IPhotoParsable {
+		virtual void AcceptPhotoParser(IPhotoParseRuler& cPhotoParser) = 0;
 	};
 
-	struct IPhotoListParseRuler {
+	struct IPhotoListParseRuler : public IExecutor {
 		virtual void Traverse(CFBPhotoList& cFBPhotoList) = 0;
 		virtual void Traverse(CFkrPhotoList& cFkrPhotoList) = 0;
 	};
 
-	struct PhotoListParsable {
-		virtual void AcceptErrorParser(IPhotoListParseRuler& cPhotoListParser) = 0;
+	struct IPhotoListParsable {
+		virtual void AcceptPhotoListParser(IPhotoListParseRuler& cPhotoListParser) = 0;
 	};
 
 	//albums rulers
-	struct IAlbumParseRuler {
+	struct IAlbumParseRuler : public IExecutor {
 		virtual void Traverse(CFBAlbum& cFBAlbum) = 0;
 		virtual void Traverse(CFkrAlbum& cFkrAlbum) = 0;
 	};
 
-	struct AlbumParsable {
-		virtual void AcceptErrorParser(IAlbumParseRuler& cAlbumParser) = 0;
+	struct IAlbumParsable {
+		virtual void AcceptAlbumParser(IAlbumParseRuler& cAlbumParser) = 0;
 	};
 
-	struct IAlbumListParseRuler {
+	struct IAlbumListParseRuler : public IExecutor {
 		virtual void Traverse(CFBAlbumList& cFBAlbumList) = 0;
 		virtual void Traverse(CFkrAlbumList& cFkrAlbumList) = 0;
 	};
 
-	struct AlbumListParsable {
-		virtual void AcceptErrorParser(IAlbumListParseRuler& cAlbumListParser) = 0;
+	struct IAlbumListParsable {
+		virtual void AcceptAlbumListParser(IAlbumListParseRuler& cAlbumListParser) = 0;
 	};
 
 	//Images rulers
-	struct IImageParseRuler {
+	struct IImageParseRuler : public IExecutor {
 		virtual void Traverse(CFBImage& cFBImage) = 0;
 		virtual void Traverse(CFkrImage& cFkrImage) = 0;
 	};
 
-	struct ImageParsable {
-		virtual void AcceptErrorParser(IImageParseRuler& cImageParser) = 0;
+	struct IImageParsable {
+		virtual void AcceptImageParser(IImageParseRuler& cImageParser) = 0;
 	};
 
-	struct IImageListParseRuler {
+	struct IImageListParseRuler : public IExecutor {
 		virtual void Traverse(CFBImageList& cFBImageList) = 0;
 		virtual void Traverse(CFkrImageList& cFkrImageList) = 0;
 	};
 
-	struct ImageListParsable {
-		virtual void AcceptErrorParser(IImageListParseRuler& cImageListParser) = 0;
+	struct IImageListParsable {
+		virtual void AcceptImageListParser(IImageListParseRuler& cImageListParser) = 0;
 	};
 
 	//Users rulers
-	struct IUserParseRuler {
+	struct IUserParseRuler : public IExecutor {
 		virtual void Traverse(CFBUser& cFBUser) = 0;
 		virtual void Traverse(CFkrUser& cFkrUser) = 0;
 	};
 
-	struct UserParsable {
-		virtual void AcceptErrorParser(IUserParseRuler& cUserParser) = 0;
+	struct IUserParsable {
+		virtual void AcceptUserParser(IUserParseRuler& cUserParser) = 0;
 	};
 
-	struct IUserListParseRuler {
+	struct IUserListParseRuler : public IExecutor {
 		virtual void Traverse(CFBUserList& cFBUserList) = 0;
 		virtual void Traverse(CFkrUserList& cFkrUserList) = 0;
 	};
 
-	struct UserListParsable {
-		virtual void AcceptErrorParser(IUserListParseRuler& cUserListParser) = 0;
+	struct IUserListParsable {
+		virtual void AcceptUserListParser(IUserListParseRuler& cUserListParser) = 0;
 	};
 
 	//Videos rulers
-	struct IVideoFormatParseRuler {
+	struct IVideoFormatParseRuler : public IExecutor {
 		virtual void Traverse(CFBVideoFormat& cFBVideoFormat) = 0;
 	};
 
-	struct VideoFormatParsable {
-		virtual void AcceptErrorParser(IVideoFormatParseRuler& cVideoFormatParser) = 0;
+	struct IVideoFormatParsable {
+		virtual void AcceptVideoFormatParser(IVideoFormatParseRuler& cVideoFormatParser) = 0;
 	};
 
-	struct IVideoParseRuler {
+	struct IVideoParseRuler : public IExecutor {
 		virtual void Traverse(CFBVideo& cFBVideo) = 0;
 		//virtual void Traverse(CFkrVideo& cFkrVideo) = 0;
 	};
 
-	struct VideoParsable {
-		virtual void AcceptErrorParser(IVideoParseRuler& cVideoParser) = 0;
+	struct IVideoParsable {
+		virtual void AcceptVideoParser(IVideoParseRuler& cVideoParser) = 0;
 	};
 
-	struct IVideoListParseRuler {
+	struct IVideoListParseRuler : public IExecutor {
 		virtual void Traverse(CFBVideoList& cFBVideoList) = 0;
 		//virtual void Traverse(CFkrVideoList& cFkrVideoList) = 0;
 	};
 
-	struct VideoListParsable {
-		virtual void AcceptErrorParser(IVideoListParseRuler& cVideoListParser) = 0;
+	struct IVideoListParsable {
+		virtual void AcceptVideoListParser(IVideoListParseRuler& cVideoListParser) = 0;
 	};
 }
 

@@ -131,6 +131,8 @@
     <ClInclude Include="..\..\NetKernel\Src\INetKernel.h" />
     <ClInclude Include="CodecHelper.h" />
     <ClInclude Include="ErrorParseRuler.h" />
+    <ClInclude Include="ImageParseRuler.h" />
+    <ClInclude Include="ListHelper.h" />
     <ClInclude Include="PhotoParseRuler.h" />
     <ClInclude Include="FkrAlbumModel.h" />
     <ClInclude Include="FkRErrorModel.h" />
@@ -177,7 +179,9 @@
     <ClCompile Include="CodecHelper.cpp" />
     <ClCompile Include="ErrorParseRuler.cpp" />
     <ClCompile Include="FlickrService.cpp" />
+    <ClCompile Include="ImageParseRuler.cpp" />
     <ClCompile Include="InternetConnectService.cpp" />
+    <ClCompile Include="ListHelper.cpp" />
     <ClCompile Include="Log4CxxLogger.cpp" />
     <ClCompile Include="LoggerMgr.cpp" />
     <ClCompile Include="NetKernelLoader.cpp" />
