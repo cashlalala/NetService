@@ -16,6 +16,7 @@
 
 #include "ErrorParseRuler.h"
 #include "PhotoParseRuler.h"
+#include "UserParseRuler.h"
 
 #include "StringHelper.h"
 
@@ -91,7 +92,7 @@ int util::CJsonCppMgr::ParsePhoto( IPhoto& iPhoto, string szInput, IError& iErro
 	return nResult;
 }
 
-int util::CJsonCppMgr::ParseUser( IUser& iUser, string szInput, EnDataOwner enDataOwner, IError& iError )
+int util::CJsonCppMgr::ParseUser( IUser& iUser, string szInput, IError& iError )
 {
 	int nResult = E_FAIL;
 	Json::Reader jrReader;
@@ -99,28 +100,12 @@ int util::CJsonCppMgr::ParseUser( IUser& iUser, string szInput, EnDataOwner enDa
 
 	if (jrReader.parse(szInput.c_str(),jvRoot))
 	{
-		switch(enDataOwner)
-		{
-		case Facebook:
-			{
-				nResult = TravFBErr(jvRoot,iError);
-				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
-				TravFBUser(jvRoot,&iUser);
-				nResult = S_OK;
-				break;
-			}
-		case Flickr:
-			{
-				nResult = TravFkrErr(jvRoot,iError);
-				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
-				TravFkrUser(jvRoot,iUser);
-				nResult = S_OK;
-				break;
-			}
-		default: 
-			nResult = NS_S_DMGR_NO_DATA_OWNER;
-			break;
-		}
+		CErrorParseRuler cErrRuler((void*)&jvRoot);
+		nResult = iError.AcceptErrorParser(cErrRuler);
+		ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+
+		CUserParseRuler cUserRuler((void*)&jvRoot);
+		iUser.AcceptUserParser(cUserRuler);
 	}
 	else
 		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
@@ -176,7 +161,7 @@ int util::CJsonCppMgr::TravFBErr( Json::Value &jvRoot, IError& cFbErr )
 	return NS_E_DMGR_BAD_REQUEST_PARAMS;
 }
 
-int util::CJsonCppMgr::ParseError( IError& iError, string szInput, EnDataOwner enDataOwner )
+int util::CJsonCppMgr::ParseError( IError& iError, string szInput )
 {
 	int nResult = E_FAIL;
 	Json::Reader jrReader;
@@ -184,19 +169,9 @@ int util::CJsonCppMgr::ParseError( IError& iError, string szInput, EnDataOwner e
 
 	if (jrReader.parse(szInput.c_str(),jvRoot))
 	{
-		switch(enDataOwner)
-		{
-		case Facebook:
-			{
-				nResult = TravFBErr(jvRoot,iError);
-				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
-				nResult = S_OK;
-				break;
-			}
-		default: 
-			nResult = NS_S_DMGR_NO_DATA_OWNER;
-			break;
-		}
+		CErrorParseRuler cErrRuler((void*)&jvRoot);
+		nResult = iError.AcceptErrorParser(cErrRuler);
+		ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 	}
 	else
 		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
@@ -204,7 +179,7 @@ int util::CJsonCppMgr::ParseError( IError& iError, string szInput, EnDataOwner e
 	return nResult;
 }
 
-int util::CJsonCppMgr::ParseFriendList( IUserList& iUserList, string szInput, EnDataOwner enDataOwner, IError& iError )
+int util::CJsonCppMgr::ParseFriendList( IUserList& iUserList, string szInput, IError& iError )
 {
 	int nResult = E_FAIL;
 	Json::Reader jrReader;
@@ -212,30 +187,12 @@ int util::CJsonCppMgr::ParseFriendList( IUserList& iUserList, string szInput, En
 
 	if (jrReader.parse(szInput.c_str(),jvRoot))
 	{
-		switch(enDataOwner)
-		{
-		case Facebook:
-			{
-				nResult = TravFBErr(jvRoot,iError);
-				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+		CErrorParseRuler cErrRuler((void*)&jvRoot);
+		nResult = iError.AcceptErrorParser(cErrRuler);
+		ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 
-				TravFBFriendList(jvRoot,&iUserList);
-				nResult = S_OK;
-			}
-			break;
-		case Flickr:
-			{
-				nResult = TravFkrErr(jvRoot,iError);
-				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
-
-				TravFkrFriendList(jvRoot,iUserList);
-				nResult = S_OK;
-			}
-			break;
-		default: 
-			nResult = NS_S_DMGR_NO_DATA_OWNER;
-			break;
-		}
+		CUserListParseRuler cUsrLstRuler((void*)&jvRoot);
+		iUserList.AcceptUserListParser(cUsrLstRuler);	
 	}
 	else
 		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;

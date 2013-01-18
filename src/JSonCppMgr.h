@@ -21,11 +21,11 @@ namespace util
 
 		virtual int ParsePhoto( IPhoto& iPhoto, string szInput, IError& iError  ) ;
 
-		virtual int ParseUser(IUser& iUser, string szInput, EnDataOwner enDataOwner, IError& iError) ;
+		virtual int ParseUser(IUser& iUser, string szInput, IError& iError) ;
 
-		virtual int ParseError(IError& iError, string szInput, EnDataOwner enDataOwner) ;
+		virtual int ParseError(IError& iError, string szInput) ;
 
-		virtual int ParseFriendList(IUserList& iUserList, string szInput, EnDataOwner enDataOwner, IError& iError  ) ;
+		virtual int ParseFriendList(IUserList& iUserList, string szInput, IError& iError  ) ;
 
 		virtual int ParseVideoList( IVideoList&iVideoList, string szInput, EnDataOwner enDataOwner, IError& iError) ;
 

@@ -168,7 +168,7 @@ int CFlickrService::GetUsersInfo( IUserList& iUserLst, IError& iErr, SysList::St
 			nResult = this->CallApi(cHttpResp,iErr,mapBuf);
 			EXCEPTION_BREAK(nResult)
 
-			nResult = m_pIDataMgr->ParseUser(*pFkrUsr,cHttpResp.szResp,util::Flickr,iErr);
+			nResult = m_pIDataMgr->ParseUser(*pFkrUsr,cHttpResp.szResp,iErr);
 			EXCEPTION_BREAK(nResult)
 
 			iUserLst.items.push_back(pFkrUsr);
@@ -206,7 +206,7 @@ int CFlickrService::GetUserInfo( IUser& iUser, IError& iErr, string szUid/*="me"
 		nResult = CallApi(cHttpResp, iErr, mapQryCriteria);
 		EXCEPTION_BREAK(nResult);
 
-		nResult = m_pIDataMgr->ParseUser(iUser,cHttpResp.szResp,util::Flickr,iErr);
+		nResult = m_pIDataMgr->ParseUser(iUser,cHttpResp.szResp,iErr);
 		EXCEPTION_BREAK(nResult);
 
 		nResult = S_OK;
@@ -235,7 +235,7 @@ int CFlickrService::GetFriends( IUserList& iUserLst, IError& iErr, string szUid/
 		nResult = CallApi(cHttpResp, iErr, mapQryCriteria);
 		EXCEPTION_BREAK(nResult);
 
-		nResult = m_pIDataMgr->ParseFriendList(iUserLst,cHttpResp.szResp,util::Flickr,iErr);
+		nResult = m_pIDataMgr->ParseFriendList(iUserLst,cHttpResp.szResp,iErr);
 
 		CFkrUserList* pAlbLst = dynamic_cast<CFkrUserList*>(&iUserLst);
 		ComposePagingUrl(iUserLst,pAlbLst->nPage,pAlbLst->nPages,mapQryCriteria);

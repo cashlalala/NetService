@@ -20,10 +20,12 @@ namespace model
 	struct CFBUser : public IUser{
 	public:
 		virtual ~CFBUser(){};
+		void AcceptUserParser(IUserParseRuler& cUserParser) {cUserParser.Traverse(*this);}
 	};
 
 	struct CFBUserList : public IUserList{
 		virtual ~CFBUserList(){};
+		void AcceptUserListParser(IUserListParseRuler& cUserListParser) {cUserListParser.Traverse(*this);}
 	};
 }
 

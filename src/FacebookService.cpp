@@ -117,7 +117,7 @@ int CFacebookService::GetUsersInfo( IUserList& iUserLst, IError& iErr, SysList::
 			nResult = this->CallGraphAPI(cHttpResp,*it,None,mapQryCriteria);
 			EXCEPTION_BREAK(nResult)
 
-			nResult = m_pIDataMgr->ParseUser(*cFbUsr,cHttpResp.szResp,util::Facebook,iErr);
+			nResult = m_pIDataMgr->ParseUser(*cFbUsr,cHttpResp.szResp,iErr);
 			EXCEPTION_BREAK(nResult)
 
 			iUserLst.items.push_back(cFbUsr);
@@ -151,7 +151,7 @@ int CFacebookService::GetUserInfo( IUser& iUser, IError& iErr, string szUid/*="m
 		nResult = this->CallGraphAPI(cHttpResp,szUid,None,mapQryCriteria);
 		EXCEPTION_BREAK(nResult)
 
-		nResult = m_pIDataMgr->ParseUser( iUser,cHttpResp.szResp,util::Facebook,iErr);
+		nResult = m_pIDataMgr->ParseUser( iUser,cHttpResp.szResp,iErr);
 		EXCEPTION_BREAK(nResult)
 
 		nResult = S_OK;
@@ -173,7 +173,7 @@ int CFacebookService::GetFriends( IUserList& iUserLst, IError& iErr, string szUi
 		nResult = CallGraphAPI(cHttpResp,szUid, Friend, mapQryCriteria,Get);
 		EXCEPTION_BREAK(nResult);
 
-		nResult = m_pIDataMgr->ParseFriendList(iUserLst,cHttpResp.szResp,util::Facebook,iErr);
+		nResult = m_pIDataMgr->ParseFriendList(iUserLst,cHttpResp.szResp,iErr);
 		EXCEPTION_BREAK(nResult)
 
 		CrackParamsForPagination(iUserLst);

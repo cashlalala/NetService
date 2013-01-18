@@ -2,6 +2,8 @@
 
 namespace model
 {
+	struct CFBProfile;
+
 	struct CFBError;
 	struct CFkrError;
 
