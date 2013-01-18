@@ -27,13 +27,13 @@ namespace util
 
 		virtual int ParseFriendList(IUserList& iUserList, string szInput, IError& iError  ) ;
 
-		virtual int ParseVideoList( IVideoList&iVideoList, string szInput, EnDataOwner enDataOwner, IError& iError) ;
+		virtual int ParseVideoList( IVideoList&iVideoList, string szInput, IError& iError) ;
 
 		virtual int ParseAlbumList(IAlbumList& iAlbumList, string szInput, IError& iError) ;
 
 		virtual int ParseProfile(IProfile& iProfile, string szInput, IError& iError);
 
-		virtual int ParseImageList(IImageList& listImage, string szInput, EnDataOwner enDataOwner, IError& iError) ;
+		virtual int ParseImageList(IImageList& listImage, string szInput, IError& iError) ;
 
 
 		virtual int ParseFBSrouceSmall(SysList::Str2StrMapList& listMap, string szInput, IError& iError) ;

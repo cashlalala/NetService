@@ -177,6 +177,7 @@
     <ClInclude Include="FBUserModel.h" />
     <ClInclude Include="FBVideoModel.h" />
     <ClInclude Include="UserParseRuler.h" />
+    <ClInclude Include="VideoParseRuler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AlbumParseRuler.cpp" />
@@ -206,6 +207,7 @@
     <ClCompile Include="FacebookService.cpp" />
     <ClCompile Include="SocialServiceFactory.cpp" />
     <ClCompile Include="UserParseRuler.cpp" />
+    <ClCompile Include="VideoParseRuler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\TestData\Log4cxxConfig.xml">

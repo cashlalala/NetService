@@ -144,6 +144,7 @@
     <ClCompile Include="FacebookService.cpp" />
     <ClCompile Include="SocialServiceFactory.cpp" />
     <ClCompile Include="UserParseRuler.cpp" />
+    <ClCompile Include="VideoParseRuler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\NetKernel\Src\INetKernel.h" />
@@ -195,6 +196,7 @@
     <ClInclude Include="FBUserModel.h" />
     <ClInclude Include="FBVideoModel.h" />
     <ClInclude Include="UserParseRuler.h" />
+    <ClInclude Include="VideoParseRuler.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

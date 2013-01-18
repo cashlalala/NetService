@@ -209,7 +209,7 @@ int CFacebookService::GetVideos( IVideoList& iVideoList, IError& iErr, string sz
 		nResult = CallGraphAPI(cHttpResp, szId, Video,mapQryCriteria);
 		EXCEPTION_BREAK(nResult)
 
-		nResult = m_pIDataMgr->ParseVideoList(iVideoList,cHttpResp.szResp, util::Facebook, iErr);
+		nResult = m_pIDataMgr->ParseVideoList(iVideoList,cHttpResp.szResp, iErr);
 		EXCEPTION_BREAK(nResult)
 
 		CrackParamsForPagination(iVideoList);

@@ -31,6 +31,9 @@ namespace model
 	struct CFBVideoList;
 	struct CFBVideo;
 	struct CFBVideoFormat;
+	struct CFkrVideoList;
+	struct CFkrVideo;
+	struct CFkrVideoFormat;
 
 }
 

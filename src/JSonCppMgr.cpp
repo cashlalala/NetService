@@ -19,6 +19,8 @@
 #include "UserParseRuler.h"
 #include "AlbumParseRuler.h"
 #include "ProfileParseRuler.h"
+#include "ImageParseRuler.h"
+#include "VideoParseRuler.h"
 
 #include "StringHelper.h"
 
@@ -215,7 +217,7 @@ void util::CJsonCppMgr::TravFBFriendList( Json::Value jvRoot, IUserList* pUserLi
 	TravFBPagination(*pFbUserList,jvRoot);
 }
 
-int util::CJsonCppMgr::ParseVideoList( IVideoList&iVideoList, string szInput, EnDataOwner enDataOwner, IError& iError )
+int util::CJsonCppMgr::ParseVideoList( IVideoList&iVideoList, string szInput, IError& iError )
 {
 	int nResult = E_FAIL;
 	Json::Reader jrReader;
@@ -223,21 +225,12 @@ int util::CJsonCppMgr::ParseVideoList( IVideoList&iVideoList, string szInput, En
 
 	if (jrReader.parse(szInput.c_str(),jvRoot))
 	{
-		switch(enDataOwner)
-		{
-		case Facebook:
-			{
-				nResult = TravFBErr(jvRoot,iError);
-				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+		CErrorParseRuler cErrRuler((void*)&jvRoot);
+		nResult = iError.AcceptErrorParser(cErrRuler);
+		ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 
-				TravFBVideoList(jvRoot,&iVideoList);
-				nResult = S_OK;
-				break;
-			}
-		default: 
-			nResult = NS_S_DMGR_NO_DATA_OWNER;
-			break;
-		}
+		CVideoListParseRuler cVideoLstRuler((void*)&jvRoot);
+		iVideoList.AcceptVideoListParser(cVideoLstRuler);
 	}
 	else
 		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
@@ -587,31 +580,19 @@ void util::CJsonCppMgr::TravFBImg( Json::Value& item, model::IImage& iImage)
 	iImage.szSource = item[FB_IMAGE_SOURCE].asString();
 }
 
-int util::CJsonCppMgr::ParseImageList( IImageList& listImage, string szInput, EnDataOwner enDataOwner, IError& iError )
+int util::CJsonCppMgr::ParseImageList( IImageList& listImage, string szInput, IError& iError )
 {
 	int nResult = E_FAIL;
 	Json::Reader jrReader;
 	Json::Value jvRoot;
 	if (jrReader.parse(szInput.c_str(),jvRoot))
 	{
-		switch(enDataOwner)
-		{
-		case Facebook:
-			{
-				nResult = TravFBErr(jvRoot,iError);
-				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+		CErrorParseRuler cErrRuler((void*)&jvRoot);
+		nResult = iError.AcceptErrorParser(cErrRuler);
+		ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 
-				int nSize = jvRoot[FB_DATA].size();
-				for (int i =0;i<nSize;++i)
-					TravFBImgList(jvRoot[FB_DATA][i][FB_PHOTO_IMAGES], listImage);
-			}
-			break;
-		case Flickr:
-			break;
-		default:
-			nResult = NS_S_DMGR_NO_DATA_OWNER;
-			break;
-		}
+		CImageListParseRuler cImgLstRuler((void*)&jvRoot);
+		listImage.AcceptImageListParser(cImgLstRuler);
 	}
 	else
 		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;

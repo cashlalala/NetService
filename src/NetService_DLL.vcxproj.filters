@@ -180,6 +180,9 @@
     <ClInclude Include="ProfileParseRuler.h">
       <Filter>Util\DataMgr\ParseRule</Filter>
     </ClInclude>
+    <ClInclude Include="VideoParseRuler.h">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InternetConnectService.cpp">
@@ -252,6 +255,9 @@
       <Filter>Util\DataMgr\ParseRule</Filter>
     </ClCompile>
     <ClCompile Include="ProfileParseRuler.cpp">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoParseRuler.cpp">
       <Filter>Util\DataMgr\ParseRule</Filter>
     </ClCompile>
   </ItemGroup>

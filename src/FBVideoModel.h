@@ -8,6 +8,7 @@ namespace model
 	{
 		virtual ~CFBVideoFormat(void){};
 		string szEmbedHtml;
+		void AcceptVideoFormatParser(IVideoFormatParseRuler& cVideoFormatParser) {cVideoFormatParser.Traverse(*this);}
 	};
 
 
@@ -16,11 +17,13 @@ namespace model
 	{
 		virtual ~CFBVideo(void){};
 		string szEmbedHtml;
+		void AcceptVideoParser( IVideoParseRuler& cVideoParser ) {cVideoParser.Traverse(*this);}
 	};
 
 	struct CFBVideoList : public IVideoList
 	{
 		virtual ~CFBVideoList(void){};
+		void AcceptVideoListParser( IVideoListParseRuler& cVideoListParser ) {cVideoListParser.Traverse(*this);}
 	};
 }
 
