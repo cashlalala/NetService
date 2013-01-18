@@ -19,12 +19,13 @@ NetKernelLoader::~NetKernelLoader(void)
 
 BOOL NetKernelLoader::LoadDll( void )
 {
-	TCHAR szExePath[_MAX_PATH];
-	GetModuleFileName(NULL, szExePath, _MAX_PATH);
-	PathRemoveFileSpec(szExePath);
-	PathAddBackslash(szExePath);
-	_tcscat_s(szExePath, TEXT("NetKernel.dll"));
-	m_hNetKernel = LoadLibrary(szExePath);
+	//TCHAR szExePath[_MAX_PATH];
+	//GetModuleFileName(NULL, szExePath, _MAX_PATH);
+	//PathRemoveFileSpec(szExePath);
+	//PathAddBackslash(szExePath);
+	//_tcscat_s(szExePath, TEXT("NetKernel.dll"));
+	//m_hNetKernel = LoadLibrary(szExePath);
+	m_hNetKernel = LoadLibrary(TEXT("NetKernel.dll"));
 
 	LPVOID lpMsgBuf;
 	if (!m_hNetKernel)
