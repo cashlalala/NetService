@@ -24,10 +24,10 @@ namespace util
 		JsonCpp
 	} EnDataMgr;
 
-	typedef enum {
-		Facebook,
-		Flickr
-	} EnDataOwner;
+	//typedef enum {
+	//	Facebook,
+	//	Flickr
+	//} EnDataOwner;
 
 	struct IDataMgrFBOnly {
 		virtual ~IDataMgrFBOnly() = 0;
