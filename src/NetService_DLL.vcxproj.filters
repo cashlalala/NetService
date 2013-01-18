@@ -28,6 +28,9 @@
     <Filter Include="Util\Logger">
       <UniqueIdentifier>{f13d3aef-722c-4abf-a288-4aaaca298193}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Util\DataMgr\ParseRule">
+      <UniqueIdentifier>{5ea7a8df-b9bb-4dd1-8c7e-a19eebf8ba00}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\NetKernel\Src\INetKernel.h">
@@ -153,6 +156,15 @@
     <ClInclude Include="FkrUserModel.h">
       <Filter>Model\Flickr</Filter>
     </ClInclude>
+    <ClInclude Include="PhotoParseRuler.h">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorParseRuler.h">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClInclude>
+    <ClInclude Include="IParseRuler.h">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InternetConnectService.cpp">
@@ -205,6 +217,12 @@
     </ClCompile>
     <ClCompile Include="StringHelper.cpp">
       <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="PhotoParseRuler.cpp">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClCompile>
+    <ClCompile Include="ErrorParseRuler.cpp">
+      <Filter>Util\DataMgr\ParseRule</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

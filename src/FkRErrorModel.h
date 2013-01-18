@@ -8,6 +8,7 @@ namespace model
 		public IError
 	{
 		virtual ~CFkrError(void) {};
+		int AcceptErrorParser(util::IErrorParseRuler& errParse) { return errParse.Traverse(*this);};
 		string szStat;
 	};
 

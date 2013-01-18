@@ -14,6 +14,8 @@
 #include "FkrAlbumModel.h"
 #include "FkrUserModel.h"
 
+#include "ErrorParseRuler.h"
+
 #include "StringHelper.h"
 
 #include <typeinfo>
@@ -54,16 +56,16 @@ int util::CJsonCppMgr::ParsePhotoList( IPhotoList& iPhotoList, string szInput, E
 	Json::Value jvRoot;
 	if (jrReader.parse(szInput.c_str(),jvRoot))
 	{
+		CErrorParseRuler cErrRuler(jvRoot);
+		nResult = iError.AcceptErrorParser(cErrRuler);
+		ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+
 		switch(enDataOwner)
 		{
 		case Facebook:
-			nResult = TravFBErr(jvRoot,iError);
-			ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 			TravFBPhotoList(jvRoot, iPhotoList);
 			break;
 		case Flickr:
-			nResult = TravFkrErr(jvRoot,iError);
-			ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 			TravrFkrPhotoList(jvRoot, iPhotoList);
 			break;
 		default:
