@@ -9,12 +9,14 @@ namespace model
 		public IAlbum
 	{
 		virtual ~CFBAlbum(void){};
+		void AcceptAlbumParser(IAlbumParseRuler& cAlbumParser) {cAlbumParser.Traverse(*this);}
 	};
 
 	struct CFBAlbumList :
 		public IAlbumList	
 	{
 		virtual ~CFBAlbumList(void){};
+		void AcceptAlbumListParser(IAlbumListParseRuler& cAlbumListParser) {cAlbumListParser.Traverse(*this);}
 	};
 }
 

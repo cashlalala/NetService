@@ -97,7 +97,7 @@ int CFlickrService::GetPhotos( IPhotoList& iPhotoLst, IError& iErr, string szId 
 		nResult = CallApi(cHttpResp,iErr, mapQryCriteria);
 		EXCEPTION_BREAK(nResult)
 
-		nResult = m_pIDataMgr->ParsePhotoList(iPhotoLst,cHttpResp.szResp,util::Flickr,iErr);
+		nResult = m_pIDataMgr->ParsePhotoList(iPhotoLst,cHttpResp.szResp, iErr);
 		EXCEPTION_BREAK(nResult)
 
 		CFkrPhotoList* pFkrPhotoLst = dynamic_cast<CFkrPhotoList*>(&iPhotoLst);
@@ -168,10 +168,10 @@ int CFlickrService::GetUsersInfo( IUserList& iUserLst, IError& iErr, SysList::St
 			nResult = this->CallApi(cHttpResp,iErr,mapBuf);
 			EXCEPTION_BREAK(nResult)
 
-			nResult = m_pIDataMgr->ParseUser(*pFkrUsr,cHttpResp.szResp,util::Flickr,iErr);
+			nResult = m_pIDataMgr->ParseUser(*pFkrUsr,cHttpResp.szResp,iErr);
 			EXCEPTION_BREAK(nResult)
 
-			iUserLst.listOfItem.push_back(pFkrUsr);
+			iUserLst.items.push_back(pFkrUsr);
 			nResult = S_OK;
 		} while (false);
 
@@ -206,7 +206,7 @@ int CFlickrService::GetUserInfo( IUser& iUser, IError& iErr, string szUid/*="me"
 		nResult = CallApi(cHttpResp, iErr, mapQryCriteria);
 		EXCEPTION_BREAK(nResult);
 
-		nResult = m_pIDataMgr->ParseUser(iUser,cHttpResp.szResp,util::Flickr,iErr);
+		nResult = m_pIDataMgr->ParseUser(iUser,cHttpResp.szResp,iErr);
 		EXCEPTION_BREAK(nResult);
 
 		nResult = S_OK;
@@ -235,7 +235,7 @@ int CFlickrService::GetFriends( IUserList& iUserLst, IError& iErr, string szUid/
 		nResult = CallApi(cHttpResp, iErr, mapQryCriteria);
 		EXCEPTION_BREAK(nResult);
 
-		nResult = m_pIDataMgr->ParseFriendList(iUserLst,cHttpResp.szResp,util::Flickr,iErr);
+		nResult = m_pIDataMgr->ParseFriendList(iUserLst,cHttpResp.szResp,iErr);
 
 		CFkrUserList* pAlbLst = dynamic_cast<CFkrUserList*>(&iUserLst);
 		ComposePagingUrl(iUserLst,pAlbLst->nPage,pAlbLst->nPages,mapQryCriteria);
@@ -259,7 +259,7 @@ int CFlickrService::GetAlbums( IAlbumList& iAlbumLst, IError& iErr, string szUid
 		nResult = CallApi(cHttpResp,iErr, mapQryCriteria);
 		EXCEPTION_BREAK(nResult)
 
-		nResult = m_pIDataMgr->ParseAlbumList(iAlbumLst,cHttpResp.szResp,util::Flickr,iErr);
+		nResult = m_pIDataMgr->ParseAlbumList(iAlbumLst,cHttpResp.szResp,iErr);
 		EXCEPTION_BREAK(nResult)
 
 		CFkrAlbumList* pAlbLst = dynamic_cast<CFkrAlbumList*>(&iAlbumLst);
@@ -455,7 +455,7 @@ void CFlickrService::ComposePagingUrl( IPage& iPage, int nCurPage, int nTotalPag
 		cit = mapCpy.find(FLICK_PARAM_API_SIG);
 		mapCpy.erase(cit);
 		mapCpy[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapCpy,m_cConnectInfo.szAppSecret.c_str());
-		iPage.mapNextPageParams = mapCpy;
+		iPage.mapPrevPageParams = mapCpy;
 		iPage.szPreviousPageUrl = ComposeUrl(mapCpy);	
 	}
 }
