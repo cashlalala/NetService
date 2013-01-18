@@ -25,7 +25,7 @@ void util::CImageListParseRuler::Traverse( CFBImageList& cFBImageList )
 		cImgRuler.SetExecutor((void*)&item);
 		model::CFBImage* pIImage = new model::CFBImage();
 		pIImage->AcceptImageParser(cImgRuler);
-		cFBImageList.listOfItem.push_back(pIImage);
+		cFBImageList.items.push_back(pIImage);
 	}
 }
 

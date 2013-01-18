@@ -92,7 +92,7 @@ void JSonCppMgrTest::TestParsePhotoList()
 {
 	model::CFBPhotoList iPhotoList;
 	model::CFBError cFBError;
-	int nResult = m_pJSonCppMgr->ParsePhotoList(iPhotoList,m_szTestPhotoList, util::Facebook,cFBError);
+	int nResult = m_pJSonCppMgr->ParsePhotoList(iPhotoList,m_szTestPhotoList, cFBError);
 	CPPUNIT_ASSERT_MESSAGE(cFBError.szMsg.c_str(),nResult==0);
 }
 
@@ -100,6 +100,6 @@ void JSonCppMgrTest::TestParsePhoto()
 {
 	model::CFBPhoto iPhoto;
 	model::CFBError cFbErr;
-	int nResult = m_pJSonCppMgr->ParsePhoto(iPhoto, m_szTestPhoto, util::Facebook, cFbErr);
+	int nResult = m_pJSonCppMgr->ParsePhoto(iPhoto, m_szTestPhoto, cFbErr);
 	CPPUNIT_ASSERT_MESSAGE(cFbErr.szMsg.c_str(),nResult==0);
 }

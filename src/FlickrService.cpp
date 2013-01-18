@@ -97,7 +97,7 @@ int CFlickrService::GetPhotos( IPhotoList& iPhotoLst, IError& iErr, string szId 
 		nResult = CallApi(cHttpResp,iErr, mapQryCriteria);
 		EXCEPTION_BREAK(nResult)
 
-		nResult = m_pIDataMgr->ParsePhotoList(iPhotoLst,cHttpResp.szResp,util::Flickr,iErr);
+		nResult = m_pIDataMgr->ParsePhotoList(iPhotoLst,cHttpResp.szResp, iErr);
 		EXCEPTION_BREAK(nResult)
 
 		CFkrPhotoList* pFkrPhotoLst = dynamic_cast<CFkrPhotoList*>(&iPhotoLst);
@@ -171,7 +171,7 @@ int CFlickrService::GetUsersInfo( IUserList& iUserLst, IError& iErr, SysList::St
 			nResult = m_pIDataMgr->ParseUser(*pFkrUsr,cHttpResp.szResp,util::Flickr,iErr);
 			EXCEPTION_BREAK(nResult)
 
-			iUserLst.listOfItem.push_back(pFkrUsr);
+			iUserLst.items.push_back(pFkrUsr);
 			nResult = S_OK;
 		} while (false);
 

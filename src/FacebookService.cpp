@@ -93,7 +93,7 @@ int CFacebookService::GetPhotos(  IPhotoList& iPhotoLst, IError& iErr, string sz
 		nResult = CallGraphAPI(cHttpResp, szId, Photo,mapQryCriteria);
 		EXCEPTION_BREAK(nResult)
 
-		nResult = m_pIDataMgr->ParsePhotoList(iPhotoLst,cHttpResp.szResp,util::Facebook,iErr);
+		nResult = m_pIDataMgr->ParsePhotoList(iPhotoLst,cHttpResp.szResp,iErr);
 		EXCEPTION_BREAK(nResult)
 
 		CrackParamsForPagination(iPhotoLst);
@@ -120,7 +120,7 @@ int CFacebookService::GetUsersInfo( IUserList& iUserLst, IError& iErr, SysList::
 			nResult = m_pIDataMgr->ParseUser(*cFbUsr,cHttpResp.szResp,util::Facebook,iErr);
 			EXCEPTION_BREAK(nResult)
 
-			iUserLst.listOfItem.push_back(cFbUsr);
+			iUserLst.items.push_back(cFbUsr);
 			nResult = S_OK;
 		} while (false);
 
@@ -245,7 +245,7 @@ int CFacebookService::GetAlbums( IAlbumList& iAlbumLst, IError& iErr, string szU
 		nResult = pIFbDataMgr->ParseFBSrouceSmall(listMap,cHttpResp.szResp,iErr);
 		EXCEPTION_BREAK(nResult)
 		
-		for(list<IAlbum*>::iterator itAlb = iAlbumLst.listOfItem.begin();itAlb!=iAlbumLst.listOfItem.end();++itAlb)
+		for(list<IAlbum*>::iterator itAlb = iAlbumLst.items.begin();itAlb!=iAlbumLst.items.end();++itAlb)
 		{
 			for (SysList::Str2StrMapList::iterator itMap = listMap.begin();itMap != listMap.end();++itMap)
 			{

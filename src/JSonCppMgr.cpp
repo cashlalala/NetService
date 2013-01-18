@@ -50,7 +50,7 @@ CJsonCppMgr::~CJsonCppMgr(void)
 {
 }
 
-int util::CJsonCppMgr::ParsePhotoList( IPhotoList& iPhotoList, string szInput, EnDataOwner enDataOwner, IError& iError  ) 
+int util::CJsonCppMgr::ParsePhotoList( IPhotoList& iPhotoList, string szInput, IError& iError  ) 
 {
 	int nResult = E_FAIL;
 	Json::Reader jrReader;
@@ -62,21 +62,7 @@ int util::CJsonCppMgr::ParsePhotoList( IPhotoList& iPhotoList, string szInput, E
 		ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 
 		CPhotoListParseRuler cPhotoLstRuler((void*)&jvRoot);
-		iPhotoList.AcceptPhotoListParser(cPhotoLstRuler);
-
-		//switch(enDataOwner)
-		//{
-		//case Facebook:
-		//	TravFBPhotoList(jvRoot, iPhotoList);
-		//	break;
-		//case Flickr:
-		//	TravrFkrPhotoList(jvRoot, iPhotoList);
-		//	break;
-		//default:
-		//	nResult = NS_S_DMGR_NO_DATA_OWNER;
-		//	break;
-		//}
-		
+		iPhotoList.AcceptPhotoListParser(cPhotoLstRuler);		
 	}
 	else
 		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
@@ -84,7 +70,7 @@ int util::CJsonCppMgr::ParsePhotoList( IPhotoList& iPhotoList, string szInput, E
 	return nResult;
 }
 
-int util::CJsonCppMgr::ParsePhoto( IPhoto& iPhoto, string szInput, EnDataOwner enDataOwner, IError& iError  ) 
+int util::CJsonCppMgr::ParsePhoto( IPhoto& iPhoto, string szInput, IError& iError  ) 
 {
 	int nResult = E_FAIL;
 	Json::Reader jrReader;
@@ -92,20 +78,12 @@ int util::CJsonCppMgr::ParsePhoto( IPhoto& iPhoto, string szInput, EnDataOwner e
 
 	if (jrReader.parse(szInput.c_str(),jvRoot))
 	{
-		switch(enDataOwner)
-		{
-		case Facebook:
-			{
-				nResult = TravFBErr(jvRoot,iError);
-				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
-				TravFBPhoto(jvRoot,&iPhoto);
-				nResult = S_OK;
-				break;
-			}
-		default: 
-			nResult = NS_S_DMGR_NO_DATA_OWNER;
-			break;
-		}
+		CErrorParseRuler cErrRuler((void*)&jvRoot);
+		nResult = iError.AcceptErrorParser(cErrRuler);
+		ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+
+		CPhotoParseRuler cPhotoRuler((void*)&jvRoot);
+		iPhoto.AcceptPhotoParser(cPhotoRuler);
 	}
 	else
 		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
@@ -159,7 +137,7 @@ void util::CJsonCppMgr::TravFBPhotoList( Json::Value &jvRoot, IPhotoList &iPhoto
 		Json::Value item = jvRoot[FB_DATA][i];
 		model::CFBPhoto* cFbPhot = new model::CFBPhoto();
 		TravFBPhoto(item,cFbPhot);
-		iPhotoList.listOfItem.push_back(cFbPhot);
+		iPhotoList.items.push_back(cFbPhot);
 	}
 	TravFBPagination(iPhotoList, jvRoot);
 }
@@ -173,7 +151,7 @@ void util::CJsonCppMgr::TravFBPhoto( Json::Value &jvRoot, IPhoto* pIPhoto )
 	pFbPhto->szLink = jvRoot[FB_PHOTO_LINK].asString();
 	pFbPhto->szSource = jvRoot[FB_IMAGE_SOURCE].asString();
 	pFbPhto->szThumbNail = jvRoot[FB_PHOTO_THUBMNAIL].asString();
-	TravFBImgList(jvRoot[FB_PHOTO_IMAGES], *pIPhoto);
+	TravFBImgList(jvRoot[FB_PHOTO_IMAGES], *pIPhoto->pListImage);
 }
 
 
@@ -273,7 +251,7 @@ void util::CJsonCppMgr::TravFBFriendList( Json::Value jvRoot, IUserList* pUserLi
 	{
 		model::CFBUser* pFbUsr = new model::CFBUser(); 
 		TravFBUser(jvRoot[FB_DATA][i],pFbUsr);
-		pFbUserList->listOfItem.push_back(pFbUsr);
+		pFbUserList->items.push_back(pFbUsr);
 	}
 	TravFBPagination(*pFbUserList,jvRoot);
 }
@@ -317,7 +295,7 @@ void util::CJsonCppMgr::TravFBVideoList( Json::Value& jvRoot, IVideoList* pIVide
 		CFBVideo* pFbVideo = new CFBVideo();
 		Json::Value jvItem = jvRoot[FB_DATA][i];
 		TravFBVideo(jvItem,pFbVideo);
-		pFbVideoList->listOfItem.push_back(pFbVideo);
+		pFbVideoList->items.push_back(pFbVideo);
 	}
 	TravFBPagination(*pFbVideoList,jvRoot);
 }
@@ -389,7 +367,7 @@ void util::CJsonCppMgr::TravFBAlbumList( Json::Value& jvRoot, IAlbumList* pIAlbu
 		CFBAlbum* pFbAlbum = new CFBAlbum();
 		Json::Value jvItem = jvRoot[FB_DATA][i];
 		TravFBAlbum(jvItem,pFbAlbum);
-		pFbAlbumList->listOfItem.push_back(pFbAlbum);
+		pFbAlbumList->items.push_back(pFbAlbum);
 	}
 	TravFBPagination(*pFbAlbumList, jvRoot);
 }
@@ -519,7 +497,7 @@ void util::CJsonCppMgr::TravrFkrPhotoList( Json::Value &jvRoot, IPhotoList &iPho
 		Json::Value item = jvRoot[szSets][FLICK_PHOTO][i];
 		model::CFkrPhoto* cFkrPhoto = new model::CFkrPhoto();
 		TravFkrPhoto(item,cFkrPhoto);
-		cFkrPhotoLst->listOfItem.push_back(cFkrPhoto);
+		cFkrPhotoLst->items.push_back(cFkrPhoto);
 	}
 }
 
@@ -548,7 +526,7 @@ void util::CJsonCppMgr::TravFkrPhoto( Json::Value &jvRoot, IPhoto* pIPhoto )
 		pFkrImg->szSource = jvRoot[FLICK_PHOTO_URL + *it].asString();
 		pFkrImg->nWidth = atoi(jvRoot[FLICK_PHOTO_WIDTH + *it].asString().c_str());
 		pFkrImg->nHeight = atoi(jvRoot[FLICK_PHOTO_HEIGHT + *it].asString().c_str());
-		pFkrPhto->listOfItem.push_back(pFkrImg);
+		pFkrPhto->pListImage->items.push_back(pFkrImg);
 	}
 }
 
@@ -566,7 +544,7 @@ void util::CJsonCppMgr::TravFkrAlbumList( Json::Value& jvRoot, IAlbumList& iAlbu
 		Json::Value item = jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSET][i];
 		model::CFkrAlbum* cFkrAlbum = new model::CFkrAlbum();
 		TravFkrAlbum(item,cFkrAlbum);
-		iAlbumList.listOfItem.push_back(cFkrAlbum);
+		iAlbumList.items.push_back(cFkrAlbum);
 	}
 }
 
@@ -600,7 +578,7 @@ void util::CJsonCppMgr::TravFkrFriendList( Json::Value& jvRoot, IUserList& iUser
 		Json::Value item = jvRoot[FLICK_CONTACTS][FLICK_CONTACTS_CONTACT][i];
 		model::CFkrUser* cFkrUsr = new model::CFkrUser();
 		TravFkrFriend(item,cFkrUsr);
-		iUserList.listOfItem.push_back(cFkrUsr);
+		iUserList.items.push_back(cFkrUsr);
 	}
 }
 
@@ -668,7 +646,7 @@ void util::CJsonCppMgr::TravFBImgList( Json::Value & jvRoot, IImageList& iImgLis
 		Json::Value item = jvRoot[j];
 		model::CFBImage* pIImage = new model::CFBImage();
 		TravFBImg(item, *pIImage);
-		iImgList.listOfItem.push_back(pIImage);
+		iImgList.items.push_back(pIImage);
 	}
 }
 

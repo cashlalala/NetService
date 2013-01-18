@@ -20,9 +20,10 @@ void util::CPhotoListParseRuler::Traverse( CFBPhotoList& cFBPhotoList )
 		cPhotoRuler.SetExecutor((void*)&item);
 		CFBPhoto* pFbPhot = new CFBPhoto();
 		pFbPhot->AcceptPhotoParser(cPhotoRuler);
-		cFBPhotoList.listOfItem.push_back(pFbPhot);
+		cFBPhotoList.items.push_back(pFbPhot);
 	}
-	//TravFBPagination(cFBPhotoList, jvRoot);
+	cFBPhotoList.szNextPageUrl = m_jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
+	cFBPhotoList.szPreviousPageUrl = m_jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
 }
 
 void util::CPhotoListParseRuler::Traverse( CFkrPhotoList& cFkrPhotoList )
@@ -43,7 +44,7 @@ void util::CPhotoListParseRuler::Traverse( CFkrPhotoList& cFkrPhotoList )
 		cPhotoRuler.SetExecutor((void*)&item);
 		model::CFkrPhoto* cFkrPhoto = new model::CFkrPhoto();
 		cFkrPhoto->AcceptPhotoParser(cPhotoRuler);
-		cFkrPhotoList.listOfItem.push_back(cFkrPhoto);
+		cFkrPhotoList.items.push_back(cFkrPhoto);
 	}
 }
 
@@ -70,8 +71,9 @@ void util::CPhotoParseRuler::Traverse( CFBPhoto& cFBPhoto )
 	cFBPhoto.szLink = m_jvRoot[FB_PHOTO_LINK].asString();
 	cFBPhoto.szSource = m_jvRoot[FB_IMAGE_SOURCE].asString();
 	cFBPhoto.szThumbNail = m_jvRoot[FB_PHOTO_THUBMNAIL].asString();
+	cFBPhoto.pListImage = new CFBImageList();
 	CImageListParseRuler cImgLstRuler((void*)&m_jvRoot[FB_PHOTO_IMAGES]);
-	cFBPhoto.AcceptImageListParser(cImgLstRuler);
+	cFBPhoto.pListImage->AcceptImageListParser(cImgLstRuler);
 }
 
 void util::CPhotoParseRuler::Traverse( CFkrPhoto& cFkrPhoto )
@@ -91,6 +93,7 @@ void util::CPhotoParseRuler::Traverse( CFkrPhoto& cFkrPhoto )
 	cFkrPhoto.nWidth = atoi(m_jvRoot[FLICK_PHOTO_WIDTH_O].asString().c_str());
 	cFkrPhoto.szThumbNail = m_jvRoot[FLICK_PHOTO_URL_T].asString();	
 
+	cFkrPhoto.pListImage = new CFkrImageList();
 	std::list<string>::const_iterator it = S_LIST_FKRPHOTOSIZES.begin();
 	for (;it!=S_LIST_FKRPHOTOSIZES.end();++it)
 	{
@@ -98,7 +101,7 @@ void util::CPhotoParseRuler::Traverse( CFkrPhoto& cFkrPhoto )
 		pFkrImg->szSource = m_jvRoot[FLICK_PHOTO_URL + *it].asString();
 		pFkrImg->nWidth = atoi(m_jvRoot[FLICK_PHOTO_WIDTH + *it].asString().c_str());
 		pFkrImg->nHeight = atoi(m_jvRoot[FLICK_PHOTO_HEIGHT + *it].asString().c_str());
-		cFkrPhoto.listOfItem.push_back(pFkrImg);
+		cFkrPhoto.pListImage->items.push_back(pFkrImg);
 	}
 }
 

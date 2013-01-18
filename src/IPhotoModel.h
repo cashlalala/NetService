@@ -35,17 +35,20 @@ namespace model
 	inline IImageList::~IImageList(){};
 
 	struct IPhoto : 
-		virtual public IImage, virtual public IImageList, public IPhotoParsable
+		virtual public IImage, public IPhotoParsable
 	{
+		IPhoto() : pListImage(NULL) {};
 		virtual ~IPhoto() = 0;
 		string szId;
 		string szLink;
 		string szThumbNail;
+		IImageList* pListImage;
 		void AcceptPhotoParser(IPhotoParseRuler& cPhotoParser){};
 	};
 
 	inline IPhoto::~IPhoto()
 	{
+		SAFE_DELETE_OBJECT(pListImage);
 	};
 
 	struct IPhotoList : 

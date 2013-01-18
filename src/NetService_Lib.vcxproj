@@ -117,13 +117,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CodecHelper.cpp" />
+    <ClCompile Include="ErrorParseRuler.cpp" />
     <ClCompile Include="FlickrService.cpp" />
+    <ClCompile Include="ImageParseRuler.cpp" />
     <ClCompile Include="InternetConnectService.cpp" />
+    <ClCompile Include="ListHelper.cpp" />
     <ClCompile Include="Log4CxxLogger.cpp" />
     <ClCompile Include="LoggerMgr.cpp" />
     <ClCompile Include="NetKernelLoader.cpp" />
     <ClCompile Include="NetService.cpp" />
     <ClCompile Include="OAuthHelper.cpp" />
+    <ClCompile Include="PhotoParseRuler.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -141,6 +145,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\NetKernel\Src\INetKernel.h" />
     <ClInclude Include="CodecHelper.h" />
+    <ClInclude Include="ErrorParseRuler.h" />
     <ClInclude Include="FkrAlbumModel.h" />
     <ClInclude Include="FkRErrorModel.h" />
     <ClInclude Include="FkRPhotoModel.h" />
@@ -148,13 +153,17 @@
     <ClInclude Include="FlickrFields.h" />
     <ClInclude Include="FlickrService.h" />
     <ClInclude Include="ILogger.h" />
+    <ClInclude Include="ImageParseRuler.h" />
     <ClInclude Include="InternetConnectService.h" />
+    <ClInclude Include="IParseRuler.h" />
+    <ClInclude Include="ListHelper.h" />
     <ClInclude Include="Log4CxxLogger.h" />
     <ClInclude Include="LoggerMgr.h" />
     <ClInclude Include="NetKernelLoader.h" />
     <ClInclude Include="NetService.h" />
     <ClInclude Include="NetServiceErr.h" />
     <ClInclude Include="OAuthHelper.h" />
+    <ClInclude Include="PhotoParseRuler.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="DataMgrFactory.h" />
     <ClInclude Include="IDataManager.h" />

@@ -17,9 +17,9 @@ namespace util
 		CJsonCppMgr(void);
 		virtual ~CJsonCppMgr(void);
 
-		virtual int ParsePhotoList( IPhotoList& iPhotoList, string szInput, EnDataOwner enDataOwner, IError& iError ) ;
+		virtual int ParsePhotoList( IPhotoList& iPhotoList, string szInput, IError& iError ) ;
 
-		virtual int ParsePhoto( IPhoto& iPhoto, string szInput, EnDataOwner enDataOwner, IError& iError  ) ;
+		virtual int ParsePhoto( IPhoto& iPhoto, string szInput, IError& iError  ) ;
 
 		virtual int ParseUser(IUser& iUser, string szInput, EnDataOwner enDataOwner, IError& iError) ;
 
