@@ -174,6 +174,9 @@
     <ClInclude Include="UserParseRuler.h">
       <Filter>Util\DataMgr\ParseRule</Filter>
     </ClInclude>
+    <ClInclude Include="AlbumParseRuler.h">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InternetConnectService.cpp">
@@ -240,6 +243,9 @@
       <Filter>Util</Filter>
     </ClCompile>
     <ClCompile Include="UserParseRuler.cpp">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClCompile>
+    <ClCompile Include="AlbumParseRuler.cpp">
       <Filter>Util\DataMgr\ParseRule</Filter>
     </ClCompile>
   </ItemGroup>

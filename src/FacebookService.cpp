@@ -230,7 +230,7 @@ int CFacebookService::GetAlbums( IAlbumList& iAlbumLst, IError& iErr, string szU
 		nResult = CallGraphAPI(cHttpResp, szUid, Album,mapQryCriteria);
 		EXCEPTION_BREAK(nResult)
 
-		nResult = m_pIDataMgr->ParseAlbumList(iAlbumLst,cHttpResp.szResp,util::Facebook,iErr);
+		nResult = m_pIDataMgr->ParseAlbumList(iAlbumLst,cHttpResp.szResp,iErr);
 		EXCEPTION_BREAK(nResult)
 
 		//The following is a workaround for get thumbnails...

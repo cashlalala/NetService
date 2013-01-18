@@ -99,6 +99,9 @@
     <ClCompile Include="UserParseRuler.cpp">
       <Filter>Util\DataMgr\ParseRule</Filter>
     </ClCompile>
+    <ClCompile Include="AlbumParseRuler.cpp">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\NetKernel\Src\INetKernel.h">
@@ -240,6 +243,9 @@
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="UserParseRuler.h">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClInclude>
+    <ClInclude Include="AlbumParseRuler.h">
       <Filter>Util\DataMgr\ParseRule</Filter>
     </ClInclude>
   </ItemGroup>

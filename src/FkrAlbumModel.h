@@ -11,6 +11,7 @@ namespace model
 		virtual ~CFkrAlbum(void){};
 		string szTitle;
 		string szDescription;
+		void AcceptAlbumParser(IAlbumParseRuler& cAlbumParser) { cAlbumParser.Traverse(*this);}
 	};
 
 	struct CFkrAlbumList :
@@ -22,6 +23,7 @@ namespace model
 		int nPages;
 		int nPerpage;
 		int nTotal; 
+		void AcceptAlbumListParser(IAlbumListParseRuler& cAlbumListParser)  {cAlbumListParser.Traverse(*this);}
 	};
 }
 

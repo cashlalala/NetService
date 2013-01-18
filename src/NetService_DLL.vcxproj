@@ -129,6 +129,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\NetKernel\Src\INetKernel.h" />
+    <ClInclude Include="AlbumParseRuler.h" />
     <ClInclude Include="CodecHelper.h" />
     <ClInclude Include="ErrorParseRuler.h" />
     <ClInclude Include="ImageParseRuler.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="UserParseRuler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AlbumParseRuler.cpp" />
     <ClCompile Include="CodecHelper.cpp" />
     <ClCompile Include="ErrorParseRuler.cpp" />
     <ClCompile Include="FlickrService.cpp" />

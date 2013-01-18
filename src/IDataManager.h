@@ -51,7 +51,7 @@ namespace util
 		virtual int ParseUser(IUser& iUser, string szInput, IError& iError) = 0;
 		virtual int ParseFriendList(IUserList& iUser, string szInput, IError& iError  )  = 0;
 		virtual int ParseVideoList( IVideoList& iVideoList, string szInput, EnDataOwner enDataOwner, IError& iError) = 0;
-		virtual int ParseAlbumList(IAlbumList& iAlbumList, string szInput, EnDataOwner enDataOwner, IError& iError) = 0;
+		virtual int ParseAlbumList(IAlbumList& iAlbumList, string szInput, IError& iError) = 0;
 		virtual int ParseProfile(IProfile& iProfile, string szInput, EnDataOwner enDataOwner, IError& iError) = 0;
 		virtual int ParseImageList(IImageList& listImage, string szInput, EnDataOwner endDataOwner, IError& iError) = 0;
 

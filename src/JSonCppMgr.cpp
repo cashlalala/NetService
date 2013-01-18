@@ -17,6 +17,7 @@
 #include "ErrorParseRuler.h"
 #include "PhotoParseRuler.h"
 #include "UserParseRuler.h"
+#include "AlbumParseRuler.h"
 
 #include "StringHelper.h"
 
@@ -276,7 +277,7 @@ void util::CJsonCppMgr::TravFBVideo( Json::Value& jvRoot, IVideo* pIVideo )
 		}
 }
 
-int util::CJsonCppMgr::ParseAlbumList( IAlbumList& iAlbumList, string szInput, EnDataOwner enDataOwner, IError& iError )
+int util::CJsonCppMgr::ParseAlbumList( IAlbumList& iAlbumList, string szInput, IError& iError )
 {
 	int nResult = E_FAIL;
 	Json::Reader jrReader;
@@ -284,30 +285,12 @@ int util::CJsonCppMgr::ParseAlbumList( IAlbumList& iAlbumList, string szInput, E
 
 	if (jrReader.parse(szInput.c_str(),jvRoot))
 	{
-		switch(enDataOwner)
-		{
-		case Facebook:
-			{
-				nResult = TravFBErr(jvRoot,iError);
-				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
+		CErrorParseRuler cErrRuler((void*)&jvRoot);
+		nResult = iError.AcceptErrorParser(cErrRuler);
+		ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
 
-				TravFBAlbumList(jvRoot,&iAlbumList);
-				nResult = S_OK;
-				break;
-			}
-		case Flickr:
-			{
-				nResult = TravFkrErr(jvRoot,iError);
-				ERROR_RETURN(nResult,NS_E_DMGR_BAD_REQUEST_PARAMS)
-
-				TravFkrAlbumList(jvRoot,iAlbumList);
-				nResult = S_OK;
-				break;
-			}
-		default: 
-			nResult = NS_S_DMGR_NO_DATA_OWNER;
-			break;
-		}
+		CAlbumListParseRuler cAlbumLstRuler((void*)&jvRoot);
+		iAlbumList.AcceptAlbumListParser(cAlbumLstRuler);		
 	}
 	else
 		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
