@@ -80,6 +80,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <AdditionalDependencies>json_msvc90_mDd.lib;Wininet.lib;Shlwapi.lib;log4cxx-sMDd.lib;apr-sMDd.lib;aprutil-sMDd.lib;xml-sMDd.lib;WS2_32.Lib;MsWSock.Lib;AdvAPI32.Lib;odbc32.lib;%(AdditionalDependencies)</AdditionalDependencies>

@@ -1,18 +1,9 @@
 #include "StdAfx.h"
 #include "JSonCppMgr.h"
-#include "FBFields.h"
-#include "FBPhotoModel.h"
 #include "NetServiceErr.h"
-#include "FBUserModel.h"
-#include "FBErrorModel.h"
-#include "FBVideoModel.h"
-#include "FBAlbumModel.h"
 
+#include "FBFields.h"
 #include "FlickrFields.h"
-#include "FkRErrorModel.h"
-#include "FkRPhotoModel.h"
-#include "FkrAlbumModel.h"
-#include "FkrUserModel.h"
 
 #include "ErrorParseRuler.h"
 #include "PhotoParseRuler.h"
@@ -22,17 +13,10 @@
 #include "ImageParseRuler.h"
 #include "VideoParseRuler.h"
 
-#include "StringHelper.h"
-
-#include <typeinfo>
-#include <sstream>
-#include <assert.h>
-
 #include <json/json.h>
 
 #define ERROR_RETURN(retVal) if(!SUCCEEDED(retVal)) return retVal;
 
-using std::stringstream;
 using util::CJsonCppMgr;
 
 CJsonCppMgr::CJsonCppMgr(void)
