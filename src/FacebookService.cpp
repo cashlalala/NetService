@@ -111,13 +111,13 @@ int CFacebookService::GetUsersInfo( IUserList& iUserLst, IError& iErr, SysList::
 	for (SysList::StrList::iterator it = listUid.begin();it!=listUid.end();++it)
 	{
 		HttpRespValObj cHttpResp;
-		CFBUser* cFbUsr = new CFBUser();
+		CFBUser* cFbUsr = NULL;
 		do 
-		{	
-			nResult = this->CallGraphAPI(cHttpResp,*it,None,mapQryCriteria);
-			EXCEPTION_BREAK(nResult)
+		{
+			SysMaps::Str2Str mapCpy(mapQryCriteria);
+			cFbUsr = new CFBUser();
 
-			nResult = m_pIDataMgr->ParseUser(*cFbUsr,cHttpResp.szResp,iErr);
+			nResult = GetUserInfo(*cFbUsr,iErr,*it,mapCpy);
 			EXCEPTION_BREAK(nResult)
 
 			iUserLst.items.push_back(cFbUsr);
@@ -127,14 +127,6 @@ int CFacebookService::GetUsersInfo( IUserList& iUserLst, IError& iErr, SysList::
 		//Error Handling
 		if (!SUCCEEDED(nResult))
 		{
-			if (nResult == NS_E_INET_CONNECT_FAIL_API_RETURN_ERROR ||
-				nResult == NS_E_INET_CONNECT_FAIL_HTTP_STATUS_ERROR)
-			{
-				stringstream ss;
-				ss << "API return Code: [" << cHttpResp.dwError << "] Http Status: [" << cHttpResp.dwStatusCode << "] Response Msg:[" << cHttpResp.szResp <<"]";
-				iErr.szMsg = ss.str() ;
-			}
-
 			SAFE_DELETE_OBJECT(cFbUsr);
 			break;
 		}

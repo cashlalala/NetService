@@ -159,16 +159,13 @@ int CFlickrService::GetUsersInfo( IUserList& iUserLst, IError& iErr, SysList::St
 	for (SysList::StrList::iterator it = listUid.begin();it!=listUid.end();++it)
 	{
 		HttpRespValObj cHttpResp;
-		CFkrUser* pFkrUsr = new CFkrUser();
+		CFkrUser* pFkrUsr = NULL;
 		do 
 		{
-			SysMaps::Str2Str mapBuf(mapQryCriteria);
-			mapBuf[FLICK_PARAM_USER_ID] = *it;
-			mapBuf[FLICK_PARAM_METHOD] = FLICK_METHOD_PEOPLE_GETINFO;
-			nResult = this->CallApi(cHttpResp,iErr,mapBuf);
-			EXCEPTION_BREAK(nResult)
+			SysMaps::Str2Str mapCpy(mapQryCriteria);
+			pFkrUsr = new CFkrUser();
 
-			nResult = m_pIDataMgr->ParseUser(*pFkrUsr,cHttpResp.szResp,iErr);
+			nResult = GetUserInfo(*pFkrUsr,iErr,*it,mapCpy);
 			EXCEPTION_BREAK(nResult)
 
 			iUserLst.items.push_back(pFkrUsr);
@@ -178,14 +175,6 @@ int CFlickrService::GetUsersInfo( IUserList& iUserLst, IError& iErr, SysList::St
 		//Error Handling
 		if (!SUCCEEDED(nResult))
 		{
-			if (nResult == NS_E_INET_CONNECT_FAIL_API_RETURN_ERROR ||
-				nResult == NS_E_INET_CONNECT_FAIL_HTTP_STATUS_ERROR)
-			{
-				stringstream ss;
-				ss << "API return Code: [" << cHttpResp.dwError << "] Http Status: [" << cHttpResp.dwStatusCode << "] Response Msg:[" << cHttpResp.szResp <<"]";
-				iErr.szMsg = ss.str() ;
-			}
-
 			SAFE_DELETE_OBJECT(pFkrUsr);
 			break;
 		}

@@ -170,4 +170,18 @@ void CFlickrServiceTest::terminate()
 	g_szToken = "";
 }
 
+void CFlickrServiceTest::testFkrGetUsers()
+{
+	model::CFkrUserList cFkrUsrLst;
+	model::CFkrError cFkrErr;
+	std::list<string> listUid;
+	listUid.push_back("92188701@N07");
+	listUid.push_back("70735667@N03");
+	listUid.push_back("91786782@N02");
+
+	int nResult = pSocialService->GetUsersInfo(cFkrUsrLst,cFkrErr, listUid);
+	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK && cFkrUsrLst.items.size()==3);
+
+}
+
 CFlickrConnectionInfo CFlickrServiceTest::m_cCnctInfoVO;
