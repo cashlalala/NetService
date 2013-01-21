@@ -1,5 +1,5 @@
 #pragma once
-
+#include "IParser.h"
 #include "IParseRuler.h"
 #include <json/json.h>
 
@@ -17,8 +17,10 @@ namespace util
 		virtual void Traverse( CFkrVideoFormat& cFkrVideoFormat ) ;
 
 		virtual void SetExecutor(void* pExecutor) ;
+
+		virtual void SetExecutor(IParser* pExecutor);
 	private:
-		Json::Value m_jvRoot;
+		IParser* m_pParser;
 	};
 
 	class CVideoListParseRuler : public IVideoListParseRuler 
@@ -33,8 +35,10 @@ namespace util
 		virtual void Traverse( CFkrVideoList& cFkrVideoList ) ;
 
 		virtual void SetExecutor(void* pExecutor) ;
+
+		virtual void SetExecutor(IParser* pExecutor);
 	private:
-		Json::Value m_jvRoot;
+		IParser* m_pParser;
 	};
 
 	class CVideoParseRuler : public IVideoParseRuler 
@@ -49,7 +53,9 @@ namespace util
 		virtual void Traverse( CFkrVideo& cFkrVideo ) ;
 
 		virtual void SetExecutor(void* pExecutor) ;
+
+		virtual void SetExecutor(IParser* pExecutor);
 	private:
-		Json::Value m_jvRoot;
+		IParser* m_pParser;
 	};
 }
