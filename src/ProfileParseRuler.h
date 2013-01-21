@@ -1,5 +1,6 @@
 #pragma  once
 #include "IParseRuler.h"
+#include "IParser.h"
 #include <json/json.h>
 
 namespace util
@@ -7,6 +8,8 @@ namespace util
 	class CProfileParseRuler : public IProfileParseRuler 
 	{
 	public:
+		CProfileParseRuler();
+
 		CProfileParseRuler(void* pExecutor);
 
 		virtual int Traverse( CFBProfile& cFBProfile ) ;
@@ -14,8 +17,10 @@ namespace util
 		virtual int Traverse( CFkrProfile& cFkrProfile ) ;
 
 		virtual void SetExecutor(void* pExecutor);
+
+		virtual void SetExecutor(IParser* pExecutor);
 	private:
-		Json::Value m_jvRoot;
+		IParser* m_pParser;
 	};
 }
 

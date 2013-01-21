@@ -14,13 +14,13 @@ int util::CProfileParseRuler::Traverse( CFkrProfile& cFkrErr )
 
 int util::CProfileParseRuler::Traverse( CFBProfile& cFBErr )
 {
-	int nSize = m_jvRoot[FB_DATA].size();
+	int nSize = m_pParser->GetValueAsArrarySize(FB_DATA);
 	if (nSize==1)
 	{
-		cFBErr.szThumNail = m_jvRoot[FB_DATA][0][FB_PROFILE_PIC].asString();
-		cFBErr.szBig = m_jvRoot[FB_DATA][0][FB_PROFILE_PIC_BIG].asString();
-		cFBErr.szSmall = m_jvRoot[FB_DATA][0][FB_PROFILE_PIC_SMALL].asString();
-		cFBErr.szSquare = m_jvRoot[FB_DATA][0][FB_PROFILE_PIC_SQUARE].asString();
+		cFBErr.szThumNail = m_pParser->GetValueAsString("%s.%d.%s",FB_DATA,0,FB_PROFILE_PIC);
+		cFBErr.szBig = m_pParser->GetValueAsString("%s.%d.%s",FB_DATA,0,FB_PROFILE_PIC_BIG);
+		cFBErr.szSmall = m_pParser->GetValueAsString("%s.%d.%s",FB_DATA,0,FB_PROFILE_PIC_SMALL);
+		cFBErr.szSquare = m_pParser->GetValueAsString("%s.%d.%s",FB_DATA,0,FB_PROFILE_PIC_SQUARE);
 		return S_OK;
 	}
 	else
@@ -32,8 +32,17 @@ util::CProfileParseRuler::CProfileParseRuler( void* pExecutor )
 	this->SetExecutor(pExecutor);
 }
 
+util::CProfileParseRuler::CProfileParseRuler()
+{
+
+}
+
 void util::CProfileParseRuler::SetExecutor( void* pExecutor )
 {
-	m_jvRoot = *((Json::Value*) pExecutor);
+}
+
+void util::CProfileParseRuler::SetExecutor( IParser* pExecutor )
+{
+	m_pParser = pExecutor;
 }
 
