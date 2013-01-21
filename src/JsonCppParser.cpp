@@ -57,7 +57,9 @@ Json::Value& util::CJsonCppParser::GetObject( Json::Value& jvRoot, string szTarg
 	unsigned nToken = szTarget.find_first_of(".");
 	if (nToken==string::npos) 
 	{
-		if (!isdigit(szTarget[0]) && atoi(szTarget.c_str())==0)
+		if (szTarget=="")
+			return jvRoot;
+		else if (!isdigit(szTarget[0]) && atoi(szTarget.c_str())==0)
 			return jvRoot[szTarget];
 		else
 			return jvRoot[atoi(szTarget.c_str())];

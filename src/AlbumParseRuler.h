@@ -10,7 +10,7 @@ namespace util
 	public:
 		CAlbumListParseRuler();
 
-		CAlbumListParseRuler(void* pExecutor);
+		CAlbumListParseRuler(IParser* pExecutor);
 
 		virtual void Traverse( CFBAlbumList& cFBAlbumList ) ;
 
@@ -21,8 +21,6 @@ namespace util
 		virtual void SetExecutor(IParser* pParser);
 	private:
 		IParser* m_pParser;
-		Json::Value m_jvRoot;
-
 	};
 
 	class CAlbumParseRuler : public IAlbumParseRuler 
@@ -30,7 +28,7 @@ namespace util
 	public:
 		CAlbumParseRuler();
 
-		CAlbumParseRuler(void* pExecutor);
+		CAlbumParseRuler(IParser* pExecutor);
 
 		virtual void Traverse( CFBAlbum& cFBAlbum ) ;
 
@@ -41,6 +39,5 @@ namespace util
 		virtual void SetExecutor(IParser* pParser);
 	private:
 		IParser* m_pParser;
-		Json::Value m_jvRoot;
 	};
 }

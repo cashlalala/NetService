@@ -11,7 +11,7 @@ util::CAlbumListParseRuler::CAlbumListParseRuler()
 
 }
 
-util::CAlbumListParseRuler::CAlbumListParseRuler( void* pExecutor )
+util::CAlbumListParseRuler::CAlbumListParseRuler( IParser* pExecutor )
 {
 	this->SetExecutor(pExecutor);
 }
@@ -58,7 +58,6 @@ void util::CAlbumListParseRuler::Traverse( CFkrAlbumList& cFkrAlbumList )
 
 void util::CAlbumListParseRuler::SetExecutor( void* pExecutor )
 {
-	m_jvRoot = * ((Json::Value*) pExecutor);
 }
 
 void util::CAlbumListParseRuler::SetExecutor( IParser* pParser )
@@ -71,7 +70,7 @@ util::CAlbumParseRuler::CAlbumParseRuler()
 
 }
 
-util::CAlbumParseRuler::CAlbumParseRuler( void* pExecutor )
+util::CAlbumParseRuler::CAlbumParseRuler( IParser* pExecutor )
 {
 	this->SetExecutor(pExecutor);
 }
@@ -102,7 +101,6 @@ void util::CAlbumParseRuler::Traverse( CFkrAlbum& cFkrAlbum )
 
 void util::CAlbumParseRuler::SetExecutor( void* pExecutor )
 {
-	m_jvRoot = * ((Json::Value*) pExecutor);
 }
 
 void util::CAlbumParseRuler::SetExecutor( IParser* pParser )
