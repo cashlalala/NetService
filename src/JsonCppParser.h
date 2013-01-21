@@ -1,6 +1,7 @@
 #pragma once
 #include "IParser.h"
 #include <json/json.h>
+#include <list>
 
 namespace util
 {
@@ -19,11 +20,17 @@ namespace util
 
 		virtual int GetValueAsArrarySize(const char* lpcszFormat, ...) ;
 
-		virtual void GetObjectAsRoot(const char* llpcszFormat, ...) ;
+		virtual bool IsObjectNull(const char* lpcszFormat, ...);
+
+		virtual void GetObjectAsListRoot(const char* lpcszFormat, ...);
+
+		virtual void StoreListRoot()  ;
+		virtual void RestoreListRoot() ;
+		virtual void ClearTop() ;
 
 		virtual int Parse( string szSrc );
 
-		virtual void ResetParseRoot() ;
+		virtual void ResetRoot() ;
 
 	private:
 		string MsgFormat(const char* lpszFormat, va_list args);
@@ -31,6 +38,7 @@ namespace util
 
 		Json::Value m_jvRoot;
 		Json::Value m_jvCurRoot;
+		std::list<Json::Value> m_jvListRoot;
 	};
 }
 

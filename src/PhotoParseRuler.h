@@ -1,6 +1,6 @@
 #pragma once
-
 #include "IParseRuler.h"
+#include "IParser.h"
 #include <json/json.h>
 #include <string>
 #include <list>
@@ -22,8 +22,10 @@ namespace util
 		virtual void Traverse( CFkrPhotoList& cFkrPhotoList ) ;
 
 		virtual void SetExecutor(void* pExecutor) ;
+
+		virtual void SetExecutor(IParser* pExecutor);
 	private:
-		Json::Value m_jvRoot;
+		IParser* m_pParser;
 	};
 
 	class CPhotoParseRuler : public IPhotoParseRuler 
@@ -38,8 +40,10 @@ namespace util
 		virtual void Traverse( CFkrPhoto& cFkrPhoto ) ;
 
 		virtual void SetExecutor(void* pExecutor) ;
+
+		virtual void SetExecutor(IParser* pExecutor);
 	private:
-		Json::Value m_jvRoot;
+		IParser* m_pParser;
 		static const list<string> S_LIST_FKRPHOTOSIZES;
 	};
 }

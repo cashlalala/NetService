@@ -21,14 +21,16 @@ void util::CAlbumListParseRuler::Traverse( CFBAlbumList& cFBAlbumList )
 	int nAlbumNum = m_pParser->GetValueAsArrarySize(FB_DATA);
 	CAlbumParseRuler cAlbumParseRuler;
 	cAlbumParseRuler.SetExecutor(m_pParser);
+	m_pParser->StoreListRoot();
 	for (int i = 0 ;i<nAlbumNum;++i)
 	{
 		CFBAlbum* pFbAlbum = new CFBAlbum();
-		m_pParser->GetObjectAsRoot("%s.%d",FB_DATA,i);
+		m_pParser->GetObjectAsListRoot("%s.%d",FB_DATA,i);
 		pFbAlbum->AcceptAlbumParser(cAlbumParseRuler);
 		cFBAlbumList.items.push_back(pFbAlbum);
-		m_pParser->ResetParseRoot();
+		m_pParser->RestoreListRoot();
 	}
+	m_pParser->ClearTop();
 	cFBAlbumList.szNextPageUrl = m_pParser->GetValueAsString("%s.%s",FB_PAGING,FB_PAGING_NEXT);
 	cFBAlbumList.szPreviousPageUrl = m_pParser->GetValueAsString("%s.%s",FB_PAGING,FB_PAGING_PREVIOUS);
 }
@@ -42,15 +44,17 @@ void util::CAlbumListParseRuler::Traverse( CFkrAlbumList& cFkrAlbumList )
 
 	CAlbumParseRuler cAlbumParseRuler;
 	cAlbumParseRuler.SetExecutor(m_pParser);
+	m_pParser->StoreListRoot();
 	int nAlbums = m_pParser->GetValueAsArrarySize(FLICK_PHOTOSETS"."FLICK_PHOTOSET);
 	for (int i =0;i<nAlbums;++i)
-	{
-		m_pParser->GetObjectAsRoot("%s.%s.%d",FLICK_PHOTOSETS,FLICK_PHOTOSET,i);		
+	{		
+		m_pParser->GetObjectAsListRoot("%s.%s.%d",FLICK_PHOTOSETS,FLICK_PHOTOSET,i);
 		model::CFkrAlbum* cFkrAlbum = new model::CFkrAlbum();
 		cFkrAlbum->AcceptAlbumParser(cAlbumParseRuler);
 		cFkrAlbumList.items.push_back(cFkrAlbum);
-		m_pParser->ResetParseRoot();
+		m_pParser->RestoreListRoot();
 	}
+	m_pParser->ClearTop();
 }
 
 

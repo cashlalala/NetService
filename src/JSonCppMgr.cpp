@@ -30,25 +30,26 @@ CJsonCppMgr::CJsonCppMgr(void)
 
 CJsonCppMgr::~CJsonCppMgr(void)
 {
+	SAFE_DELETE_OBJECT(m_pParser);
 }
 
 int util::CJsonCppMgr::ParsePhotoList( IPhotoList& iPhotoList, string szInput, IError& iError  ) 
 {
 	int nResult = E_FAIL;
-	Json::Reader jrReader;
-	Json::Value jvRoot;
 
-	if (jrReader.parse(szInput.c_str(),jvRoot))
+	do 
 	{
-		CErrorParseRuler cErrRuler((void*)&jvRoot);
-		nResult = iError.AcceptErrorParser(cErrRuler);
+		nResult = m_pParser->Parse(szInput);
 		ERROR_RETURN(nResult)
 
-		CPhotoListParseRuler cPhotoLstRuler((void*)&jvRoot);
-		iPhotoList.AcceptPhotoListParser(cPhotoLstRuler);		
-	}
-	else
-		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
+			//CErrorParseRuler cErrRuler((void*)&jvRoot);
+			//nResult = iError.AcceptErrorParser(cErrRuler);
+			//ERROR_RETURN(nResult)
+
+		CPhotoListParseRuler cPhotoLstRuler;
+		cPhotoLstRuler.SetExecutor(m_pParser);
+		iPhotoList.AcceptPhotoListParser(cPhotoLstRuler);	
+	} while (false);
 
 	return nResult;
 }
@@ -56,20 +57,19 @@ int util::CJsonCppMgr::ParsePhotoList( IPhotoList& iPhotoList, string szInput, I
 int util::CJsonCppMgr::ParsePhoto( IPhoto& iPhoto, string szInput, IError& iError  ) 
 {
 	int nResult = E_FAIL;
-	Json::Reader jrReader;
-	Json::Value jvRoot;
-
-	if (jrReader.parse(szInput.c_str(),jvRoot))
+	do 
 	{
-		CErrorParseRuler cErrRuler((void*)&jvRoot);
-		nResult = iError.AcceptErrorParser(cErrRuler);
+		nResult = m_pParser->Parse(szInput);
 		ERROR_RETURN(nResult)
 
-		CPhotoParseRuler cPhotoRuler((void*)&jvRoot);
+		//CErrorParseRuler cErrRuler((void*)&jvRoot);
+		//nResult = iError.AcceptErrorParser(cErrRuler);
+		//ERROR_RETURN(nResult)
+
+		CPhotoParseRuler cPhotoRuler;
+		cPhotoRuler.SetExecutor(m_pParser);
 		iPhoto.AcceptPhotoParser(cPhotoRuler);
-	}
-	else
-		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
+	} while (false);
 
 	return nResult;
 }

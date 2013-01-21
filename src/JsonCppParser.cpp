@@ -96,7 +96,12 @@ int util::CJsonCppParser::GetValueAsArrarySize( const char* lpcszFormat, ... )
 	return GetObject(m_jvCurRoot,szResult).size();
 }
 
-void util::CJsonCppParser::GetObjectAsRoot( const char* lpcszFormat, ... )
+void util::CJsonCppParser::ResetRoot()
+{
+	m_jvCurRoot = m_jvRoot;
+}
+
+void util::CJsonCppParser::GetObjectAsListRoot( const char* lpcszFormat, ... )
 {
 	va_list args;
 	va_start(args, lpcszFormat);
@@ -105,7 +110,26 @@ void util::CJsonCppParser::GetObjectAsRoot( const char* lpcszFormat, ... )
 	m_jvCurRoot = GetObject(m_jvCurRoot,szResult);
 }
 
-void util::CJsonCppParser::ResetParseRoot()
+void util::CJsonCppParser::StoreListRoot()
 {
-	m_jvCurRoot = m_jvRoot;
+	m_jvListRoot.push_back(m_jvCurRoot);
+}
+
+void util::CJsonCppParser::RestoreListRoot()
+{
+	m_jvCurRoot = m_jvListRoot.back();
+}
+
+void util::CJsonCppParser::ClearTop()
+{
+	m_jvListRoot.pop_back();
+}
+
+bool util::CJsonCppParser::IsObjectNull( const char* lpcszFormat, ... )
+{
+	va_list args;
+	va_start(args, lpcszFormat);
+	string szResult = MsgFormat(lpcszFormat,args);
+	va_end(args);
+	return GetObject(m_jvCurRoot,szResult).isNull();
 }
