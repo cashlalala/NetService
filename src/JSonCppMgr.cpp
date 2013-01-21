@@ -181,17 +181,20 @@ int util::CJsonCppMgr::ParseImageList( IImageList& listImage, string szInput, IE
 	int nResult = E_FAIL;
 	Json::Reader jrReader;
 	Json::Value jvRoot;
-	if (jrReader.parse(szInput.c_str(),jvRoot))
+
+	do 
 	{
-		CErrorParseRuler cErrRuler((void*)&jvRoot);
-		nResult = iError.AcceptErrorParser(cErrRuler);
+		nResult = m_pParser->Parse(szInput);
 		ERROR_RETURN(nResult)
 
-		CImageListParseRuler cImgLstRuler((void*)&jvRoot);
+		//CErrorParseRuler cErrRuler((void*)&jvRoot);
+		//nResult = iError.AcceptErrorParser(cErrRuler);
+		//ERROR_RETURN(nResult)
+
+		CImageListParseRuler cImgLstRuler;
+		cImgLstRuler.SetExecutor(m_pParser);
 		listImage.AcceptImageListParser(cImgLstRuler);
-	}
-	else
-		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
+	} while (false);
 
 	return nResult;
 }
