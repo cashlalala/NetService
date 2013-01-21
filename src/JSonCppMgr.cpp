@@ -13,15 +13,19 @@
 #include "ImageParseRuler.h"
 #include "VideoParseRuler.h"
 
+#include "JsonCppParser.h"
+
 #include <json/json.h>
 
 #define ERROR_RETURN(retVal) if(!SUCCEEDED(retVal)) return retVal;
 
 using util::CJsonCppMgr;
+using util::CJsonCppParser;
 
 CJsonCppMgr::CJsonCppMgr(void)
 {
 	m_pLogger = util::CLoggerMgr::GetLogger(Log4Cxx,"CJsonCppMgr");
+	m_pParser  = new CJsonCppParser();
 }
 
 CJsonCppMgr::~CJsonCppMgr(void)
@@ -33,6 +37,7 @@ int util::CJsonCppMgr::ParsePhotoList( IPhotoList& iPhotoList, string szInput, I
 	int nResult = E_FAIL;
 	Json::Reader jrReader;
 	Json::Value jvRoot;
+
 	if (jrReader.parse(szInput.c_str(),jvRoot))
 	{
 		CErrorParseRuler cErrRuler((void*)&jvRoot);
@@ -157,17 +162,19 @@ int util::CJsonCppMgr::ParseAlbumList( IAlbumList& iAlbumList, string szInput, I
 	Json::Reader jrReader;
 	Json::Value jvRoot;
 
-	if (jrReader.parse(szInput.c_str(),jvRoot))
+	do 
 	{
-		CErrorParseRuler cErrRuler((void*)&jvRoot);
-		nResult = iError.AcceptErrorParser(cErrRuler);
+		nResult = m_pParser->Parse(szInput);
 		ERROR_RETURN(nResult)
 
-		CAlbumListParseRuler cAlbumLstRuler((void*)&jvRoot);
+		//CErrorParseRuler cErrRuler((void*)&jvRoot);
+		//nResult = iError.AcceptErrorParser(cErrRuler);
+		//ERROR_RETURN(nResult)
+
+		CAlbumListParseRuler cAlbumLstRuler;
+		cAlbumLstRuler.SetExecutor(m_pParser);
 		iAlbumList.AcceptAlbumListParser(cAlbumLstRuler);		
-	}
-	else
-		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
+	} while (false);
 
 	return nResult;
 }

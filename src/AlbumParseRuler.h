@@ -1,6 +1,6 @@
 #pragma once
-
 #include "IParseRuler.h"
+#include "IParser.h"
 #include <json/json.h>
 
 namespace util
@@ -17,8 +17,12 @@ namespace util
 		virtual void Traverse( CFkrAlbumList& cFkrAlbumList ) ;
 
 		virtual void SetExecutor(void* pExecutor) ;
+
+		virtual void SetExecutor(IParser* pParser);
 	private:
+		IParser* m_pParser;
 		Json::Value m_jvRoot;
+
 	};
 
 	class CAlbumParseRuler : public IAlbumParseRuler 
@@ -33,7 +37,10 @@ namespace util
 		virtual void Traverse( CFkrAlbum& cFkrAlbum ) ;
 
 		virtual void SetExecutor(void* pExecutor) ;
+
+		virtual void SetExecutor(IParser* pParser);
 	private:
+		IParser* m_pParser;
 		Json::Value m_jvRoot;
 	};
 }

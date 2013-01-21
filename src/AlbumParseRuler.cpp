@@ -18,42 +18,52 @@ util::CAlbumListParseRuler::CAlbumListParseRuler( void* pExecutor )
 
 void util::CAlbumListParseRuler::Traverse( CFBAlbumList& cFBAlbumList )
 {
-	int nAlbumNum = m_jvRoot[FB_DATA].size();
+	int nAlbumNum = m_pParser->GetValueAsArrarySize(FB_DATA);
 	CAlbumParseRuler cAlbumParseRuler;
+	cAlbumParseRuler.SetExecutor(m_pParser);
 	for (int i = 0 ;i<nAlbumNum;++i)
 	{
 		CFBAlbum* pFbAlbum = new CFBAlbum();
-		Json::Value jvItem = m_jvRoot[FB_DATA][i];
-		cAlbumParseRuler.SetExecutor((void*)&jvItem);
+		m_pParser->GetObjectAsRoot("%s.%d",FB_DATA,i);
 		pFbAlbum->AcceptAlbumParser(cAlbumParseRuler);
 		cFBAlbumList.items.push_back(pFbAlbum);
+		m_pParser->ResetParseRoot();
 	}
-	cFBAlbumList.szNextPageUrl = m_jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
-	cFBAlbumList.szPreviousPageUrl = m_jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
+	cFBAlbumList.szNextPageUrl = m_pParser->GetValueAsString("%s.%s",FB_PAGING,FB_PAGING_NEXT);
+	cFBAlbumList.szPreviousPageUrl = m_pParser->GetValueAsString("%s.%s",FB_PAGING,FB_PAGING_PREVIOUS);
 }
 
 void util::CAlbumListParseRuler::Traverse( CFkrAlbumList& cFkrAlbumList )
 {
-	cFkrAlbumList.nPage = atoi(m_jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSETS_PAGE].asString().c_str());
-	cFkrAlbumList.nPages = atoi(m_jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSETS_PAGES].asString().c_str());
-	cFkrAlbumList.nPerpage = atoi(m_jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSETS_PERPAGE].asString().c_str());
-	cFkrAlbumList.nTotal = atoi(m_jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSETS_TOTAL].asString().c_str());
+	cFkrAlbumList.nPage = atoi(m_pParser->GetValueAsString(FLICK_PHOTOSETS"."FLICK_PHOTOSETS_PAGE).c_str());
+	cFkrAlbumList.nPages = atoi(m_pParser->GetValueAsString(FLICK_PHOTOSETS"."FLICK_PHOTOSETS_PAGES).c_str());
+	cFkrAlbumList.nPerpage = atoi(m_pParser->GetValueAsString(FLICK_PHOTOSETS"."FLICK_PHOTOSETS_PERPAGE).c_str());
+	cFkrAlbumList.nTotal = atoi(m_pParser->GetValueAsString(FLICK_PHOTOSETS"."FLICK_PHOTOSETS_TOTAL).c_str());
 
 	CAlbumParseRuler cAlbumParseRuler;
-	int nAlbums = m_jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSET].size();
+	cAlbumParseRuler.SetExecutor(m_pParser);
+	int nAlbums = m_pParser->GetValueAsArrarySize(FLICK_PHOTOSETS"."FLICK_PHOTOSET);
 	for (int i =0;i<nAlbums;++i)
 	{
-		Json::Value item = m_jvRoot[FLICK_PHOTOSETS][FLICK_PHOTOSET][i];
-		cAlbumParseRuler.SetExecutor((void*)&item);
+		m_pParser->GetObjectAsRoot("%s.%s.%d",FLICK_PHOTOSETS,FLICK_PHOTOSET,i);		
 		model::CFkrAlbum* cFkrAlbum = new model::CFkrAlbum();
 		cFkrAlbum->AcceptAlbumParser(cAlbumParseRuler);
 		cFkrAlbumList.items.push_back(cFkrAlbum);
+		m_pParser->ResetParseRoot();
 	}
 }
+
+
+
 
 void util::CAlbumListParseRuler::SetExecutor( void* pExecutor )
 {
 	m_jvRoot = * ((Json::Value*) pExecutor);
+}
+
+void util::CAlbumListParseRuler::SetExecutor( IParser* pParser )
+{
+	m_pParser = pParser;
 }
 
 util::CAlbumParseRuler::CAlbumParseRuler()
@@ -68,28 +78,34 @@ util::CAlbumParseRuler::CAlbumParseRuler( void* pExecutor )
 
 void util::CAlbumParseRuler::Traverse( CFBAlbum& cFBAlbum )
 {
-	cFBAlbum.szId = m_jvRoot[FB_ID].asString();
-	cFBAlbum.szName = m_jvRoot[FB_ALBUM_NAME].asString();
-	cFBAlbum.szCoverPhotoId = m_jvRoot[FB_ALBUM_COVER_PHOTO].asString();
-	cFBAlbum.nCount = m_jvRoot[FB_ALBUM_PHOTO_COUNT].asInt();
+	cFBAlbum.szId = m_pParser->GetValueAsString(FB_ID);
+	cFBAlbum.szName = m_pParser->GetValueAsString(FB_ALBUM_NAME);
+	cFBAlbum.szCoverPhotoId = m_pParser->GetValueAsString(FB_ALBUM_COVER_PHOTO);
+	cFBAlbum.nCount = m_pParser->GetValueAsInt(FB_ALBUM_PHOTO_COUNT);
 }
 
 void util::CAlbumParseRuler::Traverse( CFkrAlbum& cFkrAlbum )
 {
-	cFkrAlbum.nCount = atoi(m_jvRoot[FLICK_PHOTOSET_VIDEOS].asString().c_str()) + 
-									atoi(m_jvRoot[FLICK_PHOTOSET_PHOTOS].asString().c_str());
-	cFkrAlbum.szCoverPhotoId = m_jvRoot[FLICK_PHOTOSET_PRIMARY].asString();
-	cFkrAlbum.szDescription = m_jvRoot[FLICK_PHOTOSET_DESCRIPTION][FLICK_FIELD_CONTENT].asString();
-	cFkrAlbum.szId = m_jvRoot[FLICK_PHOTOSET_ID].asString();
-	cFkrAlbum.szTitle = m_jvRoot[FLICK_PHOTOSET_TITLE][FLICK_FIELD_CONTENT].asString();
+	;
+	cFkrAlbum.nCount = atoi(m_pParser->GetValueAsString(FLICK_PHOTOSET_VIDEOS).c_str()) + 
+									atoi(m_pParser->GetValueAsString(FLICK_PHOTOSET_PHOTOS).c_str());
+	cFkrAlbum.szCoverPhotoId = m_pParser->GetValueAsString(FLICK_PHOTOSET_PRIMARY);
+	cFkrAlbum.szDescription = m_pParser->GetValueAsString(FLICK_PHOTOSET_DESCRIPTION"."FLICK_FIELD_CONTENT);
+	cFkrAlbum.szId = m_pParser->GetValueAsString(FLICK_PHOTOSET_ID);
+	cFkrAlbum.szTitle = m_pParser->GetValueAsString(FLICK_PHOTOSET_TITLE"."FLICK_FIELD_CONTENT);
 	cFkrAlbum.szThumbNail = util::CStringHelper::Format("http://farm%s.staticflickr.com/%s/%s_%s_t.jpg",
-		m_jvRoot[FLICK_PHOTOSET_FARM].asString().c_str(),
-		m_jvRoot[FLICK_PHOTOSET_SERVER].asString().c_str(),
+		m_pParser->GetValueAsString(FLICK_PHOTOSET_FARM).c_str(),
+		m_pParser->GetValueAsString(FLICK_PHOTOSET_SERVER).c_str(),
 		cFkrAlbum.szCoverPhotoId.c_str(),
-		m_jvRoot[FLICK_PHOTOSET_SECRET].asString().c_str());
+		m_pParser->GetValueAsString(FLICK_PHOTOSET_SECRET).c_str());
 }
 
 void util::CAlbumParseRuler::SetExecutor( void* pExecutor )
 {
 	m_jvRoot = * ((Json::Value*) pExecutor);
+}
+
+void util::CAlbumParseRuler::SetExecutor( IParser* pParser )
+{
+	m_pParser = pParser;
 }

@@ -123,6 +123,7 @@
     <ClCompile Include="FlickrService.cpp" />
     <ClCompile Include="ImageParseRuler.cpp" />
     <ClCompile Include="InternetConnectService.cpp" />
+    <ClCompile Include="JsonCppParser.cpp" />
     <ClCompile Include="ListHelper.cpp" />
     <ClCompile Include="Log4CxxLogger.cpp" />
     <ClCompile Include="LoggerMgr.cpp" />
@@ -161,7 +162,9 @@
     <ClInclude Include="ILogger.h" />
     <ClInclude Include="ImageParseRuler.h" />
     <ClInclude Include="InternetConnectService.h" />
+    <ClInclude Include="IParser.h" />
     <ClInclude Include="IParseRuler.h" />
+    <ClInclude Include="JsonCppParser.h" />
     <ClInclude Include="ListHelper.h" />
     <ClInclude Include="Log4CxxLogger.h" />
     <ClInclude Include="LoggerMgr.h" />

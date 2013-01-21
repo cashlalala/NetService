@@ -1,5 +1,7 @@
 #pragma once
 
+#include "IParser.h"
+
 namespace model
 {
 	struct CFBProfile;
@@ -44,6 +46,7 @@ namespace util
 	//for future decoupling of executor
 	struct IExecutor {
 		virtual void SetExecutor(void* pExecutor) = 0;
+		virtual void SetExecutor(IParser* pIParser){};
 	};
 
 	//error rulers

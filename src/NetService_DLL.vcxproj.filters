@@ -31,6 +31,9 @@
     <Filter Include="Util\DataMgr\ParseRule">
       <UniqueIdentifier>{5ea7a8df-b9bb-4dd1-8c7e-a19eebf8ba00}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Util\DataMgr\Parser">
+      <UniqueIdentifier>{521ea876-40dc-4678-a97c-b2c137aaef61}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\NetKernel\Src\INetKernel.h">
@@ -183,6 +186,12 @@
     <ClInclude Include="VideoParseRuler.h">
       <Filter>Util\DataMgr\ParseRule</Filter>
     </ClInclude>
+    <ClInclude Include="IParser.h">
+      <Filter>Util\DataMgr\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonCppParser.h">
+      <Filter>Util\DataMgr\Parser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InternetConnectService.cpp">
@@ -259,6 +268,9 @@
     </ClCompile>
     <ClCompile Include="VideoParseRuler.cpp">
       <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonCppParser.cpp">
+      <Filter>Util\DataMgr\Parser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

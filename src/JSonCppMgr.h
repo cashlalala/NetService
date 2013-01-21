@@ -1,5 +1,6 @@
 #pragma once
 #include "IDataManager.h"
+#include "IParser.h"
 #include "LoggerMgr.h"
 #include "SysTypes.h"
 #include <list>
@@ -44,6 +45,7 @@ namespace util
 
 	private:
 		util::ILogger* m_pLogger;
+		util::IParser* m_pParser;
 	};
 }
 

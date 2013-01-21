@@ -1,5 +1,6 @@
 #pragma  once
 #include "IParseRuler.h"
+#include "IParser.h"
 #include <json/json.h>
 
 namespace util
