@@ -22,11 +22,11 @@ namespace util
 
 		virtual bool IsObjectNull(const char* lpcszFormat, ...);
 
-		virtual void GetObjectAsListRoot(const char* lpcszFormat, ...);
+		virtual void GetObjectAsRoot(const char* lpcszFormat, ...);
 
-		virtual void StoreListRoot()  ;
-		virtual void RestoreListRoot() ;
-		virtual void ClearTop() ;
+		virtual void StoreRoot()  ;
+		virtual void RestoreRoot() ;
+		virtual void ClearBuffTop() ;
 
 		virtual int Parse( string szSrc );
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "ILogger.h"
 #include "IParseRuler.h"
+#include "IParser.h"
 #include <json/json.h>
 
 namespace util
@@ -21,8 +22,11 @@ namespace util
 		virtual void Traverse( CFkrUserList& cFkrUserList ) ;
 
 		virtual void SetExecutor(void* pExecutor) ;
+
+		virtual void SetExecutor(IParser* pExecutor) ;
+		
 	private:
-		Json::Value m_jvRoot;
+		IParser* m_pParser;
 	};
 
 	class CUserParseRuler : public IUserParseRuler 
@@ -35,8 +39,12 @@ namespace util
 		virtual void Traverse( CFkrUser& cFkrUser ) ;
 
 		virtual void SetExecutor(void* pExecutor) ;
+
+		virtual void SetExecutor(IParser* pExecutor) ;
+
 	private:
-		Json::Value m_jvRoot;
+		IParser* m_pParser;
+
 		ILogger* m_pILogger;
 	};
 }

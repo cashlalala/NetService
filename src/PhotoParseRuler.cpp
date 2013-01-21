@@ -15,16 +15,16 @@ void util::CPhotoListParseRuler::Traverse( CFBPhotoList& cFBPhotoList )
 	int nPhotoNum = m_pParser->GetValueAsArrarySize(FB_DATA);
 	CPhotoParseRuler cPhotoRuler;
 	cPhotoRuler.SetExecutor(m_pParser);
-	m_pParser->StoreListRoot();
+	m_pParser->StoreRoot();
 	for (int i=0;i<nPhotoNum;++i)
 	{
-		m_pParser->GetObjectAsListRoot("%s.%d",FB_DATA,i);
+		m_pParser->GetObjectAsRoot("%s.%d",FB_DATA,i);
 		CFBPhoto* pFbPhot = new CFBPhoto();
 		pFbPhot->AcceptPhotoParser(cPhotoRuler);
 		cFBPhotoList.items.push_back(pFbPhot);
-		m_pParser->RestoreListRoot();
+		m_pParser->RestoreRoot();
 	}
-	m_pParser->ClearTop();
+	m_pParser->ClearBuffTop();
 	cFBPhotoList.szNextPageUrl = m_pParser->GetValueAsString("%s.%s",FB_PAGING,FB_PAGING_NEXT);
 	cFBPhotoList.szPreviousPageUrl = m_pParser->GetValueAsString("%s.%s",FB_PAGING,FB_PAGING_PREVIOUS);
 }
@@ -42,16 +42,16 @@ void util::CPhotoListParseRuler::Traverse( CFkrPhotoList& cFkrPhotoList )
 	int nPhotoNum = m_pParser->GetValueAsArrarySize("%s.%s",szSets.c_str(),FLICK_PHOTO);
 	CPhotoParseRuler cPhotoRuler;
 	cPhotoRuler.SetExecutor(m_pParser);
-	m_pParser->StoreListRoot();
+	m_pParser->StoreRoot();
 	for (int i=0;i<nPhotoNum;++i)
 	{
-		m_pParser->GetObjectAsListRoot("%s.%s.%d",szSets.c_str(),FLICK_PHOTO,i);
+		m_pParser->GetObjectAsRoot("%s.%s.%d",szSets.c_str(),FLICK_PHOTO,i);
 		model::CFkrPhoto* cFkrPhoto = new model::CFkrPhoto();
 		cFkrPhoto->AcceptPhotoParser(cPhotoRuler);
 		cFkrPhotoList.items.push_back(cFkrPhoto);
-		m_pParser->RestoreListRoot();
+		m_pParser->RestoreRoot();
 	}
-	m_pParser->ClearTop();
+	m_pParser->ClearBuffTop();
 }
 
 util::CPhotoListParseRuler::CPhotoListParseRuler( void* pExecutor )

@@ -77,20 +77,19 @@ int util::CJsonCppMgr::ParsePhoto( IPhoto& iPhoto, string szInput, IError& iErro
 int util::CJsonCppMgr::ParseUser( IUser& iUser, string szInput, IError& iError )
 {
 	int nResult = E_FAIL;
-	Json::Reader jrReader;
-	Json::Value jvRoot;
-
-	if (jrReader.parse(szInput.c_str(),jvRoot))
+	do 
 	{
-		CErrorParseRuler cErrRuler((void*)&jvRoot);
-		nResult = iError.AcceptErrorParser(cErrRuler);
+		nResult = m_pParser->Parse(szInput);
 		ERROR_RETURN(nResult)
 
-		CUserParseRuler cUserRuler((void*)&jvRoot);
+			//CErrorParseRuler cErrRuler((void*)&jvRoot);
+			//nResult = iError.AcceptErrorParser(cErrRuler);
+			//ERROR_RETURN(nResult)
+
+		CUserParseRuler cUserRuler;
+		cUserRuler.SetExecutor(m_pParser);
 		iUser.AcceptUserParser(cUserRuler);
-	}
-	else
-		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
+	} while (false);
 
 	return nResult;
 }
@@ -117,20 +116,19 @@ int util::CJsonCppMgr::ParseError( IError& iError, string szInput )
 int util::CJsonCppMgr::ParseFriendList( IUserList& iUserList, string szInput, IError& iError )
 {
 	int nResult = E_FAIL;
-	Json::Reader jrReader;
-	Json::Value jvRoot;
-
-	if (jrReader.parse(szInput.c_str(),jvRoot))
+	do 
 	{
-		CErrorParseRuler cErrRuler((void*)&jvRoot);
-		nResult = iError.AcceptErrorParser(cErrRuler);
+		nResult = m_pParser->Parse(szInput);
 		ERROR_RETURN(nResult)
 
-		CUserListParseRuler cUsrLstRuler((void*)&jvRoot);
+			//CErrorParseRuler cErrRuler((void*)&jvRoot);
+			//nResult = iError.AcceptErrorParser(cErrRuler);
+			//ERROR_RETURN(nResult)
+
+		CUserListParseRuler cUsrLstRuler;
+		cUsrLstRuler.SetExecutor(m_pParser);
 		iUserList.AcceptUserListParser(cUsrLstRuler);	
-	}
-	else
-		nResult = NS_E_DMGR_PARSE_DATA_FAIL_ILL_FORMED;
+	} while (false);
 
 	return nResult;
 }

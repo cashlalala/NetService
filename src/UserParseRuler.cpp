@@ -21,41 +21,52 @@ util::CUserListParseRuler::CUserListParseRuler( void* pExecutor )
 
 void util::CUserListParseRuler::SetExecutor( void* pExecutor )
 {
-	if (pExecutor) m_jvRoot = * ((Json::Value*) pExecutor);
+}
+
+void util::CUserListParseRuler::SetExecutor( IParser* pExecutor )
+{
+	m_pParser = pExecutor;
 }
 
 void util::CUserListParseRuler::Traverse( CFBUserList& cFBUserList )
 {
-	int nFriendNum = m_jvRoot[FB_DATA].size();
+	int nFriendNum = m_pParser->GetValueAsArrarySize(FB_DATA);
 	CUserParseRuler cUsrParseRuler; 
+	cUsrParseRuler.SetExecutor(m_pParser);
+	m_pParser->StoreRoot();
 	for (int i = 0;i<nFriendNum;++i)
 	{
-		model::CFBUser* pFbUsr = new model::CFBUser(); 
-		cUsrParseRuler.SetExecutor((void*)&m_jvRoot[FB_DATA][i]);
+		m_pParser->GetObjectAsRoot("%s.%d",FB_DATA,i);
+		model::CFBUser* pFbUsr = new model::CFBUser();
 		pFbUsr->AcceptUserParser(cUsrParseRuler);
 		cFBUserList.items.push_back(pFbUsr);
+		m_pParser->RestoreRoot();
 	}
-	cFBUserList.szNextPageUrl = m_jvRoot[FB_PAGING][FB_PAGING_NEXT].asString();
-	cFBUserList.szPreviousPageUrl = m_jvRoot[FB_PAGING][FB_PAGING_PREVIOUS].asString();
+	m_pParser->ClearBuffTop();
+	cFBUserList.szNextPageUrl = m_pParser->GetValueAsString("%s.%s",FB_PAGING,FB_PAGING_NEXT);
+	cFBUserList.szPreviousPageUrl = m_pParser->GetValueAsString("%s.%s",FB_PAGING,FB_PAGING_PREVIOUS);
 }
 
 void util::CUserListParseRuler::Traverse( CFkrUserList& cFkrUserList )
 {
-	cFkrUserList.nPage = atoi(m_jvRoot[FLICK_CONTACTS][FLICK_CONTACTS_PAGE].asString().c_str());
-	cFkrUserList.nPages = atoi(m_jvRoot[FLICK_CONTACTS][FLICK_CONTACTS_PAGES].asString().c_str());
-	cFkrUserList.nPerpage = atoi(m_jvRoot[FLICK_CONTACTS][FLICK_CONTACTS_PERPAGE].asString().c_str());
-	cFkrUserList.nTotal = atoi(m_jvRoot[FLICK_CONTACTS][FLICK_CONTACTS_TOTAL].asString().c_str());
+	cFkrUserList.nPage = atoi(m_pParser->GetValueAsString(FLICK_CONTACTS"."FLICK_CONTACTS_PAGE).c_str());
+	cFkrUserList.nPages = atoi(m_pParser->GetValueAsString(FLICK_CONTACTS"."FLICK_CONTACTS_PAGES).c_str());
+	cFkrUserList.nPerpage = atoi(m_pParser->GetValueAsString(FLICK_CONTACTS"."FLICK_CONTACTS_PERPAGE).c_str());
+	cFkrUserList.nTotal = atoi(m_pParser->GetValueAsString(FLICK_CONTACTS"."FLICK_CONTACTS_TOTAL).c_str());
 
-	int nFriends = m_jvRoot[FLICK_CONTACTS][FLICK_CONTACTS_CONTACT].size();
+	int nFriends = m_pParser->GetValueAsArrarySize(FLICK_CONTACTS"."FLICK_CONTACTS_CONTACT);
 	CUserParseRuler cUserParseRuler;
+	cUserParseRuler.SetExecutor(m_pParser);
+	m_pParser->StoreRoot();
 	for (int i =0;i<nFriends;++i)
 	{
-		Json::Value item = m_jvRoot[FLICK_CONTACTS][FLICK_CONTACTS_CONTACT][i];
-		cUserParseRuler.SetExecutor((void*)&item);
+		m_pParser->GetObjectAsRoot("%s.%s.%d",FLICK_CONTACTS,FLICK_CONTACTS_CONTACT,i);
 		model::CFkrUser* cFkrUsr = new model::CFkrUser();
 		cFkrUsr->AcceptUserParser(cUserParseRuler);
 		cFkrUserList.items.push_back(cFkrUsr);
+		m_pParser->RestoreRoot();
 	}
+	m_pParser->ClearBuffTop();
 }
 
 
@@ -67,56 +78,59 @@ util::CUserParseRuler::CUserParseRuler( void* pExecutor  /*= NULL*/)
 
 void util::CUserParseRuler::SetExecutor( void* pExecutor )
 {
-	if (pExecutor) m_jvRoot = * ((Json::Value*) pExecutor);
+}
+
+void util::CUserParseRuler::SetExecutor( IParser* pExecutor )
+{
+	m_pParser = pExecutor;
 }
 
 void util::CUserParseRuler::Traverse( CFBUser& cFBUser )
 {
-	cFBUser.szId = m_jvRoot[FB_ID].asString();
-	cFBUser.szFullName = m_jvRoot[FB_USER_NAME].asString();
-	if (!m_jvRoot[FB_USER_PICTURE].isNull())
+	cFBUser.szId = m_pParser->GetValueAsString(FB_ID);
+	cFBUser.szFullName = m_pParser->GetValueAsString(FB_USER_NAME);
+	if (!m_pParser->IsObjectNull(FB_USER_PICTURE))
 	{
 		cFBUser.pProfile = new CFBProfile();
-		cFBUser.pProfile->szThumNail = m_jvRoot[FB_USER_PICTURE][FB_USER_PICTURE_DATA][FB_USER_PICTURE_DATA_URL].asString();
+		cFBUser.pProfile->szThumNail = m_pParser->GetValueAsString(FB_USER_PICTURE"."FB_USER_PICTURE_DATA"."FB_USER_PICTURE_DATA_URL);
 	}
 }
 
 void util::CUserParseRuler::Traverse( CFkrUser& cFkrUser )
 {
-	Json::Value jvValue = m_jvRoot;
-	if (jvValue[FLICK_PEOPLE_PERSON].isNull())
+	if (m_pParser->IsObjectNull(FLICK_PEOPLE_PERSON))
 	{
-		cFkrUser.szId = jvValue[FLICK_CONTACT_NSID].asString();
-		cFkrUser.szFullName = jvValue[FLICK_CONTACT_REAL_NAME].asString();
-		cFkrUser.szUsrName = jvValue[FLICK_CONTACT_USR_NAME].asString();
-		cFkrUser.bIsFriend = jvValue[FLICK_CONTACT_FRIEND].asBool();
-		cFkrUser.bIsFamily = jvValue[FLICK_CONTACT_FAMILY].asBool();	
+		cFkrUser.szId = m_pParser->GetValueAsString(FLICK_CONTACT_NSID);
+		cFkrUser.szFullName = m_pParser->GetValueAsString(FLICK_CONTACT_REAL_NAME);
+		cFkrUser.szUsrName = m_pParser->GetValueAsString(FLICK_CONTACT_USR_NAME);
+		cFkrUser.bIsFriend = m_pParser->GetValueAsBool(FLICK_CONTACT_FRIEND);
+		cFkrUser.bIsFamily = m_pParser->GetValueAsBool(FLICK_CONTACT_FAMILY);
 	}
 	else
 	{
-		jvValue = m_jvRoot[FLICK_PEOPLE_PERSON];
-		cFkrUser.bIsFamily = atoi(jvValue[FLICK_PEOPLE_PERSON_ISFAMILY].asString().c_str()) != 0;
-		cFkrUser.bIsFriend = atoi(jvValue[FLICK_PEOPLE_PERSON_ISFRIEND].asString().c_str()) != 0;
-		cFkrUser.bIsProUsr = atoi(jvValue[FLICK_PEOPLE_PERSON_ISPRO].asString().c_str()) != 0;
-		cFkrUser.szFullName = jvValue[FLICK_PEOPLE_PERSON_REAL_NAME][FLICK_FIELD_CONTENT].asString();
-		cFkrUser.szId = jvValue[FLICK_PEOPLE_PERSON_ID].asString();
-		cFkrUser.szUsrName = jvValue[FLICK_PEOPLE_PERSON_USR_NAME][FLICK_FIELD_CONTENT].asString();
+		m_pParser->StoreRoot();
+		m_pParser->GetObjectAsRoot(FLICK_PEOPLE_PERSON);
+		cFkrUser.bIsFamily = atoi(m_pParser->GetValueAsString(FLICK_PEOPLE_PERSON_ISFAMILY).c_str()) != 0;
+		cFkrUser.bIsFriend = atoi(m_pParser->GetValueAsString(FLICK_PEOPLE_PERSON_ISFRIEND).c_str()) != 0;
+		cFkrUser.bIsProUsr = atoi(m_pParser->GetValueAsString(FLICK_PEOPLE_PERSON_ISPRO).c_str()) != 0;
+		cFkrUser.szFullName = m_pParser->GetValueAsString(FLICK_PEOPLE_PERSON_REAL_NAME"."FLICK_FIELD_CONTENT);
+		cFkrUser.szId = m_pParser->GetValueAsString(FLICK_PEOPLE_PERSON_ID);
+		cFkrUser.szUsrName = m_pParser->GetValueAsString(FLICK_PEOPLE_PERSON_USR_NAME"."FLICK_FIELD_CONTENT);
 	}
 
-	if (jvValue[FLICK_PEOPLE_PERSON_ICONFARM].asString()=="0" && 
-		jvValue[FLICK_PEOPLE_PERSON_ICONSVR].asString()=="0")
+	if (m_pParser->GetValueAsString(FLICK_PEOPLE_PERSON_ICONFARM)=="0" && 
+		m_pParser->GetValueAsString(FLICK_PEOPLE_PERSON_ICONSVR)=="0")
 	{
 		LOGGER_DEBUG(m_pILogger,"This queryee [%s] don't have the thumbnail or open the access right for the querier",cFkrUser.szId.c_str())
 	}
 	else
 	{
 		cFkrUser.pProfile = new CFkrProfile();
-		cFkrUser.pProfile->szThumNail = util::CStringHelper::Format("http://farm%s.staticflickr.com/%s/buddyicons/%s.jpg", 
-			jvValue[FLICK_PEOPLE_PERSON_ICONFARM].asString().c_str(),
-			jvValue[FLICK_PEOPLE_PERSON_ICONSVR].asString().c_str(),
+		cFkrUser.pProfile->szThumNail = util::CStringHelper::Format("http://farm%s.staticflickr.com/%s/buddyicons/%s.jpg",
+			m_pParser->GetValueAsString(FLICK_PEOPLE_PERSON_ICONFARM).c_str(),
+			m_pParser->GetValueAsString(FLICK_PEOPLE_PERSON_ICONSVR).c_str(),
 			cFkrUser.szId.c_str());
 	}
-
 }
 
 

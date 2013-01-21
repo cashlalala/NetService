@@ -101,7 +101,7 @@ void util::CJsonCppParser::ResetRoot()
 	m_jvCurRoot = m_jvRoot;
 }
 
-void util::CJsonCppParser::GetObjectAsListRoot( const char* lpcszFormat, ... )
+void util::CJsonCppParser::GetObjectAsRoot( const char* lpcszFormat, ... )
 {
 	va_list args;
 	va_start(args, lpcszFormat);
@@ -110,17 +110,17 @@ void util::CJsonCppParser::GetObjectAsListRoot( const char* lpcszFormat, ... )
 	m_jvCurRoot = GetObject(m_jvCurRoot,szResult);
 }
 
-void util::CJsonCppParser::StoreListRoot()
+void util::CJsonCppParser::StoreRoot()
 {
 	m_jvListRoot.push_back(m_jvCurRoot);
 }
 
-void util::CJsonCppParser::RestoreListRoot()
+void util::CJsonCppParser::RestoreRoot()
 {
 	m_jvCurRoot = m_jvListRoot.back();
 }
 
-void util::CJsonCppParser::ClearTop()
+void util::CJsonCppParser::ClearBuffTop()
 {
 	m_jvListRoot.pop_back();
 }

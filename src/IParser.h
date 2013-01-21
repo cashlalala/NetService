@@ -17,11 +17,11 @@ namespace util
 
 		virtual void ResetRoot() = 0;
 
-		virtual void StoreListRoot() = 0 ;
-		virtual void RestoreListRoot() = 0;
-		virtual void ClearTop() = 0 ;
+		virtual void StoreRoot() = 0 ;
+		virtual void RestoreRoot() = 0;
+		virtual void ClearBuffTop() = 0 ;
 
-		virtual void GetObjectAsListRoot(const char* lpcszFormat, ...) = 0;
+		virtual void GetObjectAsRoot(const char* lpcszFormat, ...) = 0;
 		
 	};
 }

@@ -20,16 +20,16 @@ void util::CImageListParseRuler::Traverse( CFBImageList& cFBImageList )
 	int nImageNum = m_pParser->GetValueAsArrarySize(FB_PHOTO_IMAGES);
 	CImageParseRuler cImgRuler;
 	cImgRuler.SetExecutor(m_pParser);
-	m_pParser->StoreListRoot();
+	m_pParser->StoreRoot();
 	for (int j = 0; j<nImageNum;++j)
 	{
-		m_pParser->GetObjectAsListRoot("%s.%d",FB_PHOTO_IMAGES,j);
+		m_pParser->GetObjectAsRoot("%s.%d",FB_PHOTO_IMAGES,j);
 		model::CFBImage* pIImage = new model::CFBImage();
 		pIImage->AcceptImageParser(cImgRuler);
 		cFBImageList.items.push_back(pIImage);
-		m_pParser->RestoreListRoot();
+		m_pParser->RestoreRoot();
 	}
-	m_pParser->ClearTop();
+	m_pParser->ClearBuffTop();
 }
 
 void util::CImageListParseRuler::Traverse( CFkrImageList& cFkrImageList )
