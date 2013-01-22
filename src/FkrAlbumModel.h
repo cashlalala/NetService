@@ -17,7 +17,7 @@ namespace model
 	struct CFkrAlbumList :
 		public IAlbumList	
 	{
-		CFkrAlbumList(): nPage(0), nPages(0), nTotal(0){};
+		CFkrAlbumList(): nPage(0), nPages(0), nPerpage(0), nTotal(0){};
 		virtual ~CFkrAlbumList(void){};
 		int nPage;
 		int nPages;
