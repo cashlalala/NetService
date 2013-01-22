@@ -15,7 +15,11 @@ namespace util
 		virtual int Traverse( CFkrError& cFBErr ) ;
 
 		virtual void SetExecutor(void* pExecutor);
+
+		virtual void SetExecutor(IParser* pExecutor);
 	private:
+		IParser* m_pParser;
+
 		Json::Value m_jvRoot;
 	};
 }

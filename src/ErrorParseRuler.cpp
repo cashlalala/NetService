@@ -33,3 +33,8 @@ void util::CErrorParseRuler::SetExecutor( void* pExecutor )
 	m_jvRoot = *((Json::Value*) pExecutor);
 }
 
+void util::CErrorParseRuler::SetExecutor( IParser* pExecutor )
+{
+	m_pParser = pExecutor;
+}
+
