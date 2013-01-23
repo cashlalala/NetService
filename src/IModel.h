@@ -52,13 +52,13 @@ namespace model
 	struct IList : virtual public IModel 
 	{
 		virtual ~IList() = 0;
-		list<T> listOfItem;
+		list<T> items;
 	};
 
 	template <class T>
 	inline IList<T>::~IList()
 	{
-		SAFE_DELETE_LIST(list<T>,listOfItem);
+		SAFE_DELETE_LIST(list<T>,items);
 	}
 
 	template <class T>

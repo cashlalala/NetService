@@ -10,6 +10,7 @@ namespace model
 
 	struct CFkrProfile : public IProfile{
 		virtual ~CFkrProfile(){};
+		int AcceptProfileParser(IProfileParseRuler& cProfileParser) {return cProfileParser.Traverse(*this);}
 	};
 
 	struct CFkrUser : public IUser{
@@ -20,6 +21,7 @@ namespace model
 		bool bIsFamily;
 		bool bIsProUsr;
 		string szUsrName;
+		void AcceptUserParser(IUserParseRuler& cUserParser) {cUserParser.Traverse(*this);}
 	};
 
 	struct CFkrUserList : public IUserList{
@@ -29,6 +31,7 @@ namespace model
 		int nPages;
 		int nPerpage;
 		int nTotal; //not only in current page
+		void AcceptUserListParser(IUserListParseRuler& cUserListParser) {cUserListParser.Traverse(*this);}
 	};
 }
 

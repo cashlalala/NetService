@@ -8,6 +8,7 @@ namespace model
 		public IError
 	{
 		virtual ~CFBError(void) {};
+		int AcceptErrorParser(util::IErrorParseRuler& errParse) { return errParse.Traverse(*this);};
 	};
 
 }

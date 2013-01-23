@@ -28,6 +28,9 @@
     <Filter Include="Util\Logger">
       <UniqueIdentifier>{b703055c-5468-4447-9ecf-c1114096afac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Util\DataMgr\ParseRule">
+      <UniqueIdentifier>{f88ee986-8fda-4a9f-9146-f7f9043787be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InternetConnectService.cpp">
@@ -80,6 +83,30 @@
     </ClCompile>
     <ClCompile Include="StringHelper.cpp">
       <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="ErrorParseRuler.cpp">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageParseRuler.cpp">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClCompile>
+    <ClCompile Include="PhotoParseRuler.cpp">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClCompile>
+    <ClCompile Include="ListHelper.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="UserParseRuler.cpp">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClCompile>
+    <ClCompile Include="AlbumParseRuler.cpp">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClCompile>
+    <ClCompile Include="ProfileParseRuler.cpp">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoParseRuler.cpp">
+      <Filter>Util\DataMgr\ParseRule</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +232,33 @@
     </ClInclude>
     <ClInclude Include="FkrUserModel.h">
       <Filter>Model\Flickr</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorParseRuler.h">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageParseRuler.h">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClInclude>
+    <ClInclude Include="IParseRuler.h">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClInclude>
+    <ClInclude Include="PhotoParseRuler.h">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClInclude>
+    <ClInclude Include="ListHelper.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="UserParseRuler.h">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClInclude>
+    <ClInclude Include="AlbumParseRuler.h">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClInclude>
+    <ClInclude Include="ProfileParseRuler.h">
+      <Filter>Util\DataMgr\ParseRule</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoParseRuler.h">
+      <Filter>Util\DataMgr\ParseRule</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

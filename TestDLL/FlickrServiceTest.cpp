@@ -135,7 +135,7 @@ void CFlickrServiceTest::testGetFriendsPhotosInAlbumWithPhotosAndAlbumPaging()
 	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK);
 
 	string szTargetFriendId;
-	for (list<IUser*>::iterator it = cFkrUsrList.listOfItem.begin();it != cFkrUsrList.listOfItem.end(); ++it)
+	for (list<IUser*>::iterator it = cFkrUsrList.items.begin();it != cFkrUsrList.items.end(); ++it)
 	{
 		cout << (*it)->szId << endl;
 		if ((*it)->szId == szCertainFriend)
@@ -150,15 +150,15 @@ void CFlickrServiceTest::testGetFriendsPhotosInAlbumWithPhotosAndAlbumPaging()
 	mapQryParams[FLICK_PARAM_PERPAGE] = "1";
 	mapQryParams[FLICK_PARAM_PAGE] = "2";
 	nResult = pSocialService->GetAlbums(cFkrAlbumList,cFkrErr,szTargetFriendId,mapQryParams);
-	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK && cFkrAlbumList.listOfItem.size()==1);
+	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK && cFkrAlbumList.items.size()==1);
 	mapQryParams.clear();
 
 	model::CFkrPhotoList cFBPhotoList;
 	mapQryParams[FLICK_PARAM_PERPAGE] = "5";
 	mapQryParams[FLICK_PARAM_PAGE] = "2";
-	string szTargetAlbumId = cFkrAlbumList.listOfItem.front()->szId;
+	string szTargetAlbumId = cFkrAlbumList.items.front()->szId;
 	nResult = pSocialService->GetPhotos(cFBPhotoList,cFkrErr,szTargetAlbumId,mapQryParams);
-	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK && cFBPhotoList.listOfItem.size()==5 
+	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK && cFBPhotoList.items.size()==5 
 		&& !cFBPhotoList.szNextPageUrl.empty() && !cFBPhotoList.szPreviousPageUrl.empty());
 
 }
@@ -168,6 +168,20 @@ void CFlickrServiceTest::terminate()
 {
 	g_bIsAuthFlowDone = false;
 	g_szToken = "";
+}
+
+void CFlickrServiceTest::testFkrGetUsers()
+{
+	model::CFkrUserList cFkrUsrLst;
+	model::CFkrError cFkrErr;
+	std::list<string> listUid;
+	listUid.push_back("92188701@N07");
+	listUid.push_back("70735667@N03");
+	listUid.push_back("91786782@N02");
+
+	int nResult = pSocialService->GetUsersInfo(cFkrUsrLst,cFkrErr, listUid);
+	CPPUNIT_ASSERT_MESSAGE(cFkrErr.szMsg.c_str(),nResult==S_OK && cFkrUsrLst.items.size()==3);
+
 }
 
 CFlickrConnectionInfo CFlickrServiceTest::m_cCnctInfoVO;

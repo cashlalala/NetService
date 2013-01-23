@@ -22,6 +22,7 @@ class CFlickrServiceTest: public CPPUNIT_NS::TestFixture
 	CPPUNIT_TEST( testFkrGetProfile );
 	CPPUNIT_TEST( testFkrGetAlbumList );
 	CPPUNIT_TEST( testFkrGetUser );
+	CPPUNIT_TEST( testFkrGetUsers );
 	CPPUNIT_TEST( testFkrGetPhotos );
 	CPPUNIT_TEST( testGetFriends );
 	// ＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃＃Basic testing 
@@ -42,6 +43,7 @@ public:
 	void testFkrGetProfile();
 	void testFkrGetAlbumList();
 	void testFkrGetUser();
+	void testFkrGetUsers();
 	void testFkrGetPhotos();
 	void testGetFriends();
 

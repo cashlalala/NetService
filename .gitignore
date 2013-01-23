@@ -13,3 +13,5 @@ ipch
 *.sdf
 
 *.log
+TestLib/Log4cxxConfig.xml
+TestDLL/Log4cxxConfig.xml

@@ -54,10 +54,11 @@ void CFlickrService::SetConnectionInfo( IConnectionInfo& cConectInfoVO )
 	m_cConnectInfo.szFrob = S_FROB_BUF;
 }
 
-int CFlickrService::GetPhotos( IPhotoList& iPhotoLst, IError& iErr, string szId /*= "me"*/, SysMaps::Str2Str& mapQryCriteria/*=SysMaps::Str2Str()*/ )
+int CFlickrService::GetPhotos( IPhotoList& iPhotoLst, IError& iErr, string szId /*= "me"*/, SysMaps::Str2Str& mapQryParams/*=SysMaps::Str2Str()*/ )
 {
 	int nResult = E_FAIL;
 	HttpRespValObj cHttpResp;
+	SysMaps::Str2Str mapQryCriteria(mapQryParams);
 	do 
 	{
 		if ( szId.find("@")==string::npos && szId!="me")//album id
@@ -97,7 +98,7 @@ int CFlickrService::GetPhotos( IPhotoList& iPhotoLst, IError& iErr, string szId 
 		nResult = CallApi(cHttpResp,iErr, mapQryCriteria);
 		EXCEPTION_BREAK(nResult)
 
-		nResult = m_pIDataMgr->ParsePhotoList(iPhotoLst,cHttpResp.szResp,util::Flickr,iErr);
+		nResult = m_pIDataMgr->ParsePhotoList(iPhotoLst,cHttpResp.szResp, iErr);
 		EXCEPTION_BREAK(nResult)
 
 		CFkrPhotoList* pFkrPhotoLst = dynamic_cast<CFkrPhotoList*>(&iPhotoLst);
@@ -159,33 +160,22 @@ int CFlickrService::GetUsersInfo( IUserList& iUserLst, IError& iErr, SysList::St
 	for (SysList::StrList::iterator it = listUid.begin();it!=listUid.end();++it)
 	{
 		HttpRespValObj cHttpResp;
-		CFkrUser* pFkrUsr = new CFkrUser();
+		CFkrUser* pFkrUsr = NULL;
 		do 
 		{
-			SysMaps::Str2Str mapBuf(mapQryCriteria);
-			mapBuf[FLICK_PARAM_USER_ID] = *it;
-			mapBuf[FLICK_PARAM_METHOD] = FLICK_METHOD_PEOPLE_GETINFO;
-			nResult = this->CallApi(cHttpResp,iErr,mapBuf);
+			SysMaps::Str2Str mapCpy(mapQryCriteria);
+			pFkrUsr = new CFkrUser();
+
+			nResult = GetUserInfo(*pFkrUsr,iErr,*it,mapCpy);
 			EXCEPTION_BREAK(nResult)
 
-			nResult = m_pIDataMgr->ParseUser(*pFkrUsr,cHttpResp.szResp,util::Flickr,iErr);
-			EXCEPTION_BREAK(nResult)
-
-			iUserLst.listOfItem.push_back(pFkrUsr);
+			iUserLst.items.push_back(pFkrUsr);
 			nResult = S_OK;
 		} while (false);
 
 		//Error Handling
 		if (!SUCCEEDED(nResult))
 		{
-			if (nResult == NS_E_INET_CONNECT_FAIL_API_RETURN_ERROR ||
-				nResult == NS_E_INET_CONNECT_FAIL_HTTP_STATUS_ERROR)
-			{
-				stringstream ss;
-				ss << "API return Code: [" << cHttpResp.dwError << "] Http Status: [" << cHttpResp.dwStatusCode << "] Response Msg:[" << cHttpResp.szResp <<"]";
-				iErr.szMsg = ss.str() ;
-			}
-
 			SAFE_DELETE_OBJECT(pFkrUsr);
 			break;
 		}
@@ -193,10 +183,11 @@ int CFlickrService::GetUsersInfo( IUserList& iUserLst, IError& iErr, SysList::St
 	return nResult;
 }
 
-int CFlickrService::GetUserInfo( IUser& iUser, IError& iErr, string szUid/*="me"*/, SysMaps::Str2Str& mapQryCriteria /*= SysMaps::Str2Str()*/ )
+int CFlickrService::GetUserInfo( IUser& iUser, IError& iErr, string szUid/*="me"*/, SysMaps::Str2Str& mapQryParams/*=SysMaps::Str2Str()*/ )
 {
 	int nResult = E_FAIL;
 	HttpRespValObj cHttpResp;
+	SysMaps::Str2Str mapQryCriteria(mapQryParams);
 
 	if (mapQryCriteria.find(FLICK_PARAM_USER_ID)==mapQryCriteria.end())//not ever exist
 		mapQryCriteria[FLICK_PARAM_USER_ID] = (szUid.empty())? "me" : szUid;
@@ -206,7 +197,7 @@ int CFlickrService::GetUserInfo( IUser& iUser, IError& iErr, string szUid/*="me"
 		nResult = CallApi(cHttpResp, iErr, mapQryCriteria);
 		EXCEPTION_BREAK(nResult);
 
-		nResult = m_pIDataMgr->ParseUser(iUser,cHttpResp.szResp,util::Flickr,iErr);
+		nResult = m_pIDataMgr->ParseUser(iUser,cHttpResp.szResp,iErr);
 		EXCEPTION_BREAK(nResult);
 
 		nResult = S_OK;
@@ -218,10 +209,11 @@ int CFlickrService::GetUserInfo( IUser& iUser, IError& iErr, string szUid/*="me"
 	return nResult;
 }
 
-int CFlickrService::GetFriends( IUserList& iUserLst, IError& iErr, string szUid/*="me"*/, SysMaps::Str2Str& mapQryCriteria /*= SysMaps::Str2Str()*/ )
+int CFlickrService::GetFriends( IUserList& iUserLst, IError& iErr, string szUid/*="me"*/, SysMaps::Str2Str& mapQryParams/*=SysMaps::Str2Str()*/ )
 {
 	int nResult = E_FAIL;
 	HttpRespValObj cHttpResp;
+	SysMaps::Str2Str mapQryCriteria(mapQryParams);
 
 	if (mapQryCriteria.find(FLICK_PARAM_USER_ID)==mapQryCriteria.end())//not ever exist
 		mapQryCriteria[FLICK_PARAM_USER_ID] = (szUid.empty())? "me" : szUid;
@@ -235,7 +227,7 @@ int CFlickrService::GetFriends( IUserList& iUserLst, IError& iErr, string szUid/
 		nResult = CallApi(cHttpResp, iErr, mapQryCriteria);
 		EXCEPTION_BREAK(nResult);
 
-		nResult = m_pIDataMgr->ParseFriendList(iUserLst,cHttpResp.szResp,util::Flickr,iErr);
+		nResult = m_pIDataMgr->ParseFriendList(iUserLst,cHttpResp.szResp,iErr);
 
 		CFkrUserList* pAlbLst = dynamic_cast<CFkrUserList*>(&iUserLst);
 		ComposePagingUrl(iUserLst,pAlbLst->nPage,pAlbLst->nPages,mapQryCriteria);
@@ -247,10 +239,11 @@ int CFlickrService::GetFriends( IUserList& iUserLst, IError& iErr, string szUid/
 	return nResult;
 }
 
-int CFlickrService::GetAlbums( IAlbumList& iAlbumLst, IError& iErr, string szUid/*="me"*/, SysMaps::Str2Str& mapQryCriteria /*= SysMaps::Str2Str()*/ )
+int CFlickrService::GetAlbums( IAlbumList& iAlbumLst, IError& iErr, string szUid/*="me"*/, SysMaps::Str2Str& mapQryParams/*=SysMaps::Str2Str()*/ )
 {
 	int nResult = E_FAIL;
 	HttpRespValObj cHttpResp;
+	SysMaps::Str2Str mapQryCriteria(mapQryParams);
 	if (mapQryCriteria.find(FLICK_PARAM_USER_ID)==mapQryCriteria.end())//not ever exist
 		mapQryCriteria[FLICK_PARAM_USER_ID] = (szUid.empty())? "me" : szUid;
 	mapQryCriteria[FLICK_PARAM_METHOD] = FLICK_METHOD_PHOTOSET_GETLIST;
@@ -259,7 +252,7 @@ int CFlickrService::GetAlbums( IAlbumList& iAlbumLst, IError& iErr, string szUid
 		nResult = CallApi(cHttpResp,iErr, mapQryCriteria);
 		EXCEPTION_BREAK(nResult)
 
-		nResult = m_pIDataMgr->ParseAlbumList(iAlbumLst,cHttpResp.szResp,util::Flickr,iErr);
+		nResult = m_pIDataMgr->ParseAlbumList(iAlbumLst,cHttpResp.szResp,iErr);
 		EXCEPTION_BREAK(nResult)
 
 		CFkrAlbumList* pAlbLst = dynamic_cast<CFkrAlbumList*>(&iAlbumLst);
@@ -272,8 +265,9 @@ int CFlickrService::GetAlbums( IAlbumList& iAlbumLst, IError& iErr, string szUid
 	return nResult;
 }
 
-int CFlickrService::GetProfile( IProfile& iProfile, IError& iErr, string szId/*="me"*/, SysMaps::Str2Str& mapQryCriteria /*= SysMaps::Str2Str()*/ )
+int CFlickrService::GetProfile( IProfile& iProfile, IError& iErr, string szId/*="me"*/, SysMaps::Str2Str& mapQryParams/*=SysMaps::Str2Str()*/ )
 {
+	SysMaps::Str2Str mapQryCriteria(mapQryParams);
 	CFkrUser cFkrUsr;
 	int nResult = GetUserInfo(cFkrUsr,iErr,szId,mapQryCriteria);
 	if (cFkrUsr.pProfile)
@@ -455,7 +449,7 @@ void CFlickrService::ComposePagingUrl( IPage& iPage, int nCurPage, int nTotalPag
 		cit = mapCpy.find(FLICK_PARAM_API_SIG);
 		mapCpy.erase(cit);
 		mapCpy[FLICK_PARAM_API_SIG] = util::CCodecHelper::GetInstance()->ToMD5(mapCpy,m_cConnectInfo.szAppSecret.c_str());
-		iPage.mapNextPageParams = mapCpy;
+		iPage.mapPrevPageParams = mapCpy;
 		iPage.szPreviousPageUrl = ComposeUrl(mapCpy);	
 	}
 }

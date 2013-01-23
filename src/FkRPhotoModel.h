@@ -17,11 +17,13 @@ namespace model
 		virtual ~CFkrImage(void){};
 		string szLabel;
 		string szMedia;
+		void AcceptImageParser(IImageParseRuler& cImageParser) {cImageParser.Traverse(*this);}
 	};
 
 	struct CFkrImageList : virtual public IImageList
 	{
 		virtual ~CFkrImageList(void){};
+		void AcceptImageListParser(IImageListParseRuler& cImageListParser) {cImageListParser.Traverse(*this);}
 	};
 
 	struct CFkrPhoto : public IPhoto , public CFkrImage
@@ -37,6 +39,7 @@ namespace model
 		bool bCanBlog;
 		bool bCanPrint;
 		bool bCanDownload;
+		void AcceptPhotoParser(IPhotoParseRuler& cPhotoParser) {cPhotoParser.Traverse(*this);};
 	};
 
 	struct CFkrPhotoList : public IPhotoList
@@ -47,6 +50,7 @@ namespace model
 		int nPages;
 		int nPerpage;
 		int nTotal; //not only in current page
+		void AcceptPhotoListParser(IPhotoListParseRuler& cPhotoListParser) {cPhotoListParser.Traverse(*this);}
 	};
 }
 
