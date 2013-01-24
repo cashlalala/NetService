@@ -21,10 +21,21 @@
     </layout>
   </appender>
 
+
+  <!-- Output the log message to windows debugger
+    -->
+  <appender name="Win32DebugAppender" class="org.apache.log4j.OutputDebugStringAppender">
+    <param name="threshold" value="trace" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d %-5p [%t] %C{2} %M- %m (%F:%L) %n" />
+    </layout>
+  </appender>
+
   <root>
     <priority value="trace" />
     <appender-ref ref="appxNormalAppender"/>
     <appender-ref ref="appxConsoleAppender"/>
+    <appender-ref ref="Win32DebugAppender"/>
   </root>
 
   <!-- Specify the level for some specific categories -->
